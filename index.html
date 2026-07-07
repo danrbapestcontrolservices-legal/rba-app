@@ -46,14 +46,23 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzVt49fW43h1e3c92cAo6ZzXgdfoHD9XjeybUsj-ccGEUmRP1lWoO8_6pVKrB59xlsXXQ/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbygrWr4BqJZd609syio_xIGkilz7ciMah6mc541QTubhy_hjUEAG3UoKGrqkk0BAiARSA/exec"; 
     let empId = "", lat = null, lng = null;
 
     if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
-    async function sendDataToGoogle(data) {
-      const response = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) });
-      return response.json();
+   async function sendDataToGoogle(data) {
+      try {
+        const response = await fetch(API_URL, { 
+          method: 'POST', 
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          redirect: 'follow', // This stops the screen from hanging!
+          body: JSON.stringify(data) 
+        });
+        return await response.json();
+      } catch (error) {
+        return { success: false, message: "Network Error. Check internet." };
+      }
     }
 
     function sendOTP() {
@@ -67,7 +76,7 @@
           document.getElementById('loginView').classList.add('hidden');
           document.getElementById('otpView').classList.remove('hidden');
         } else {
-          alert("ID not found in RBA Database.");
+          alert(res.message || "ID not found in RBA Database.");
           document.getElementById('btnSend').innerText = "SEND SMS CODE";
           document.getElementById('btnSend').disabled = false;
         }
