@@ -48,7 +48,7 @@
 
   <script>
     // PASTE YOUR NEW GOOGLE SCRIPT DEPLOYMENT URL BELOW
-    const API_URL = "https://script.google.com/macros/s/AKfycbx7FZxdQsmhchnA5vvM-geI50q_x2kjgN7oZPjG9HAP3HQH0rCWp_c9gmYLz5-ljCyPpg/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbzg6Hwx0C6CGXkfKabY0OduGf4QNipse3tROqo72t5YnsntpMlviReP47eeHAnjxrAezA/exec"; 
 
     let empId = "", lat = null, lng = null;
 
@@ -89,7 +89,6 @@
     }
 
     function verifyOTP() {
-      // .trim() prevents the "Wrong Code" space error
       const otp = document.getElementById('otpCode').value.trim(); 
       document.getElementById('btnVerify').innerText = "CHECKING...";
       document.getElementById('btnVerify').disabled = true;
@@ -98,7 +97,8 @@
         if (res.success) {
           startApp();
         } else {
-          alert("Wrong Code. Try again.");
+          // X-RAY POPUP: This will show you exactly what is wrong
+          alert(res.debug || "Wrong Code.");
           document.getElementById('btnVerify').innerText = "VERIFY IDENTITY";
           document.getElementById('btnVerify').disabled = false;
         }
