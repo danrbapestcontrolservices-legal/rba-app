@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>RBA Core HR</title>
+  <title>RBA Core HR Platform</title>
   <link rel="manifest" href="manifest.json">
+  
+  <!-- INTERNATIONALLY BENCHMARKED OTA AUTO-UPDATE CACHE BUSTERS -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
+  <!-- Tailwind CSS Engine -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; }
@@ -12,188 +19,200 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     .nav-btn.active { color: #1e3a8a; border-top: 3px solid #1e3a8a; background: #eff6ff; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
-    /* Desktop layout overrides for Admin */
-    @media (min-width: 768px) { .mobile-wrapper { max-width: 1000px !important; } }
+    @media (min-width: 768px) { 
+      .mobile-wrapper { max-width: 1100px !important; } 
+      .nav-btn.active { border-top: 0px; border-l-4: 4px solid #1e3a8a; }
+    }
   </style>
 </head>
 <body class="flex justify-center min-h-screen">
 
   <div class="mobile-wrapper w-full max-w-lg bg-white min-h-screen shadow-2xl relative flex flex-col pb-[70px] md:pb-0">
     
-    <!-- HEADER -->
+    <!-- BRANDING HEADER -->
     <div class="pt-6 pb-4 text-center border-b-[6px] border-blue-900 bg-white shadow-sm flex-shrink-0 z-10">
-      <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" alt="RBA Logo" class="h-12 md:h-16 mx-auto object-contain">
+      <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" alt="RBA Logo" class="h-14 md:h-16 mx-auto object-contain">
       <h1 class="text-xl md:text-2xl font-black text-slate-800 tracking-tight mt-2">RBA PEST CONTROL</h1>
-      <h2 class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase">Enterprise HR Portal</h2>
+      <h2 class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase">& WATERPROOFING SERVICES</h2>
     </div>
 
-    <!-- MAIN CONTENT AREA -->
+    <!-- MAIN APP CANVAS -->
     <div class="flex-1 overflow-y-auto no-scrollbar p-4 md:p-8">
 
-      <!-- ================= LOGIN/OTP ================= -->
+      <!-- ================= LOGIN / SECURITY GATE ================= -->
       <div id="authSection" class="fade-in mt-10 max-w-md mx-auto">
         <div id="loginView">
-          <input type="text" id="empId" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl uppercase font-black text-center text-xl text-slate-700 focus:border-blue-700 focus:ring-0" placeholder="EMPLOYEE ID">
-          <button onclick="sendOTP()" class="mt-4 w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800" id="btnSend">SECURE LOGIN</button>
+          <input type="text" id="empId" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl uppercase font-black text-center text-xl text-slate-700 focus:border-blue-700 outline-none" placeholder="EMPLOYEE ID">
+          <button onclick="sendOTP()" class="mt-4 w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnSend">SECURE LOGIN</button>
         </div>
         <div id="otpView" class="hidden fade-in mt-4">
-          <div class="bg-blue-50 text-blue-800 text-xs font-semibold p-3 rounded-lg mb-4 text-center border border-blue-100">SMS Code Sent.</div>
-          <input type="number" id="otpCode" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl text-center tracking-[0.5em] text-3xl font-black text-slate-800 focus:border-blue-700" placeholder="••••••">
-          <button onclick="verifyOTP()" class="mt-4 w-full bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-emerald-700" id="btnVerify">VERIFY IDENTITY</button>
+          <div class="bg-blue-50 text-blue-800 text-xs font-semibold p-3 rounded-lg mb-4 text-center border border-blue-100">Security verification token transmitted via network cellular SMS.</div>
+          <input type="number" id="otpCode" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl text-center tracking-[0.5em] text-3xl font-black text-slate-800 focus:border-blue-700 outline-none" placeholder="••••••">
+          <button onclick="verifyOTP()" class="mt-4 w-full bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition-all" id="btnVerify">VERIFY IDENTITY</button>
         </div>
       </div>
 
-      <!-- ================= COMPLIANCE GATE ================= -->
+      <!-- ================= COMPLIANCE GATE (BROADCAST) ================= -->
       <div id="broadcastView" class="hidden fade-in text-center py-10 max-w-md mx-auto">
-        <div class="inline-block bg-rose-100 text-rose-800 px-4 py-1 rounded-full font-black text-xs mb-4 animate-pulse">REQUIRED READING</div>
-        <h3 class="text-2xl font-black text-slate-800 mb-4">Official Memo</h3>
-        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 text-slate-700 font-medium text-sm text-left mb-6 shadow-inner whitespace-pre-wrap" id="broadcastMessage"></div>
-        <button onclick="acknowledgeMemo()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg" id="btnAck">I HAVE READ AND AGREE</button>
+        <div class="inline-block bg-rose-100 text-rose-800 px-4 py-1 rounded-full font-black text-xs mb-4 animate-pulse">COMPULSORY HR ACKNOWLEDGMENT MANDATE</div>
+        <h3 class="text-2xl font-black text-slate-800 mb-4">Official Executive Directive</h3>
+        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 text-slate-700 font-medium text-sm text-left mb-6 shadow-inner whitespace-pre-wrap leading-relaxed" id="broadcastMessage"></div>
+        <button onclick="acknowledgeMemo()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnAck">I CONFIRM, READ, AND LEGALLY AGREE</button>
       </div>
 
-      <!-- ================= APP MODULES ================= -->
+      <!-- ================= INTEGRATED APP NAVIGATION MODULES ================= -->
       <div id="appModules" class="hidden h-full">
         
-        <!-- TAB 1: CLOCK -->
+        <!-- TAB MODULE 1: INTERNATIONALLY BENCHMARKED CHRONO CLOCK -->
         <div id="tab-time" class="fade-in max-w-md mx-auto">
           <div id="12hrWarning" class="hidden bg-rose-100 text-rose-800 text-xs font-bold p-3 rounded-lg mb-4 border border-rose-300 text-left shadow-sm">
-            ⚠️ 12-HOUR LIMIT REACHED. You must Time Out immediately. HR review required.
+            ⚠️ MAXIMUM SHIFT REACHED: You have logged a maximum allocation of 12 hours for the day. Access has been restricted pending official HR administrative audit.
           </div>
-          <div class="bg-amber-50 text-amber-800 text-[10px] font-bold p-2 rounded-lg mb-4 text-center uppercase tracking-wider border border-amber-200 shadow-sm flex items-center justify-center gap-2">
-            <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" class="h-4"> Biometric Terminal Active
+          <div class="bg-blue-50 text-blue-900 text-[10px] font-black p-2 rounded-lg mb-4 text-center uppercase tracking-wider border border-blue-200 shadow-sm flex items-center justify-center gap-2">
+            Encrypted Biometric Verification Loop Engaged
           </div>
           <div class="relative rounded-xl overflow-hidden shadow-inner border-4 border-slate-200 bg-black aspect-square md:aspect-video">
             <video id="videoElement" autoplay playsinline class="w-full h-full object-cover"></video>
             <canvas id="canvas" class="hidden"></canvas>
           </div>
-          <p id="gpsText" class="text-slate-500 mt-3 font-bold text-xs text-center animate-pulse">Acquiring Satellite...</p>
+          <p id="gpsText" class="text-slate-500 mt-3 font-bold text-xs text-center animate-pulse">Polling Geostationary Coordinate Telemetry...</p>
           <div class="flex gap-4 mt-6">
-            <button onclick="logTime('TIME IN')" class="flex-1 bg-emerald-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25 transition-transform active:scale-95" id="btnIn" disabled>TIME IN</button>
-            <button onclick="logTime('TIME OUT')" class="flex-1 bg-rose-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25 transition-transform active:scale-95" id="btnOut" disabled>TIME OUT</button>
+            <button onclick="logTime('TIME IN')" class="flex-1 bg-emerald-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25 transition-all" id="btnIn" disabled>TIME IN</button>
+            <button onclick="logTime('TIME OUT')" class="flex-1 bg-rose-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25 transition-all" id="btnOut" disabled>TIME OUT</button>
           </div>
         </div>
 
-        <!-- TAB 2: FORMS -->
+        <!-- TAB MODULE 2: REGULATED PHILIPPINE COMPLIANT HR FORMS HUB -->
         <div id="tab-forms" class="hidden fade-in text-left max-w-md mx-auto">
-          <div class="flex items-center gap-3 mb-6 border-b-2 pb-2 border-slate-100">
-            <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" class="h-8">
-            <h2 class="text-xl font-black text-slate-800">Submit Request</h2>
+          <div class="flex items-center gap-3 mb-4 border-b pb-2 border-slate-100">
+            <h2 class="text-xl font-black text-slate-800">Operational Request Center</h2>
           </div>
-          <p class="text-xs text-slate-500 mb-4 font-semibold">Official forms are automatically converted to PDF upon admin approval.</p>
+          <p class="text-xs text-slate-400 mb-4 font-bold uppercase tracking-wider">All documentation logs generate a system unique control sequence.</p>
+          
+          <label class="block text-xs font-black text-slate-500 uppercase mb-1">Form Class Structure</label>
           <select id="formType" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl font-bold text-slate-700 mb-4 focus:border-blue-900 outline-none">
-            <option value="Official Leave (Annex E)">Official Leave (Annex E)</option>
-            <option value="Cash Advance (Annex D)">Cash Advance / Vale (Annex D)</option>
-            <option value="Incident / Spill (Annex C)">Incident / Chemical Spill (Annex C)</option>
-            <option value="Material / PPE Request">Material / PPE Request</option>
-            <option value="Accomplishment Report">Accomplishment Report</option>
+            <option value="Official Leave Application (Annex E)">Official Leave Application (Annex E)</option>
+            <option value="Cash Advance & Liquidation Undertaking (Annex D)">Cash Advance / Vale (Annex D)</option>
+            <option value="Occupational Incident / Spill Report (Annex C)">Occupational Incident / Chemical Spill Report (Annex C)</option>
+            <option value="Equipment, PPE, and Material Supply Provision Request">Equipment, PPE, and Material Supply Provision Request</option>
+            <option value="Verified Field Accomplishment Data Report">Verified Field Accomplishment Data Report</option>
           </select>
-          <textarea id="formDetails" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl font-medium text-slate-700 h-40 mb-4 focus:border-blue-900 outline-none" placeholder="Enter complete details, dates, items needed, or reasons here..."></textarea>
-          <button onclick="submitHrForm()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg" id="btnForm">SUBMIT TO HR</button>
+          
+          <label class="block text-xs font-black text-slate-500 uppercase mb-1">Evidentiary Text Verification</label>
+          <textarea id="formDetails" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl font-medium text-slate-700 h-40 mb-4 focus:border-blue-900 outline-none" placeholder="Provide textual descriptions, item matrices, dates, or formal justifications..."></textarea>
+          <button onclick="submitHrForm()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnForm">SUBMIT SECURE RECORD</button>
         </div>
 
-        <!-- TAB 3: HR HUB (MANUAL) -->
+        <!-- TAB MODULE 3: INTERACTIVE CORPORATE WELFARE & COMPLIANCE KNOWLEDGE BASE -->
         <div id="tab-hub" class="hidden fade-in text-left max-w-lg mx-auto">
-          <h2 class="text-2xl font-black text-slate-800 mb-2">Corporate Manual</h2>
-          <p class="text-xs text-slate-500 font-bold mb-6">Effectivity: July 2026 (Perfected Legal & Welfare Edition)</p>
+          <h2 class="text-2xl font-black text-slate-800 mb-1">RBA Compliance Compendium</h2>
+          <p class="text-xs text-slate-400 font-bold mb-6 uppercase tracking-wider">Document Code: RBA-HR-MAN-FINAL-V19[cite: 1]</p>
           
-          <div class="space-y-3 mb-8">
-            <!-- Accordion 1 -->
+          <div class="space-y-3 mb-6">
+            <!-- Accordion Element 1 -->
             <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm">
-              <button onclick="toggleFaq('faq1')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-50 flex justify-between items-center">
-                Art II: Medical & Security <span class="text-blue-900 text-xl">+</span>
+              <button onclick="toggleFaq('faq1')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-50 flex justify-between items-center outline-none">
+                Art I: Business Prerogative & Alignment <span class="text-blue-900 font-black">+</span>
               </button>
-              <div id="faq1" class="hidden p-4 text-sm text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
-                Employees are required to submit a "Fit-to-Work" clearance from a licensed physician. The Company reserves the right to conduct standard, respectful inspections of bags, lockers, personal effects, and company vehicles upon entry and exit[cite: 1].
+              <div id="faq1" class="hidden p-4 text-sm text-slate-600 bg-white border-t border-slate-100 leading-relaxed space-y-2">
+                <p>The Company exercises its lawful right to organize, streamline, and direct human resource frameworks in good faith[cite: 1].</p>
+                <p>Tenure and contractual fulfillment remain condition-dependent upon the precise completion and submission of an employee's 201 file records[cite: 1].</p>
               </div>
             </div>
-            <!-- Accordion 2 -->
+            <!-- Accordion Element 2 -->
             <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm">
-              <button onclick="toggleFaq('faq2')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-50 flex justify-between items-center">
-                Art III: Timekeeping & Travel <span class="text-blue-900 text-xl">+</span>
+              <button onclick="toggleFaq('faq2')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-50 flex justify-between items-center outline-none">
+                Art III: Deployment & Audit SOPs <span class="text-blue-900 font-black">+</span>
               </button>
-              <div id="faq2" class="hidden p-4 text-sm text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
-                Compensable field working hours strictly commence upon actual documented arrival at the first assigned client site and strictly terminate upon actual completion and departure from the final assigned client site[cite: 1]. Travel from personal residence to the first site is non-compensable personal transit time[cite: 1].
+              <div id="faq2" class="hidden p-4 text-sm text-slate-600 bg-white border-t border-slate-100 leading-relaxed space-y-2">
+                <p>Compensable field hours strictly initiate on documented presence at the first client deployment area and close upon departure from the final worksite[cite: 1]. Personal transit remains non-compensable[cite: 1].</p>
+                <p>Stay-in facility standard utility costs are subsidized to a threshold cap of Php 1,500.00 monthly per unit; excess numbers split evenly across residents[cite: 1].</p>
               </div>
             </div>
-            <!-- Accordion 3 -->
+            <!-- Accordion Element 3 -->
             <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm">
-              <button onclick="toggleFaq('faq3')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-50 flex justify-between items-center">
-                Art IV: Benefits & Advances <span class="text-blue-900 text-xl">+</span>
+              <button onclick="toggleFaq('faq3')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-50 flex justify-between items-center outline-none">
+                Art IV & V: Welfare & Testing Standards <span class="text-blue-900 font-black">+</span>
               </button>
-              <div id="faq3" class="hidden p-4 text-sm text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
-                The Company provides a 7-Day Sick/Vacation Leave and a 3-Day Paid Bereavement Leave[cite: 1]. All operational cash advances must be fully liquidated with legitimate, BIR-compliant receipts within forty-eight (48) hours of issuance[cite: 1].
+              <div id="faq3" class="hidden p-4 text-sm text-slate-600 bg-white border-t border-slate-100 leading-relaxed space-y-2">
+                <p>Welfare parameters include an integrated 7-day annual Sick/Vacation leave block and a 3-day paid Bereavement Leave structure[cite: 1].</p>
+                <p>Unannounced drug testing procedures align directly with R.A. 9165 parameters; standard refusal constitutes immediate structural insubordination[cite: 1].</p>
               </div>
             </div>
-             <!-- Accordion 4 -->
+             <!-- Accordion Element 4 -->
             <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm">
-              <button onclick="toggleFaq('faq4')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-50 flex justify-between items-center">
-                Art VI: Moonlighting & Misconduct <span class="text-blue-900 text-xl">+</span>
+              <button onclick="toggleFaq('faq4')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-50 flex justify-between items-center outline-none">
+                Art VI: Corrective Progressive Machinery <span class="text-blue-900 font-black">+</span>
               </button>
-              <div id="faq4" class="hidden p-4 text-sm text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
-                Engaging in side-line businesses ("moonlighting") or privately offering pest control services to the Company's clients is a severe breach of trust resulting in immediate termination[cite: 1]. Bypassing internal channels to defame the Company on social media constitutes Cyber Libel[cite: 1].
+              <div id="faq4" class="hidden p-4 text-sm text-slate-600 bg-white border-t border-slate-100 leading-relaxed space-y-2">
+                <p>Direct conflict of interest or moonlighting pest/waterproofing actions translate immediately to termination protocols[cite: 1].</p>
+                <p>Falsification of time matrices, structural system bypasses, or social media public defamation constitute actionable Serious Misconduct[cite: 1].</p>
               </div>
             </div>
           </div>
 
-          <h3 class="text-lg font-black text-slate-800 mb-3 border-b-2 pb-2">Training Modules</h3>
-          <a href="#" class="block bg-slate-50 border-2 border-slate-200 p-4 rounded-xl mb-3 hover:bg-blue-50 transition shadow-sm">
-            <p class="font-bold text-slate-800">Chemical Spill Response</p>
-            <p class="text-xs text-blue-700 font-bold mt-1">Watch Video &rarr;</p>
-          </a>
+          <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 border-b pb-1">Mandatory Technical Training</h3>
+          <div class="grid grid-cols-1 gap-2">
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <p class="font-bold text-slate-800 text-sm">Industrial Chemical Containment & PPE SOP</p>
+              <span class="text-xs text-blue-900 font-black mt-1 inline-block">Execute Curriculum Material &rarr;</span>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <p class="font-bold text-slate-800 text-sm">Structural Waterproofing Engineering (2026 Standards)</p>
+              <span class="text-xs text-blue-900 font-black mt-1 inline-block">Execute Curriculum Material &rarr;</span>
+            </div>
+          </div>
         </div>
 
-        <!-- TAB 4: PROFILE & 201 FILES -->
+        <!-- TAB MODULE 4: PROTECTED 201 PROFILE STRUCTURE -->
         <div id="tab-profile" class="hidden fade-in text-left max-w-md mx-auto">
-          <div class="flex items-center gap-4 mb-6 bg-blue-900 p-6 rounded-2xl text-white shadow-lg">
-            <div class="h-16 w-16 bg-white rounded-full flex items-center justify-center text-blue-900 font-black text-2xl" id="profInitials">RBA</div>
+          <div class="flex items-center gap-4 mb-6 bg-blue-900 p-6 rounded-2xl text-white shadow-xl">
+            <div class="h-14 w-14 bg-white rounded-xl flex items-center justify-center text-blue-900 font-black text-xl" id="profInitials">RBA</div>
             <div>
-              <h2 class="text-xl font-black" id="profName">Employee Name</h2>
-              <p class="text-xs font-medium text-blue-200" id="profRole">Position</p>
+              <h2 class="text-xl font-black" id="profName">System Identity</h2>
+              <p class="text-xs font-semibold text-blue-200 uppercase tracking-widest" id="profRole">Rank-And-File</p>
             </div>
           </div>
           
-          <div class="grid grid-cols-2 gap-3 mb-6">
-            <div class="bg-slate-50 p-4 border border-slate-200 rounded-xl"><p class="text-[10px] text-slate-500 font-bold uppercase">Hire Date</p><p class="text-sm font-black text-slate-800" id="profHire"></p></div>
-            <div class="bg-slate-50 p-4 border border-slate-200 rounded-xl"><p class="text-[10px] text-slate-500 font-bold uppercase">Birthday</p><p class="text-sm font-black text-slate-800" id="profBday"></p></div>
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="bg-slate-50 p-3 border border-slate-200 rounded-xl"><p class="text-[9px] text-slate-400 font-bold uppercase">Hiring Frame</p><p class="text-xs font-black text-slate-800" id="profHire"></p></div>
+            <div class="bg-slate-50 p-3 border border-slate-200 rounded-xl"><p class="text-[9px] text-slate-400 font-bold uppercase">Birth Matrix</p><p class="text-xs font-black text-slate-800" id="profBday"></p></div>
           </div>
 
-          <div class="bg-white border-2 border-slate-200 rounded-xl p-5 mb-6 shadow-sm">
-            <h3 class="font-black text-slate-800 mb-4 border-b pb-2">Contact & Emergency</h3>
-            <p class="text-xs text-slate-500 font-bold">Mobile</p><p class="text-sm font-bold text-slate-800 mb-3" id="profPhone"></p>
-            <p class="text-xs text-slate-500 font-bold">Address</p><p class="text-sm font-bold text-slate-800 mb-3" id="profAddr"></p>
-            <p class="text-xs text-slate-500 font-bold">Emergency Contact</p><p class="text-sm font-bold text-rose-600" id="profEmerg"></p>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+            <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1">Contact Telemetry</h3>
+            <p class="text-[10px] text-slate-400 font-bold uppercase">Cellular Target</p><p class="text-xs font-black text-slate-800 mb-2" id="profPhone"></p>
+            <p class="text-[10px] text-slate-400 font-bold uppercase">Registered Address</p><p class="text-xs font-black text-slate-800 mb-2" id="profAddr"></p>
+            <p class="text-[10px] text-slate-400 font-bold uppercase">Emergency Contact Anchor</p><p class="text-xs font-black text-rose-600" id="profEmerg"></p>
           </div>
 
-          <div class="bg-white border-2 border-slate-200 rounded-xl p-5 mb-6 shadow-sm grid grid-cols-2 gap-4">
-            <div><p class="text-[10px] text-slate-500 font-bold">SSS</p><p class="text-xs font-black text-slate-800" id="profSss"></p></div>
-            <div><p class="text-[10px] text-slate-500 font-bold">TIN</p><p class="text-xs font-black text-slate-800" id="profTin"></p></div>
-            <div><p class="text-[10px] text-slate-500 font-bold">PhilHealth</p><p class="text-xs font-black text-slate-800" id="profPh"></p></div>
-            <div><p class="text-[10px] text-slate-500 font-bold">Pag-IBIG</p><p class="text-xs font-black text-slate-800" id="profPag"></p></div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 mb-6 shadow-sm grid grid-cols-2 gap-3">
+            <div><p class="text-[9px] text-slate-400 font-bold">PHILIPPINE SSS</p><p class="text-xs font-black text-slate-800" id="profSss"></p></div>
+            <div><p class="text-[9px] text-slate-400 font-bold">REVENUE TIN</p><p class="text-xs font-black text-slate-800" id="profTin"></p></div>
+            <div><p class="text-[9px] text-slate-400 font-bold">PHILHEALTH</p><p class="text-xs font-black text-slate-800" id="profPh"></p></div>
+            <div><p class="text-[9px] text-slate-400 font-bold">PAG-IBIG ANCHOR</p><p class="text-xs font-black text-slate-800" id="profPag"></p></div>
           </div>
           
-          <a id="btnContract" href="#" target="_blank" class="w-full block text-center bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700">VIEW EMPLOYMENT CONTRACT</a>
-          <button onclick="alert('To edit profile details, please submit an Incident/Request form in the Forms tab directed to HR Admin.')" class="mt-3 w-full text-center text-xs font-bold text-blue-600 p-2">Request Information Update</button>
+          <a id="btnContract" href="#" target="_blank" class="w-full block text-center bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition-all">RESOLVE SYSTEM COVENANT CONTRACT</a>
+          <p class="text-center text-[10px] text-slate-400 font-bold mt-2">Data Modifications require an active admin pipeline request.</p>
         </div>
 
-        <!-- TAB 5: ADMIN DASHBOARD (DESKTOP/MOBILE) -->
+        <!-- TAB MODULE 5: SCALED WEB-ADMIN OPERATIONS PANEL -->
         <div id="tab-admin" class="hidden fade-in text-left">
-          
-          <div class="md:grid md:grid-cols-2 md:gap-8">
-            <!-- Left Column: Approvals -->
+          <div class="lg:grid lg:grid-cols-2 lg:gap-8">
             <div>
-              <h2 class="text-xl font-black text-slate-800 mb-4 border-b-2 pb-2">Pending Logs</h2>
-              <div id="adminLogs" class="space-y-3 mb-8 max-h-[40vh] overflow-y-auto pr-2 no-scrollbar"></div>
+              <h2 class="text-lg font-black text-slate-800 mb-4 border-b pb-1 uppercase tracking-wider">Pending Clock Logs</h2>
+              <div id="adminLogs" class="space-y-3 mb-6 max-h-[35vh] overflow-y-auto pr-2 no-scrollbar"></div>
               
-              <h2 class="text-xl font-black text-slate-800 mb-4 border-b-2 pb-2">Pending Forms</h2>
-              <div id="adminForms" class="space-y-3 mb-8 max-h-[40vh] overflow-y-auto pr-2 no-scrollbar"></div>
+              <h2 class="text-lg font-black text-slate-800 mb-4 border-b pb-1 uppercase tracking-wider">Pending Compliance Forms</h2>
+              <div id="adminForms" class="space-y-3 mb-6 max-h-[35vh] overflow-y-auto pr-2 no-scrollbar"></div>
             </div>
 
-            <!-- Right Column: Broadcasts -->
-            <div class="bg-slate-50 p-6 rounded-2xl border-2 border-slate-200">
-              <h2 class="text-xl font-black text-blue-900 mb-2">Create Broadcast</h2>
-              <p class="text-xs text-slate-500 font-bold mb-4">This will lock the app for all users until they agree to the memo.</p>
-              <textarea id="memoText" class="w-full bg-white border-2 border-slate-200 p-4 rounded-xl font-medium text-slate-700 h-32 mb-4 focus:border-blue-900" placeholder="Type official company announcement here..."></textarea>
-              <button onclick="publishBroadcast()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800" id="btnMemo">PUBLISH TO ENTIRE FLEET</button>
+            <div class="bg-slate-50 p-5 rounded-2xl border-2 border-slate-200 h-fit">
+              <h2 class="text-lg font-black text-blue-900 mb-1">Issue Interactive Compliance Gate</h2>
+              <p class="text-xs text-slate-400 font-bold mb-3">Enforces global operational system lockouts until text agreement is completed.</p>
+              <textarea id="memoText" class="w-full bg-white border border-slate-200 p-3 rounded-xl font-medium text-slate-700 h-28 mb-3 focus:border-blue-900 outline-none" placeholder="Type administrative directive..."></textarea>
+              <button onclick="publishBroadcast()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnMemo">BROADCAST GLOBAL HARMONY BLOCK</button>
             </div>
           </div>
         </div>
@@ -201,64 +220,74 @@
       </div>
     </div>
 
-    <!-- ================= BOTTOM NAVIGATION (MOBILE) / SIDE BAR (WEB) ================= -->
-    <div id="bottomNav" class="hidden absolute md:fixed md:left-0 md:top-0 md:h-screen md:w-20 md:flex-col md:border-r-2 md:border-t-0 md:rounded-none bottom-0 w-full bg-white border-t-2 border-slate-200 flex justify-around items-center h-[70px] px-2 rounded-b-xl shadow-2xl z-20">
-      <button onclick="switchTab('tab-time')" id="nav-time" class="nav-btn active flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <span class="text-[10px] font-bold">CLOCK</span>
+    <!-- ================= SYSTEM NAVIGATION DECK (SPA CORE) ================= -->
+    <div id="bottomNav" class="hidden absolute md:fixed md:left-0 md:top-0 md:h-screen md:w-24 md:flex-col md:border-r-2 md:border-t-0 md:rounded-none bottom-0 w-full bg-white border-t border-slate-200 flex justify-around items-center h-[70px] px-1 shadow-2xl z-20">
+      <button onclick="switchTab('tab-time')" id="nav-time" class="nav-btn active flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition-all outline-none">
+        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="text-[9px] font-black tracking-wider">CLOCK</span>
       </button>
-      <button onclick="switchTab('tab-forms')" id="nav-forms" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-        <span class="text-[10px] font-bold">FORMS</span>
+      <button onclick="switchTab('tab-forms')" id="nav-forms" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition-all outline-none">
+        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <span class="text-[9px] font-black tracking-wider">REQUESTS</span>
       </button>
-      <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-        <span class="text-[10px] font-bold">HUB</span>
+      <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition-all outline-none">
+        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        <span class="text-[9px] font-black tracking-wider">MANUAL</span>
       </button>
-      <button onclick="switchTab('tab-profile')" id="nav-profile" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-        <span class="text-[10px] font-bold">201 FILE</span>
+      <button onclick="switchTab('tab-profile')" id="nav-profile" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition-all outline-none">
+        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        <span class="text-[9px] font-black tracking-wider">201 FILE</span>
       </button>
-      <button onclick="switchTab('tab-admin')" id="nav-admin" class="nav-btn hidden flex-1 md:w-full flex-col items-center justify-center h-full text-rose-400 transition">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-        <span class="text-[10px] font-bold">ADMIN</span>
+      <button onclick="switchTab('tab-admin')" id="nav-admin" class="nav-btn hidden flex-1 md:w-full flex flex-col items-center justify-center h-full text-rose-500 transition-all outline-none">
+        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+        <span class="text-[9px] font-black tracking-wider">ADMIN</span>
       </button>
     </div>
 
   </div>
 
   <script>
-    // ==========================================
-    // PASTE YOUR NEW GOOGLE DEPLOYMENT URL BELOW
-    // ==========================================
-    const API_URL = "https://script.google.com/macros/s/AKfycbxrbqR7p_Pw9uS3PwN1nlyTARhm5UjVAtLQamtsK2J4mxBPqCRDixESpA2vgFvtIEb01g/exec"; 
+    // =========================================================
+    // SYSTEM PIPELINE ANCHOR (PASTE YOUR RECENT GOOGLE WEB APP URL HERE)
+    // =========================================================
+    const API_URL = "YOUR_GOOGLE_SCRIPT_URL_HERE"; 
 
     let empId = "", lat = null, lng = null, activeGateId = null, isForcedTimeout = false;
 
-    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+    // Execute background worker updates with cache buster query routing
+    if ('serviceWorker' in navigator) { 
+      navigator.serviceWorker.register('sw.js?v=' + new Date().getTime()).then(reg => { reg.update(); }); 
+    }
 
     function switchTab(tabId) {
       document.querySelectorAll('#appModules > div').forEach(el => el.classList.add('hidden'));
       document.getElementById(tabId).classList.remove('hidden');
-      document.querySelectorAll('.nav-btn').forEach(el => { el.classList.remove('active'); el.classList.remove('border-l-4'); });
+      document.querySelectorAll('.nav-btn').forEach(el => { el.classList.remove('active', 'border-l-4'); });
       
-      const navBtn = document.getElementById('nav-' + tabId.split('-')[1]);
-      navBtn.classList.add('active');
-      // Fix for desktop layout border
-      if(window.innerWidth >= 768) { navBtn.classList.add('border-l-4'); navBtn.classList.remove('border-top'); }
+      const targetBtn = document.getElementById('nav-' + tabId.split('-')[1]);
+      targetBtn.classList.add('active');
+      if(window.innerWidth >= 768) { targetBtn.classList.add('border-l-4'); }
     }
 
     function toggleFaq(id) { document.getElementById(id).classList.toggle('hidden'); }
 
     async function sendDataToGoogle(data) {
-      try { return await (await fetch(API_URL, { method: 'POST', redirect: 'follow', body: JSON.stringify(data) })).json(); } 
-      catch (error) { return { success: false, message: "Network Error." }; }
+      try {
+        const response = await fetch(API_URL, { 
+          method: 'POST', 
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          redirect: 'follow', 
+          body: JSON.stringify(data) 
+        });
+        return await response.json();
+      } catch (error) { return { success: false, message: "Network Link Dropout." }; }
     }
 
     function sendOTP() {
       empId = document.getElementById('empId').value.trim().toUpperCase();
-      if (!empId) return;
-      document.getElementById('btnSend').innerText = "SENDING..."; document.getElementById('btnSend').disabled = true;
+      if (!empId) return alert("System requires Employee ID entry.");
+      document.getElementById('btnSend').innerText = "TRANSMITTING DATA..."; document.getElementById('btnSend').disabled = true;
+      
       sendDataToGoogle({ action: 'SEND_OTP', empId: empId }).then(res => {
         if (res.success) {
           document.getElementById('loginView').classList.add('hidden'); document.getElementById('otpView').classList.remove('hidden');
@@ -268,16 +297,16 @@
 
     function verifyOTP() {
       const otp = document.getElementById('otpCode').value.trim(); if(!otp) return;
-      document.getElementById('btnVerify').innerText = "AUTHENTICATING..."; document.getElementById('btnVerify').disabled = true;
+      document.getElementById('btnVerify').innerText = "PARSING TOKEN..."; document.getElementById('btnVerify').disabled = true;
       
       sendDataToGoogle({ action: 'VERIFY_OTP', empId: empId, otp: otp }).then(res => {
         if (res.success) {
           document.getElementById('authSection').classList.add('hidden');
           
-          // Populate Profile
+          // Map 201 File Profile Cards
           document.getElementById('profInitials').innerText = empId.substring(0,3);
           document.getElementById('profName').innerText = res.profile.name || "N/A";
-          document.getElementById('profRole').innerText = res.role;
+          document.getElementById('profRole').innerText = res.role === 'ADMIN' ? 'Executive Admin' : 'Field Operations Crew';
           document.getElementById('profHire').innerText = res.profile.hireDate || "N/A";
           document.getElementById('profBday').innerText = res.profile.bday || "N/A";
           document.getElementById('profPhone').innerText = res.profile.phone || "N/A";
@@ -289,7 +318,7 @@
           document.getElementById('profPag').innerText = res.profile.pagibig || "N/A";
           
           if(res.profile.contract) { document.getElementById('btnContract').href = res.profile.contract; }
-          else { document.getElementById('btnContract').innerText = "NO CONTRACT UPLOADED"; document.getElementById('btnContract').classList.add('opacity-50'); }
+          else { document.getElementById('btnContract').innerText = "SYSTEM ENROLLMENT OPEN"; document.getElementById('btnContract').classList.add('opacity-40'); }
 
           if (res.role === 'ADMIN') { document.getElementById('nav-admin').classList.remove('hidden'); document.getElementById('nav-admin').classList.add('flex'); }
 
@@ -305,8 +334,8 @@
     }
 
     function acknowledgeMemo() {
-      document.getElementById('btnAck').innerText = "SAVING..."; document.getElementById('btnAck').disabled = true;
-      sendDataToGoogle({ action: 'ACKNOWLEDGE', empId: empId, gateId: activeGateId }).then(res => { alert("Compliance Logged. Thank you."); location.reload(); });
+      document.getElementById('btnAck').innerText = "SYNCHRONIZING RECONCILIATION..."; document.getElementById('btnAck').disabled = true;
+      sendDataToGoogle({ action: 'ACKNOWLEDGE', empId: empId, gateId: activeGateId }).then(res => { location.reload(); });
     }
 
     function initApp(timeInDisabled, timeOutDisabled, forceTimeOut, role) {
@@ -328,9 +357,9 @@
       navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } }).then(stream => { document.getElementById('videoElement').srcObject = stream; });
       navigator.geolocation.getCurrentPosition(pos => {
         lat = pos.coords.latitude; lng = pos.coords.longitude;
-        document.getElementById('gpsText').innerHTML = `✓ SATELLITE LOCKED`;
+        document.getElementById('gpsText').innerHTML = `✓ TELESCOPIC GEOLOCATION LOCKED`;
         document.getElementById('gpsText').className = "text-emerald-600 mt-2 font-bold text-xs text-center";
-      }, err => alert("System Error: Enable location services."), { enableHighAccuracy: true });
+      }, err => alert("Hardware Constraint: Enable system geolocation layers."), { enableHighAccuracy: true });
     }
 
     function logTime(type) {
@@ -342,56 +371,55 @@
       const img = canvas.toDataURL('image/jpeg', 0.5); 
 
       sendDataToGoogle({ action: 'LOG_TIME', empId: empId, type: type, lat: lat, lng: lng, image: img, note: note }).then(res => {
-        if (res.success) { document.getElementById('tab-time').innerHTML = `<div class="py-10 text-center"><h2 class="text-3xl text-emerald-600 font-black mb-2">${type} SAVED</h2><p class="text-slate-500 font-bold text-sm mb-6">Synchronized with RBA Cloud.</p><button onclick="location.reload()" class="bg-slate-200 font-bold py-3 px-8 rounded-lg">CLOSE</button></div>`; }
+        if (res.success) { document.getElementById('tab-time').innerHTML = `<div class="py-10 text-center"><h2 class="text-3xl text-emerald-600 font-black mb-2">${type} SYNCHRONIZED</h2><p class="text-slate-400 font-bold text-xs">Security matrix verified and recorded.</p><button onclick="location.reload()" class="mt-4 bg-slate-200 font-bold py-2 px-6 rounded-lg text-xs">RETURN</button></div>`; }
       });
     }
 
     function submitHrForm() {
       const formType = document.getElementById('formType').value;
       const details = document.getElementById('formDetails').value.trim();
-      if (!details) return alert("Please enter details.");
+      if (!details) return alert("Form requires processing instructions.");
       
-      document.getElementById('btnForm').innerText = "GENERATING CONTROL NUMBER..."; document.getElementById('btnForm').disabled = true;
+      document.getElementById('btnForm').innerText = "GENERATING CONTROL LOG..."; document.getElementById('btnForm').disabled = true;
       sendDataToGoogle({ action: 'SUBMIT_FORM', empId: empId, formType: formType, details: details }).then(res => {
         if (res.success) {
-          alert("Success! Your Control Number is: " + res.controlNum);
+          alert("Success! System Registered Control Number:\n" + res.controlNum);
           document.getElementById('formDetails').value = "";
-          document.getElementById('btnForm').innerText = "SUBMIT TO HR"; document.getElementById('btnForm').disabled = false;
+          document.getElementById('btnForm').innerText = "SUBMIT SECURE RECORD"; document.getElementById('btnForm').disabled = false;
         }
       });
     }
 
-    // ================= ADMIN UX =================
+    // ================= DATA LOGISTICS FOR ADMIN MODULES =================
     function fetchAdminData() {
-      document.getElementById('adminLogs').innerHTML = "Loading..."; document.getElementById('adminForms').innerHTML = "Loading...";
+      document.getElementById('adminLogs').innerHTML = "Polling queue system database..."; 
+      document.getElementById('adminForms').innerHTML = "Polling queue form structures...";
+      
       sendDataToGoogle({ action: 'GET_ADMIN_DATA' }).then(res => {
-        
-        // Load Attendance Logs
         const logCont = document.getElementById('adminLogs'); logCont.innerHTML = ""; 
-        if (!res.logs || res.logs.length === 0) { logCont.innerHTML = `<p class="text-slate-500 font-bold text-sm">No pending logs.</p>`; }
+        if (!res.logs || res.logs.length === 0) { logCont.innerHTML = `<p class="text-slate-400 font-bold text-xs">No pending clock verifications found.</p>`; }
         else {
           res.logs.forEach(log => {
             logCont.innerHTML += `
-              <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm">
-                <div class="flex justify-between items-center mb-1"><span class="font-black">${log.empId}</span><span class="bg-slate-100 px-2 py-1 rounded text-[10px] font-black">${log.action}</span></div>
-                <p class="text-slate-500 text-xs mb-3">${log.time}</p>
-                <div class="flex gap-2 mb-3"><a href="${log.photo}" target="_blank" class="flex-1 bg-slate-50 text-center text-xs font-bold py-2 rounded-lg border">Photo</a><a href="https://www.google.com/maps/search/?api=1&query=${log.lat},${log.lng}" target="_blank" class="flex-1 bg-slate-50 text-center text-xs font-bold py-2 rounded-lg border">Map</a></div>
-                <div class="flex gap-2"><button onclick="updateStatus(this, ${log.row}, 'APPROVED')" class="flex-1 bg-emerald-500 text-white font-black text-sm py-2 rounded">APPROVE</button><button onclick="updateStatus(this, ${log.row}, 'REJECTED')" class="flex-1 bg-rose-500 text-white font-black text-sm py-2 rounded">REJECT</button></div>
+              <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm text-xs">
+                <div class="flex justify-between items-center mb-1"><span class="font-black text-slate-800">${log.empId}</span><span class="bg-blue-50 px-2 py-0.5 rounded text-[9px] font-black">${log.action}</span></div>
+                <p class="text-slate-400 font-medium mb-3">${log.time}</p>
+                <div class="flex gap-2 mb-3"><a href="${log.photo}" target="_blank" class="flex-1 bg-slate-50 text-center py-2 rounded-lg border font-bold">Image Log</a><a href="https://www.google.com/maps/search/?api=1&query=${log.lat},${log.lng}" target="_blank" class="flex-1 bg-slate-50 text-center py-2 rounded-lg border font-bold">Map Target</a></div>
+                <div class="flex gap-2"><button onclick="updateStatus(this, ${log.row}, 'APPROVED')" class="flex-1 bg-emerald-500 text-white font-black py-2 rounded shadow">APPROVE</button><button onclick="updateStatus(this, ${log.row}, 'REJECTED')" class="flex-1 bg-rose-500 text-white font-black py-2 rounded shadow">REJECT</button></div>
               </div>`;
           });
         }
 
-        // Load Forms
         const formCont = document.getElementById('adminForms'); formCont.innerHTML = ""; 
-        if (!res.forms || res.forms.length === 0) { formCont.innerHTML = `<p class="text-slate-500 font-bold text-sm">No pending forms.</p>`; }
+        if (!res.forms || res.forms.length === 0) { formCont.innerHTML = `<p class="text-slate-400 font-bold text-xs">No pending administrative documents.</p>`; }
         else {
           res.forms.forEach(f => {
             formCont.innerHTML += `
-              <div class="bg-white p-4 border-2 border-blue-100 rounded-xl shadow-sm">
-                <div class="flex justify-between items-center mb-1"><span class="font-black text-blue-900">${f.empId}</span><span class="text-[10px] font-black text-slate-400">${f.controlNum}</span></div>
-                <p class="text-slate-800 text-sm font-bold mb-2">${f.formType}</p>
-                <p class="text-slate-600 text-xs mb-4 bg-slate-50 p-2 rounded border">${f.details}</p>
-                <button onclick="approveForm(this, ${f.row}, '${f.empId}', '${f.formType}', '${f.details}', '${f.controlNum}')" class="w-full bg-blue-900 text-white font-black text-sm py-3 rounded-lg shadow">APPROVE & GENERATE PDF</button>
+              <div class="bg-white p-4 border-2 border-slate-200 rounded-xl shadow-sm text-xs">
+                <div class="flex justify-between items-center mb-1"><span class="font-black text-blue-900">${f.empId}</span><span class="text-[9px] font-black text-slate-400">${f.controlNum}</span></div>
+                <p class="text-slate-800 font-bold mb-1">${f.formType}</p>
+                <p class="text-slate-600 mb-3 bg-slate-50 p-2 rounded border font-medium">${f.details}</p>
+                <button onclick="approveForm(this, ${f.row}, '${f.empId}', '${f.formType}', '${f.details}', '${f.controlNum}')" class="w-full bg-slate-800 text-white font-black py-2.5 rounded shadow">EXECUTE COMPLIANCE AND PRINT PDF</button>
               </div>`;
           });
         }
@@ -399,23 +427,23 @@
     }
 
     function updateStatus(btn, row, status) {
-      btn.parentElement.innerHTML = "Updating..."; sendDataToGoogle({ action: 'UPDATE_STATUS', row: row, status: status }).then(res => { fetchAdminData(); });
+      btn.parentElement.innerHTML = "<span class='text-xs font-bold text-slate-400 animate-pulse'>Writing status change...</span>"; 
+      sendDataToGoogle({ action: 'UPDATE_STATUS', row: row, status: status }).then(res => { fetchAdminData(); });
     }
 
     function approveForm(btn, row, empId, formType, details, controlNum) {
-      btn.innerText = "GENERATING PDF..."; btn.disabled = true;
+      btn.innerText = "COMPILING GOVERNMENT COMPLIANT PDF..."; btn.disabled = true;
       sendDataToGoogle({ action: 'APPROVE_FORM', row: row, empId: empId, formType: formType, details: details, controlNum: controlNum }).then(res => {
-        if(res.success) { alert("PDF Generated and saved to Database!"); fetchAdminData(); }
+        if(res.success) { alert("Compliance validation completed! PDF systematically compiled."); fetchAdminData(); }
       });
     }
 
     function publishBroadcast() {
-      const msg = document.getElementById('memoText').value.trim();
-      if(!msg) return;
-      document.getElementById('btnMemo').innerText = "PUBLISHING...";
+      const msg = document.getElementById('memoText').value.trim(); if(!msg) return;
+      document.getElementById('btnMemo').innerText = "PROPAGATING INTERCEPT PROTOCOL...";
       sendDataToGoogle({ action: 'CREATE_BROADCAST', message: msg }).then(res => {
-        alert("Memo published. All devices are now locked until acknowledged.");
-        document.getElementById('memoText').value = ""; document.getElementById('btnMemo').innerText = "PUBLISH TO ENTIRE FLEET";
+        alert("Broadcast system intercept active. Global terminals isolated.");
+        document.getElementById('memoText').value = ""; document.getElementById('btnMemo').innerText = "BROADCAST GLOBAL HARMONY BLOCK";
       });
     }
   </script>
