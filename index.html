@@ -4,10 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>RBA Core HR Platform</title>
-  <link rel="manifest" href="manifest.json">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; }
@@ -15,238 +12,181 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .nav-btn.active { color: #1e3a8a; border-top: 3px solid #1e3a8a; background: #eff6ff; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
-    @media (min-width: 768px) { .mobile-wrapper { max-width: 1100px !important; } .nav-btn.active { border-top: 0px; border-l-4: 4px solid #1e3a8a; } }
-    
-    /* Fun, Friendly UI Elements */
-    .manual-card { transition: all 0.2s ease; border-left: 6px solid; }
-    .manual-card:hover { transform: translateX(4px); }
-    .border-blue { border-color: #3b82f6; } .border-emerald { border-color: #10b981; } .border-amber { border-color: #f59e0b; } .border-rose { border-color: #f43f5e; }
+    .sig-canvas { touch-action: none; border: 2px dashed #cbd5e1; background: #fff; width: 100%; height: 150px; border-radius: 0.75rem; }
+    @media (min-width: 768px) { .mobile-wrapper { max-width: 1200px !important; } .nav-btn.active { border-top: 0px; border-l-4: 4px solid #1e3a8a; } }
   </style>
 </head>
 <body class="flex justify-center min-h-screen">
 
   <div class="mobile-wrapper w-full max-w-lg bg-white min-h-screen shadow-2xl relative flex flex-col pb-[70px] md:pb-0">
     
-    <!-- BRANDING HEADER -->
-    <div class="pt-6 pb-4 text-center border-b-[6px] border-blue-900 bg-white shadow-sm flex-shrink-0 z-10">
-      <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" alt="RBA Logo" class="h-14 md:h-16 mx-auto object-contain">
+    <div class="pt-6 pb-4 text-center border-b-[6px] border-blue-900 bg-white shadow-sm flex-shrink-0 z-10 relative">
+      <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" alt="RBA Logo" class="h-12 md:h-16 mx-auto object-contain">
       <h1 class="text-xl md:text-2xl font-black text-slate-800 tracking-tight mt-2">RBA PEST CONTROL</h1>
       <h2 class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase">& WATERPROOFING SERVICES</h2>
+      
+      <button onclick="toggleInbox()" id="bellBtn" class="hidden absolute top-6 right-6 text-slate-400 hover:text-blue-900 transition-colors">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+        <span id="notifBadge" class="hidden absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
+      </button>
     </div>
 
-    <!-- MAIN APP CANVAS -->
-    <div class="flex-1 overflow-y-auto no-scrollbar p-4 md:p-8">
+    <div id="inboxView" class="hidden absolute top-24 right-4 md:right-8 bg-white border-2 border-slate-200 rounded-xl shadow-2xl w-72 z-50 p-4">
+      <h3 class="font-black text-slate-800 mb-2 border-b pb-1">Notifications</h3>
+      <div id="notifList" class="space-y-2 text-xs text-slate-600 font-medium mb-3 max-h-48 overflow-y-auto">No new messages.</div>
+      <button onclick="markRead()" class="w-full bg-slate-100 text-slate-600 text-xs font-bold py-2 rounded-lg hover:bg-slate-200">MARK ALL AS READ</button>
+    </div>
 
-      <!-- ================= LOGIN / SECURITY GATE ================= -->
+    <div class="flex-1 overflow-y-auto no-scrollbar p-4 md:p-8 relative">
+
       <div id="authSection" class="fade-in mt-10 max-w-md mx-auto">
         <div id="loginView">
           <input type="text" id="empId" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl uppercase font-black text-center text-xl text-slate-700 focus:border-blue-700 outline-none" placeholder="EMPLOYEE ID">
           <button onclick="sendOTP()" class="mt-4 w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnSend">SECURE LOGIN</button>
         </div>
         <div id="otpView" class="hidden fade-in mt-4">
-          <div class="bg-blue-50 text-blue-800 text-xs font-semibold p-3 rounded-lg mb-4 text-center border border-blue-100">Security verification token transmitted via network cellular SMS.</div>
           <input type="number" id="otpCode" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl text-center tracking-[0.5em] text-3xl font-black text-slate-800 focus:border-blue-700 outline-none" placeholder="••••••">
           <button onclick="verifyOTP()" class="mt-4 w-full bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition-all" id="btnVerify">VERIFY IDENTITY</button>
         </div>
       </div>
 
-      <!-- ================= COMPLIANCE GATE (BROADCAST) ================= -->
-      <div id="broadcastView" class="hidden fade-in text-center py-10 max-w-md mx-auto">
-        <div class="inline-block bg-rose-100 text-rose-800 px-4 py-1 rounded-full font-black text-xs mb-4 animate-pulse">COMPULSORY HR ACKNOWLEDGMENT MANDATE</div>
-        <h3 class="text-2xl font-black text-slate-800 mb-4">Official Executive Directive</h3>
-        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 text-slate-700 font-medium text-sm text-left mb-6 shadow-inner whitespace-pre-wrap leading-relaxed" id="broadcastMessage"></div>
-        <button onclick="acknowledgeMemo()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnAck">I CONFIRM, READ, AND LEGALLY AGREE</button>
-      </div>
-
-      <!-- ================= ANNUAL TRAINING & MEDICAL GATE ================= -->
-      <div id="trainingView" class="hidden fade-in text-left max-w-md mx-auto py-6">
-        <div class="bg-amber-100 text-amber-900 p-4 rounded-xl border-2 border-amber-200 mb-6 shadow-sm">
-          <h2 class="text-lg font-black uppercase tracking-wider mb-1">Annual Compliance Lock</h2>
-          <p class="text-xs font-bold">You must complete your annual safety refresher and pass the quiz to unlock the Time Clock.</p>
+      <div id="examView" class="hidden fade-in text-left max-w-md mx-auto py-6">
+        <div class="bg-blue-50 text-blue-900 p-4 rounded-xl border-2 border-blue-200 mb-6 shadow-sm">
+          <h2 class="text-lg font-black uppercase tracking-wider mb-1">Annual Compliance Exam</h2>
+          <p class="text-xs font-bold">You can navigate the app, but <span class="text-rose-600 font-black">you cannot Clock Out on Fridays</span> until this exam is passed.</p>
         </div>
-        
-        <h3 class="text-sm font-black text-slate-800 mb-2 uppercase tracking-widest">1. Watch Safety Refresher</h3>
-        <div class="rounded-xl overflow-hidden shadow-lg border-2 border-slate-200 mb-8 bg-black">
-          <!-- Safe Work YouTube Embed -->
-          <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/n4X5NhyqfJU" title="Workplace Safety" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-
-        <h3 class="text-sm font-black text-slate-800 mb-2 uppercase tracking-widest">2. Knowledge Check</h3>
         <div class="bg-white border-2 border-slate-200 p-5 rounded-xl shadow-sm mb-6">
-          <p class="text-sm font-bold text-slate-700 mb-3">1. When must operational cash advances (vales) be liquidated?</p>
-          <select id="q1" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm font-bold text-slate-700 mb-4 outline-none">
-            <option value="">Select answer...</option><option value="wrong">Within 7 days</option><option value="correct">Within 48 hours[cite: 1]</option><option value="wrong">Next payday</option>
-          </select>
-
-          <p class="text-sm font-bold text-slate-700 mb-3">2. Is travel time from your house to the first client site paid?</p>
-          <select id="q2" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm font-bold text-slate-700 mb-4 outline-none">
-            <option value="">Select answer...</option><option value="correct">No, it is personal transit time[cite: 1]</option><option value="wrong">Yes, fully paid</option>
-          </select>
-
-          <p class="text-sm font-bold text-slate-700 mb-3">3. What is the penalty for moonlighting or stealing clients?</p>
-          <select id="q3" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm font-bold text-slate-700 outline-none">
-            <option value="">Select answer...</option><option value="wrong">A warning</option><option value="correct">Immediate Dismissal[cite: 1]</option>
-          </select>
+          <p class="text-sm font-bold text-slate-700 mb-2">1. When must operational cash advances (vales) be liquidated?</p>
+          <select id="q1" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm font-bold text-slate-700 mb-4 outline-none"><option value="">Select answer...</option><option value="wrong">Within 7 days</option><option value="correct">Within 48 hours</option></select>
+          <p class="text-sm font-bold text-slate-700 mb-2">2. Is travel time from your house to the first client site paid?</p>
+          <select id="q2" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm font-bold text-slate-700 mb-4 outline-none"><option value="">Select answer...</option><option value="correct">No, it is personal transit</option><option value="wrong">Yes, fully paid</option></select>
+          <p class="text-sm font-bold text-slate-700 mb-2">3. What is the penalty for moonlighting or stealing clients?</p>
+          <select id="q3" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm font-bold text-slate-700 outline-none"><option value="">Select answer...</option><option value="wrong">A warning</option><option value="correct">Immediate Dismissal</option></select>
         </div>
-        <button onclick="submitTraining()" class="w-full bg-emerald-600 text-white font-black py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition-all" id="btnTrain">SUBMIT QUIZ & UNLOCK APP</button>
+        <button onclick="submitExam()" class="w-full bg-blue-900 text-white font-black py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnTrain">SUBMIT EXAM & LIFT RESTRICTIONS</button>
       </div>
 
-      <!-- ================= INTEGRATED APP NAVIGATION MODULES ================= -->
       <div id="appModules" class="hidden h-full">
         
-        <!-- TAB MODULE 1: CHRONO CLOCK -->
         <div id="tab-time" class="fade-in max-w-md mx-auto">
-          <div id="12hrWarning" class="hidden bg-rose-100 text-rose-800 text-xs font-bold p-3 rounded-lg mb-4 border border-rose-300 text-left shadow-sm">
-            ⚠️ MAXIMUM SHIFT REACHED: You have logged a maximum allocation of 12 hours for the day. Access has been restricted pending HR audit.
-          </div>
+          <div id="fridayWarning" class="hidden bg-rose-100 text-rose-800 text-xs font-bold p-3 rounded-lg mb-4 border border-rose-300">⚠️ FRIDAY RESTRICTION: You cannot Clock Out until you pass the Annual Exam in the EXAMS tab.</div>
           <div class="relative rounded-xl overflow-hidden shadow-inner border-4 border-slate-200 bg-black aspect-square md:aspect-video">
             <video id="videoElement" autoplay playsinline class="w-full h-full object-cover"></video>
             <canvas id="canvas" class="hidden"></canvas>
           </div>
-          <p id="gpsText" class="text-slate-500 mt-3 font-bold text-xs text-center animate-pulse">Polling Geostationary Coordinate Telemetry...</p>
+          <p id="gpsText" class="text-slate-500 mt-3 font-bold text-xs text-center animate-pulse">Acquiring Location...</p>
           <div class="flex gap-4 mt-6">
-            <button onclick="logTime('TIME IN')" class="flex-1 bg-emerald-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25 transition-all" id="btnIn" disabled>TIME IN</button>
-            <button onclick="logTime('TIME OUT')" class="flex-1 bg-rose-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25 transition-all" id="btnOut" disabled>TIME OUT</button>
+            <button onclick="logTime('TIME IN')" class="flex-1 bg-emerald-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25" id="btnIn" disabled>TIME IN</button>
+            <button onclick="logTime('TIME OUT')" class="flex-1 bg-rose-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25" id="btnOut" disabled>TIME OUT</button>
           </div>
         </div>
 
-        <!-- TAB MODULE 2: FORMS HUB -->
         <div id="tab-forms" class="hidden fade-in text-left max-w-md mx-auto">
-          <div class="flex items-center gap-3 mb-4 border-b pb-2 border-slate-100"><h2 class="text-xl font-black text-slate-800">Operational Request Center</h2></div>
-          <select id="formType" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl font-bold text-slate-700 mb-4 focus:border-blue-900 outline-none">
-            <option value="Official Leave Application (Annex E)">Official Leave Application (Annex E)</option>
-            <option value="Cash Advance / Vale (Annex D)">Cash Advance / Vale (Annex D)</option>
-            <option value="Annual Medical / Fit-to-Work Upload">Annual Medical / Fit-to-Work Upload</option>
-            <option value="Equipment, PPE, and Material Supply Request">Equipment, PPE, and Material Supply Request</option>
-            <option value="Occupational Incident / Spill Report (Annex C)">Occupational Incident / Spill Report (Annex C)</option>
-            <option value="Verified Field Accomplishment Data Report">Verified Field Accomplishment Data Report</option>
-          </select>
-          <textarea id="formDetails" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl font-medium text-slate-700 h-40 mb-4 focus:border-blue-900 outline-none" placeholder="Provide textual descriptions, item matrices, dates, or formal justifications..."></textarea>
-          <button onclick="submitHrForm()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnForm">SUBMIT SECURE RECORD</button>
-        </div>
-
-        <!-- TAB MODULE 3: INTERACTIVE CORPORATE MANUAL -->
-        <div id="tab-hub" class="hidden fade-in text-left max-w-lg mx-auto">
-          <div class="mb-6">
-            <h2 class="text-2xl font-black text-slate-800 mb-1">The RBA Playbook</h2>
-            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest bg-slate-100 inline-block px-2 py-1 rounded">Document Code: RBA-HR-MAN-FINAL-V19[cite: 1]</p>
-          </div>
+          <h2 class="text-xl font-black text-slate-800 mb-4 border-b pb-2">Digital Form Hub</h2>
           
-          <div class="space-y-4 mb-6">
-            
-            <div class="bg-white rounded-xl shadow-sm manual-card border-blue">
-              <button onclick="toggleFaq('faq1')" class="w-full p-4 text-left font-black text-slate-700 flex justify-between items-center outline-none">
-                🤝 Business Integrity & Alignment <span class="text-blue-900 font-black">+</span>
-              </button>
-              <div id="faq1" class="hidden p-4 text-sm text-slate-600 bg-slate-50 border-t border-slate-100 rounded-b-xl space-y-3 leading-relaxed">
-                <p><strong>The Core Goal:</strong> The Company exercises its lawful right to organize, streamline, and direct human resource frameworks in good faith[cite: 1].</p>
-                <p><strong>Your 201 File:</strong> Tenure and contractual fulfillment remain condition-dependent upon the precise completion and submission of an employee's 201 file records[cite: 1].</p>
-              </div>
-            </div>
+          <label class="block text-xs font-black text-slate-500 uppercase mb-1">Form Document</label>
+          <select id="formType" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl font-bold text-slate-700 mb-4 outline-none">
+            <option value="Official Leave Application">Official Leave Application</option>
+            <option value="Cash Advance / Vale">Cash Advance / Vale</option>
+            <option value="Incident Report">Incident Report</option>
+          </select>
 
-            <div class="bg-white rounded-xl shadow-sm manual-card border-emerald">
-              <button onclick="toggleFaq('faq2')" class="w-full p-4 text-left font-black text-slate-700 flex justify-between items-center outline-none">
-                🛡️ Medical & Property Security <span class="text-blue-900 font-black">+</span>
-              </button>
-              <div id="faq2" class="hidden p-4 text-sm text-slate-600 bg-slate-50 border-t border-slate-100 rounded-b-xl space-y-3 leading-relaxed">
-                <p><strong>Health First:</strong> Pest control requires endurance. Employees are required to submit a "Fit-to-Work" clearance from a licensed physician[cite: 1].</p>
-                <p><strong>Transparency:</strong> To protect assets, the Company reserves the right to conduct standard, respectful inspections of bags, lockers, personal effects, and company vehicles upon entry and exit[cite: 1].</p>
-              </div>
-            </div>
+          <label class="block text-xs font-black text-slate-500 uppercase mb-1">Specific Dates / Duration</label>
+          <input type="text" id="formDates" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl font-medium text-slate-700 mb-4 outline-none" placeholder="e.g. Oct 12 to Oct 14, 2026">
+          
+          <label class="block text-xs font-black text-slate-500 uppercase mb-1">Detailed Purpose / Justification</label>
+          <textarea id="formPurpose" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl font-medium text-slate-700 h-24 mb-4 outline-none" placeholder="Provide full details..."></textarea>
+          
+          <label class="block text-xs font-black text-slate-500 uppercase mb-1">Digital Signature</label>
+          <canvas id="sigCanvas" class="sig-canvas mb-2"></canvas>
+          <button onclick="clearCanvas()" class="text-xs font-bold text-blue-600 mb-6">Clear Signature</button>
 
-            <div class="bg-white rounded-xl shadow-sm manual-card border-amber">
-              <button onclick="toggleFaq('faq3')" class="w-full p-4 text-left font-black text-slate-700 flex justify-between items-center outline-none">
-                ⏱️ Timekeeping & Field Deployment <span class="text-blue-900 font-black">+</span>
-              </button>
-              <div id="faq3" class="hidden p-4 text-sm text-slate-600 bg-slate-50 border-t border-slate-100 rounded-b-xl space-y-3 leading-relaxed">
-                <p><strong>Work Setup:</strong> We implement a Compressed Workweek (CWW) and Flexible Work Arrangement to accommodate operational realities[cite: 1].</p>
-                <p><strong>When Does Pay Start?</strong> Compensable field hours strictly commence upon actual documented arrival at the first assigned client site and strictly terminate upon actual completion and departure from the final assigned client site[cite: 1]. Travel from personal residence to the first site is non-compensable personal transit time[cite: 1].</p>
-                <p><strong>Stay-In Perks:</strong> Stay-in facility standard utility costs are subsidized to a threshold cap of Php 1,500.00 monthly per unit; excess numbers split evenly across residents[cite: 1].</p>
-              </div>
-            </div>
+          <button onclick="submitHrForm()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg" id="btnForm">SIGN & SUBMIT TO HR</button>
+        </div>
 
-            <div class="bg-white rounded-xl shadow-sm manual-card border-rose">
-              <button onclick="toggleFaq('faq4')" class="w-full p-4 text-left font-black text-slate-700 flex justify-between items-center outline-none">
-                💰 Salary, Leaves & Benefits <span class="text-blue-900 font-black">+</span>
-              </button>
-              <div id="faq4" class="hidden p-4 text-sm text-slate-600 bg-slate-50 border-t border-slate-100 rounded-b-xl space-y-3 leading-relaxed">
-                <p><strong>13th Month:</strong> Task-based personnel 13th-month pay is strictly calculated as one-twelfth of the total basic salary actually earned during the calendar year[cite: 1].</p>
-                <p><strong>Paid Time Off:</strong> Welfare parameters include an integrated 7-Day annual Sick/Vacation leave block and a 3-Day paid Bereavement Leave structure[cite: 1].</p>
-                <p><strong>Vales (Cash Advances):</strong> All operational cash advances must be fully liquidated with legitimate, BIR-compliant receipts within forty-eight (48) hours of issuance[cite: 1].</p>
-              </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm manual-card border-blue">
-              <button onclick="toggleFaq('faq5')" class="w-full p-4 text-left font-black text-slate-700 flex justify-between items-center outline-none">
-                ⚖️ Safety & Misconduct (The Rules) <span class="text-blue-900 font-black">+</span>
-              </button>
-              <div id="faq5" class="hidden p-4 text-sm text-slate-600 bg-slate-50 border-t border-slate-100 rounded-b-xl space-y-3 leading-relaxed">
-                <p><strong>Drugs & Support:</strong> Unannounced drug testing procedures align directly with R.A. 9165 parameters; standard refusal constitutes immediate structural insubordination[cite: 1]. The Mental Health Workplace Policy ensures employees facing challenges will be supported by a licensed psychiatrist[cite: 1].</p>
-                <p><strong>Struggling?</strong> If evaluation falls below standard, the employee is placed on a supportive 30-day PIP[cite: 1].</p>
-                <p><strong>Zero Tolerance:</strong> Engaging in side-line businesses ("moonlighting") or privately offering pest control services to the Company's clients is a severe breach of trust resulting in immediate termination[cite: 1]. Bypassing internal channels to defame the Company on social media constitutes Cyber Libel[cite: 1].</p>
-                <p><strong>Resignations:</strong> Submit a 15-day written notice for voluntary resignation[cite: 1]. Final pay processed within DOLE-mandated 30-day period[cite: 1].</p>
+        <div id="tab-hub" class="hidden fade-in text-left max-w-lg mx-auto">
+          <h2 class="text-2xl font-black text-slate-800 mb-1">Corporate Manual</h2>
+          <p class="text-[10px] text-slate-400 font-bold uppercase mb-4">Document Code: RBA-HR-MAN-FINAL-V19</p>
+          <div class="space-y-3 pb-10">
+            <div class="bg-white rounded-xl shadow-sm border-l-4 border-blue-500">
+              <button onclick="toggleFaq('faq1')" class="w-full p-4 text-left font-black text-slate-700 flex justify-between">Art I: Business Integrity <span>+</span></button>
+              <div id="faq1" class="hidden p-4 text-xs text-slate-600 bg-slate-50 border-t space-y-2">
+                <p><strong>Section 1. Core Corporate Framework and Prerogative.</strong> The Company exercises its lawful right to organize, streamline, and direct all operational and human resource requirements in good faith. This includes establishing job duties, assigning specific equipment, setting deployment criteria, and regulating time and place protocols.</p>
+                <p><strong>Section 2. Prospectivity, Non-Retroactivity, and Acknowledgment.</strong> This Manual is promulgated as a forward-looking corporate charter applicable to all team members. Acknowledging this manual confirms an understanding of operational definitions and performance requirements. To protect organizational harmony, any persistent refusal to align with these prospective standards constitutes serious insubordination.</p>
+                <p><strong>Section 3. Verification and Suspensive Conditions.</strong> The perfection of the employment relationship and regularized tenure is subject to a suspensive condition: the completion of a valid 201 File, including background references, standard NBI clearances, and medical certifications.</p>
               </div>
             </div>
             
+            <div class="bg-white rounded-xl shadow-sm border-l-4 border-blue-500">
+              <button onclick="toggleFaq('faq2')" class="w-full p-4 text-left font-black text-slate-700 flex justify-between">Art II: Medical & Search Rights <span>+</span></button>
+              <div id="faq2" class="hidden p-4 text-xs text-slate-600 bg-slate-50 border-t space-y-2">
+                <p><strong>Section 1. Onboarding Medical Protocol.</strong> Given that pest control involves high physical endurance and safe chemical handling, candidates must establish physical fitness. The Company requires a standard "Fit-to-Work" clearance from a licensed physician.</p>
+                <p><strong>Section 2. Property Protection & Right to Search.</strong> To safeguard proprietary chemical formulation balances, high-value specialized equipment, and client data assets, the Company maintains a transparent property defense policy. The Company reserves the right to conduct standard, respectful inspections of bags, lockers, personal effects, and company vehicles upon entry and exit of facilities or client areas. Cooperation is mandatory.</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border-l-4 border-blue-500">
+              <button onclick="toggleFaq('faq3')" class="w-full p-4 text-left font-black text-slate-700 flex justify-between">Art III: Timekeeping & Travel <span>+</span></button>
+              <div id="faq3" class="hidden p-4 text-xs text-slate-600 bg-slate-50 border-t space-y-2">
+                <p><strong>Section 1. Flexible Work Arrangements.</strong> The Company implements a Compressed Workweek (CWW) and Flexible Work Arrangement to accommodate operational realities.</p>
+                <p><strong>Section 2. Field Deployment Boundaries.</strong> Compensable field working hours strictly commence upon actual documented arrival at the first assigned client site and strictly terminate upon actual completion and departure from the final assigned client site for the day. Travel intervals from an employee's personal residence or assigned barracks to the first site are treated as standard personal transit time and are non-compensable.</p>
+                <p><strong>Section 4. Stay-In Facilities.</strong> The Company subsidizes utility costs (water and electricity) up to a maximum cap of Php 1,500.00 per month per facility unit. Any utility expenses incurred beyond this threshold shall be billed to and split equally among the residing employees via automated payroll adjustment.</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border-l-4 border-blue-500">
+              <button onclick="toggleFaq('faq4')" class="w-full p-4 text-left font-black text-slate-700 flex justify-between">Art IV & V: Benefits & Conduct <span>+</span></button>
+              <div id="faq4" class="hidden p-4 text-xs text-slate-600 bg-slate-50 border-t space-y-2">
+                <p><strong>Salary Structure:</strong> For team members using their personal vehicles, it is explicitly covenanted that your contractually agreed Salary is fully integrated and inclusive of all gasoline expenses, routine vehicle maintenance, and wear-and-tear.</p>
+                <p><strong>13th Month:</strong> Calculated as one-twelfth of the total basic salary actually earned during the calendar year.</p>
+                <p><strong>Premium Paid Leaves:</strong> 7-Day Sick/Vacation Leave granted annually upon regularization. 3-Day Paid Bereavement Leave granted immediately for immediate family loss.</p>
+                <p><strong>Cash Advances:</strong> Must be fully liquidated with legitimate receipts within 48 hours.</p>
+                <p><strong>Anti-Moonlighting:</strong> Engaging in side-line businesses or privately offering services to the Company's active or potential clients represents a direct conflict of interest. Such acts will result in immediate termination.</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- TAB MODULE 4: PROTECTED 201 PROFILE & PHOTO UPLOAD -->
         <div id="tab-profile" class="hidden fade-in text-left max-w-md mx-auto">
           <div class="flex items-center gap-4 mb-6 bg-blue-900 p-6 rounded-2xl text-white shadow-xl relative overflow-hidden">
-            <!-- Uploadable Avatar -->
             <label for="avatarUpload" class="cursor-pointer relative group h-16 w-16 bg-white rounded-xl shadow-lg flex-shrink-0 overflow-hidden flex items-center justify-center border-2 border-white">
               <img id="profImg" src="" class="h-full w-full object-cover hidden" alt="Profile">
               <span id="profInitials" class="text-blue-900 font-black text-2xl group-hover:hidden">RBA</span>
-              <div class="absolute inset-0 bg-black bg-opacity-50 hidden group-hover:flex items-center justify-center"><span class="text-[8px] font-black uppercase tracking-wider text-white">UPLOAD</span></div>
+              <div class="absolute inset-0 bg-black bg-opacity-50 hidden group-hover:flex items-center justify-center"><span class="text-[8px] font-black text-white">UPLOAD</span></div>
               <input type="file" id="avatarUpload" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
             </label>
-            
             <div class="flex-1">
-              <h2 class="text-xl font-black truncate" id="profName">System Identity</h2>
-              <p class="text-xs font-semibold text-blue-200 uppercase tracking-widest" id="profRole">Rank-And-File</p>
+              <h2 class="text-xl font-black truncate" id="profName">Name</h2>
+              <p class="text-xs font-semibold text-blue-200 uppercase" id="profRole">Role</p>
             </div>
             <div id="uploadSpinner" class="hidden absolute top-4 right-4"><svg class="w-5 h-5 animate-spin text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>
           </div>
           
-          <div class="grid grid-cols-2 gap-3 mb-4">
-            <div class="bg-slate-50 p-3 border border-slate-200 rounded-xl"><p class="text-[9px] text-slate-400 font-bold uppercase">Hiring Frame</p><p class="text-xs font-black text-slate-800" id="profHire"></p></div>
-            <div class="bg-slate-50 p-3 border border-slate-200 rounded-xl"><p class="text-[9px] text-slate-400 font-bold uppercase">Birth Matrix</p><p class="text-xs font-black text-slate-800" id="profBday"></p></div>
-          </div>
-
-          <div class="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
-            <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1">Contact Telemetry</h3>
-            <p class="text-[10px] text-slate-400 font-bold uppercase">Cellular Target</p><p class="text-xs font-black text-slate-800 mb-2" id="profPhone"></p>
-            <p class="text-[10px] text-slate-400 font-bold uppercase">Registered Address</p><p class="text-xs font-black text-slate-800 mb-2" id="profAddr"></p>
-            <p class="text-[10px] text-slate-400 font-bold uppercase">Emergency Contact Anchor</p><p class="text-xs font-black text-rose-600" id="profEmerg"></p>
-          </div>
-
           <div class="bg-white border border-slate-200 rounded-xl p-4 mb-6 shadow-sm grid grid-cols-2 gap-3">
             <div><p class="text-[9px] text-slate-400 font-bold">PHILIPPINE SSS</p><p class="text-xs font-black text-slate-800" id="profSss"></p></div>
             <div><p class="text-[9px] text-slate-400 font-bold">REVENUE TIN</p><p class="text-xs font-black text-slate-800" id="profTin"></p></div>
             <div><p class="text-[9px] text-slate-400 font-bold">PHILHEALTH</p><p class="text-xs font-black text-slate-800" id="profPh"></p></div>
-            <div><p class="text-[9px] text-slate-400 font-bold">PAG-IBIG ANCHOR</p><p class="text-xs font-black text-slate-800" id="profPag"></p></div>
+            <div><p class="text-[9px] text-slate-400 font-bold">PAG-IBIG</p><p class="text-xs font-black text-slate-800" id="profPag"></p></div>
           </div>
           
-          <a id="btnContract" href="#" target="_blank" class="w-full block text-center bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition-all">RESOLVE SYSTEM COVENANT CONTRACT</a>
-          <p class="text-center text-[10px] text-slate-400 font-bold mt-2">Data Modifications require an active admin pipeline request.</p>
+          <h2 class="text-lg font-black text-slate-800 mb-3 border-b pb-1">Company Directory</h2>
+          <div id="orgChart" class="space-y-2 max-h-64 overflow-y-auto pr-2 pb-6"></div>
         </div>
 
-        <!-- TAB MODULE 5: ADMIN OPERATIONS PANEL -->
         <div id="tab-admin" class="hidden fade-in text-left">
           <div class="lg:grid lg:grid-cols-2 lg:gap-8">
             <div>
-              <h2 class="text-lg font-black text-slate-800 mb-4 border-b pb-1 uppercase tracking-wider">Pending Clock Logs</h2>
-              <div id="adminLogs" class="space-y-3 mb-6 max-h-[35vh] overflow-y-auto pr-2 no-scrollbar"></div>
-              
-              <h2 class="text-lg font-black text-slate-800 mb-4 border-b pb-1 uppercase tracking-wider">Pending Compliance Forms</h2>
+              <h2 class="text-lg font-black text-slate-800 mb-4 border-b pb-1">Pending HR Approvals</h2>
               <div id="adminForms" class="space-y-3 mb-6 max-h-[35vh] overflow-y-auto pr-2 no-scrollbar"></div>
+              
+              <h2 class="text-lg font-black text-slate-800 mb-4 border-b pb-1">Time Clock Logs</h2>
+              <div id="adminLogs" class="space-y-3 mb-6 max-h-[35vh] overflow-y-auto pr-2 no-scrollbar"></div>
             </div>
+            
             <div class="bg-slate-50 p-5 rounded-2xl border-2 border-slate-200 h-fit">
-              <h2 class="text-lg font-black text-blue-900 mb-1">Issue Interactive Compliance Gate</h2>
-              <p class="text-xs text-slate-400 font-bold mb-3">Enforces global operational system lockouts until text agreement is completed.</p>
-              <textarea id="memoText" class="w-full bg-white border border-slate-200 p-3 rounded-xl font-medium text-slate-700 h-28 mb-3 focus:border-blue-900 outline-none" placeholder="Type administrative directive..."></textarea>
-              <button onclick="publishBroadcast()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnMemo">BROADCAST GLOBAL HARMONY BLOCK</button>
+              <h2 class="text-lg font-black text-blue-900 mb-1">Fleet Map: Last Known Locations</h2>
+              <p class="text-xs text-slate-400 font-bold mb-3">Based on latest clock or form activity.</p>
+              <div id="fleetMap" class="space-y-2 max-h-[40vh] overflow-y-auto bg-white p-3 rounded-lg border"></div>
             </div>
           </div>
         </div>
@@ -254,59 +194,70 @@
       </div>
     </div>
 
-    <!-- ================= SYSTEM NAVIGATION DECK (SPA CORE) ================= -->
     <div id="bottomNav" class="hidden absolute md:fixed md:left-0 md:top-0 md:h-screen md:w-24 md:flex-col md:border-r-2 md:border-t-0 md:rounded-none bottom-0 w-full bg-white border-t border-slate-200 flex justify-around items-center h-[70px] px-1 shadow-2xl z-20">
-      <button onclick="switchTab('tab-time')" id="nav-time" class="nav-btn active flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition-all outline-none">
-        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[9px] font-black tracking-wider">CLOCK</span>
-      </button>
-      <button onclick="switchTab('tab-forms')" id="nav-forms" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition-all outline-none">
-        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span class="text-[9px] font-black tracking-wider">REQUESTS</span>
-      </button>
-      <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition-all outline-none">
-        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg><span class="text-[9px] font-black tracking-wider">MANUAL</span>
-      </button>
-      <button onclick="switchTab('tab-profile')" id="nav-profile" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400 transition-all outline-none">
-        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg><span class="text-[9px] font-black tracking-wider">201 FILE</span>
-      </button>
-      <button onclick="switchTab('tab-admin')" id="nav-admin" class="nav-btn hidden flex-1 md:w-full flex-col items-center justify-center h-full text-rose-500 transition-all outline-none">
-        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span class="text-[9px] font-black tracking-wider">ADMIN</span>
-      </button>
+      <button onclick="switchTab('tab-time')" id="nav-time" class="nav-btn active flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[9px] font-black">CLOCK</span></button>
+      <button onclick="switchTab('tab-forms')" id="nav-forms" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span class="text-[9px] font-black">FORMS</span></button>
+      <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg><span class="text-[9px] font-black">MANUAL</span></button>
+      <button onclick="switchTab('tab-exam')" id="nav-exam" class="nav-btn hidden flex-1 md:w-full flex-col items-center justify-center h-full text-slate-400"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[9px] font-black">EXAMS</span></button>
+      <button onclick="switchTab('tab-profile')" id="nav-profile" class="nav-btn flex-1 md:w-full flex flex-col items-center justify-center h-full text-slate-400"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg><span class="text-[9px] font-black">DIRECTORY</span></button>
+      <button onclick="switchTab('tab-admin')" id="nav-admin" class="nav-btn hidden flex-1 md:w-full flex-col items-center justify-center h-full text-rose-500"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg><span class="text-[9px] font-black">ADMIN</span></button>
     </div>
   </div>
 
   <script>
-    // =========================================================
-    // SYSTEM PIPELINE ANCHOR (PASTE YOUR RECENT GOOGLE WEB APP URL HERE)
-    // =========================================================
-    const API_URL = "https://script.google.com/macros/s/AKfycbyydrRGgVaWdOtUhRVduWOBGXcJrh7wM2IAhrekgJGMzCoA4MOSLKpgBCLiIGk3PIi37Q/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbxCIoHrZpDXxl4eWvERjBshIErrcvZJ0Fh3n4wJhFD9e99K4dTZnBsB8JFD5_i1hI0s3w/exec"; 
+    let empId = "", lat = null, lng = null, isForcedTimeout = false;
 
-    let empId = "", lat = null, lng = null, activeGateId = null, isForcedTimeout = false;
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js?v=' + new Date().getTime()).then(reg => { reg.update(); }); }
 
-    if ('serviceWorker' in navigator) { 
-      navigator.serviceWorker.register('sw.js?v=' + new Date().getTime()).then(reg => { reg.update(); }); 
+    // Canvas Signature Logic
+    const canvas = document.getElementById('sigCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    
+    // Setup for responsive canvas drawing
+    function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio; canvas.height = canvas.offsetHeight * ratio;
+        ctx.scale(ratio, ratio);
     }
+    window.addEventListener('resize', resizeCanvas); setTimeout(resizeCanvas, 500);
+
+    const startPos = (e) => { isDrawing = true; draw(e); };
+    const endPos = () => { isDrawing = false; ctx.beginPath(); };
+    const draw = (e) => {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.strokeStyle = '#1e3a8a';
+      ctx.lineTo(clientX - rect.left, clientY - rect.top); ctx.stroke(); ctx.beginPath(); ctx.moveTo(clientX - rect.left, clientY - rect.top);
+    };
+    canvas.addEventListener('mousedown', startPos); canvas.addEventListener('mouseup', endPos); canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', startPos); canvas.addEventListener('touchend', endPos); canvas.addEventListener('touchmove', draw);
+    function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
     function switchTab(tabId) {
       document.querySelectorAll('#appModules > div').forEach(el => el.classList.add('hidden'));
-      document.getElementById(tabId).classList.remove('hidden');
+      document.getElementById('examView').classList.add('hidden');
+      if (tabId === 'tab-exam') { document.getElementById('examView').classList.remove('hidden'); } 
+      else { document.getElementById(tabId).classList.remove('hidden'); }
       document.querySelectorAll('.nav-btn').forEach(el => { el.classList.remove('active', 'border-l-4'); });
       const targetBtn = document.getElementById('nav-' + tabId.split('-')[1]);
-      targetBtn.classList.add('active');
-      if(window.innerWidth >= 768) { targetBtn.classList.add('border-l-4'); }
+      if(targetBtn){ targetBtn.classList.add('active'); if(window.innerWidth >= 768) targetBtn.classList.add('border-l-4'); }
     }
 
     function toggleFaq(id) { document.getElementById(id).classList.toggle('hidden'); }
+    function toggleInbox() { document.getElementById('inboxView').classList.toggle('hidden'); }
 
     async function sendDataToGoogle(data) {
-      try {
-        const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, redirect: 'follow', body: JSON.stringify(data) });
-        return await response.json();
-      } catch (error) { return { success: false, message: "Network Link Dropout." }; }
+      try { return await (await fetch(API_URL, { method: 'POST', redirect: 'follow', body: JSON.stringify(data) })).json(); } 
+      catch (error) { return { success: false, message: "Network Link Dropout." }; }
     }
 
     function sendOTP() {
-      empId = document.getElementById('empId').value.trim().toUpperCase();
-      if (!empId) return alert("System requires Employee ID entry.");
+      empId = document.getElementById('empId').value.trim().toUpperCase(); if (!empId) return;
       document.getElementById('btnSend').innerText = "TRANSMITTING DATA..."; document.getElementById('btnSend').disabled = true;
       sendDataToGoogle({ action: 'SEND_OTP', empId: empId }).then(res => {
         if (res.success) { document.getElementById('loginView').classList.add('hidden'); document.getElementById('otpView').classList.remove('hidden');
@@ -321,108 +272,99 @@
       sendDataToGoogle({ action: 'VERIFY_OTP', empId: empId, otp: otp }).then(res => {
         if (res.success) {
           document.getElementById('authSection').classList.add('hidden');
+          document.getElementById('bellBtn').classList.remove('hidden');
           
-          // Profile Setup
+          // Notifications
+          if (res.notifications.length > 0) {
+            document.getElementById('notifBadge').classList.remove('hidden');
+            document.getElementById('notifBadge').innerText = res.notifications.length;
+            document.getElementById('notifList').innerHTML = res.notifications.map(n => `<div class="p-2 bg-blue-50 border border-blue-100 rounded">${n}</div>`).join('');
+          }
+
+          // Profile & Directory
           document.getElementById('profInitials').innerText = empId.substring(0,3);
           document.getElementById('profName').innerText = res.profile.name || "N/A";
-          document.getElementById('profRole').innerText = res.role === 'ADMIN' ? 'Executive Admin' : 'Field Operations Crew';
-          document.getElementById('profHire').innerText = res.profile.hireDate || "N/A";
-          document.getElementById('profBday').innerText = res.profile.bday || "N/A";
-          document.getElementById('profPhone').innerText = res.profile.phone || "N/A";
-          document.getElementById('profAddr').innerText = res.profile.address || "N/A";
-          document.getElementById('profEmerg').innerText = res.profile.emergency || "N/A";
+          document.getElementById('profRole').innerText = res.role;
           document.getElementById('profSss').innerText = res.profile.sss || "N/A";
           document.getElementById('profTin').innerText = res.profile.tin || "N/A";
           document.getElementById('profPh').innerText = res.profile.philhealth || "N/A";
           document.getElementById('profPag').innerText = res.profile.pagibig || "N/A";
           
-          if(res.profile.photoUrl) {
-            document.getElementById('profImg').src = res.profile.photoUrl;
-            document.getElementById('profImg').classList.remove('hidden');
-          }
+          if(res.profile.photoUrl) { document.getElementById('profImg').src = res.profile.photoUrl; document.getElementById('profImg').classList.remove('hidden'); }
           
-          if(res.profile.contract) { document.getElementById('btnContract').href = res.profile.contract; }
-          else { document.getElementById('btnContract').innerText = "SYSTEM ENROLLMENT OPEN"; document.getElementById('btnContract').classList.add('opacity-40'); }
-          if (res.role === 'ADMIN') { document.getElementById('nav-admin').classList.remove('hidden'); document.getElementById('nav-admin').classList.add('flex'); }
+          let orgHtml = "";
+          res.directory.forEach(emp => {
+            const imgHtml = emp.photo ? `<img src="${emp.photo}" class="w-8 h-8 rounded-full object-cover">` : `<div class="w-8 h-8 rounded-full bg-blue-900 text-white flex items-center justify-center text-xs font-bold">${emp.name.substring(0,2).toUpperCase()}</div>`;
+            orgHtml += `<div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border"><div class="flex-shrink-0">${imgHtml}</div><div><p class="font-black text-slate-800 text-sm">${emp.name}</p><p class="text-[10px] font-bold text-slate-500 uppercase">${emp.role}</p></div></div>`;
+          });
+          document.getElementById('orgChart').innerHTML = orgHtml;
 
-          // Flow Control: Broadcast -> Training -> Clock
-          if (res.broadcast) {
-            activeGateId = res.broadcast.id; document.getElementById('broadcastMessage').innerText = res.broadcast.message; document.getElementById('broadcastView').classList.remove('hidden');
-          } else if (res.needsTraining) {
-            document.getElementById('trainingView').classList.remove('hidden');
-          } else {
-            initApp(res.timeInDisabled, res.timeOutDisabled, res.forceTimeOut, res.role);
-          }
+          if (res.role === 'ADMIN') { document.getElementById('nav-admin').classList.remove('hidden'); document.getElementById('nav-admin').classList.add('flex'); }
+          
+          if (res.needsTraining) { document.getElementById('nav-exam').classList.remove('hidden'); document.getElementById('nav-exam').classList.add('flex'); }
+
+          initApp(res.timeInDisabled, res.timeOutDisabled, res.forceTimeOut, res.role, res.needsTraining, res.isFriday);
         } else {
-          alert("Invalid Verification Code."); document.getElementById('btnVerify').innerText = "VERIFY IDENTITY"; document.getElementById('btnVerify').disabled = false;
+          alert("Invalid Code."); document.getElementById('btnVerify').innerText = "VERIFY IDENTITY"; document.getElementById('btnVerify').disabled = false;
         }
       });
     }
 
-    function acknowledgeMemo() {
-      document.getElementById('btnAck').innerText = "SYNCHRONIZING RECONCILIATION..."; document.getElementById('btnAck').disabled = true;
-      sendDataToGoogle({ action: 'ACKNOWLEDGE', empId: empId, gateId: activeGateId }).then(res => { location.reload(); });
-    }
-
-    // Avatar Upload Logic
-    function handleAvatarUpload(event) {
-      const file = event.target.files[0]; if(!file) return;
-      document.getElementById('uploadSpinner').classList.remove('hidden');
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const imgData = e.target.result;
-        sendDataToGoogle({ action: 'UPLOAD_AVATAR', empId: empId, image: imgData }).then(res => {
-          document.getElementById('uploadSpinner').classList.add('hidden');
-          if(res.success) {
-            document.getElementById('profImg').src = res.url;
-            document.getElementById('profImg').classList.remove('hidden');
-          } else { alert("Upload failed."); }
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // Training Quiz Logic
-    function submitTraining() {
-      const q1 = document.getElementById('q1').value;
-      const q2 = document.getElementById('q2').value;
-      const q3 = document.getElementById('q3').value;
-      if (!q1 || !q2 || !q3) return alert("Please answer all questions based on the manual.");
-      if (q1 !== 'correct' || q2 !== 'correct' || q3 !== 'correct') return alert("Some answers are incorrect. Review the RBA Corporate Manual in the Hub.");
-      
-      document.getElementById('btnTrain').innerText = "LOGGING COMPLIANCE..."; document.getElementById('btnTrain').disabled = true;
-      sendDataToGoogle({ action: 'LOG_TRAINING', empId: empId, score: '100%' }).then(res => {
-        alert("Annual Compliance Verified. System Unlocked.");
-        location.reload(); // Reloads to pass the gate
-      });
-    }
-
-    function initApp(timeInDisabled, timeOutDisabled, forceTimeOut, role) {
+    function initApp(timeInDisabled, timeOutDisabled, forceTimeOut, role, needsTraining, isFriday) {
       document.getElementById('appModules').classList.remove('hidden');
       document.getElementById('bottomNav').classList.remove('hidden');
       document.getElementById('bottomNav').classList.add('flex');
+      
       if (role === 'ADMIN') { switchTab('tab-admin'); fetchAdminData(); } else { switchTab('tab-time'); }
+
       if (forceTimeOut) {
         isForcedTimeout = true; document.getElementById('12hrWarning').classList.remove('hidden');
         document.getElementById('btnIn').disabled = true; document.getElementById('btnOut').disabled = false; 
       } else {
         if (!timeInDisabled) document.getElementById('btnIn').disabled = false;
         if (!timeOutDisabled) document.getElementById('btnOut').disabled = false;
+        if (isFriday && needsTraining && hasTimedIn) {
+          document.getElementById('fridayWarning').classList.remove('hidden');
+          document.getElementById('btnOut').disabled = true; // Friday Lockout
+        }
       }
+
       navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } }).then(stream => { document.getElementById('videoElement').srcObject = stream; });
       navigator.geolocation.getCurrentPosition(pos => {
         lat = pos.coords.latitude; lng = pos.coords.longitude;
-        document.getElementById('gpsText').innerHTML = `✓ TELESCOPIC GEOLOCATION LOCKED`;
+        document.getElementById('gpsText').innerHTML = `✓ GEOLOCATION LOCKED`;
         document.getElementById('gpsText').className = "text-emerald-600 mt-2 font-bold text-xs text-center";
       }, err => alert("Hardware Constraint: Enable system geolocation layers."), { enableHighAccuracy: true });
+    }
+
+    function handleAvatarUpload(event) {
+      const file = event.target.files[0]; if(!file) return;
+      document.getElementById('uploadSpinner').classList.remove('hidden');
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        sendDataToGoogle({ action: 'UPLOAD_AVATAR', empId: empId, image: e.target.result }).then(res => {
+          document.getElementById('uploadSpinner').classList.add('hidden');
+          if(res.success) { document.getElementById('profImg').src = res.url; document.getElementById('profImg').classList.remove('hidden'); } 
+          else { alert("Upload failed."); }
+        });
+      }; reader.readAsDataURL(file);
+    }
+
+    function submitExam() {
+      const q1 = document.getElementById('q1').value; const q2 = document.getElementById('q2').value; const q3 = document.getElementById('q3').value;
+      if (!q1 || !q2 || !q3) return alert("Please answer all questions.");
+      if (q1 !== 'correct' || q2 !== 'correct' || q3 !== 'correct') return alert("Incorrect answers. Review the Manual.");
+      
+      document.getElementById('btnTrain').innerText = "LOGGING COMPLIANCE..."; document.getElementById('btnTrain').disabled = true;
+      sendDataToGoogle({ action: 'LOG_TRAINING', empId: empId, score: '100%' }).then(res => { alert("Exam Passed. Restrictions lifted."); location.reload(); });
     }
 
     function logTime(type) {
       document.getElementById('btnIn').disabled = true; document.getElementById('btnOut').disabled = true;
       let note = isForcedTimeout && type === 'TIME OUT' ? 'AUTO 12HR FORCE' : '';
-      const video = document.getElementById('videoElement'); const canvas = document.getElementById('canvas');
-      canvas.width = video.videoWidth; canvas.height = video.videoHeight; canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-      const img = canvas.toDataURL('image/jpeg', 0.5); 
+      const video = document.getElementById('videoElement'); const canvasLog = document.getElementById('canvas');
+      canvasLog.width = video.videoWidth; canvasLog.height = video.videoHeight; canvasLog.getContext('2d').drawImage(video, 0, 0, canvasLog.width, canvasLog.height);
+      const img = canvasLog.toDataURL('image/jpeg', 0.5); 
       sendDataToGoogle({ action: 'LOG_TIME', empId: empId, type: type, lat: lat, lng: lng, image: img, note: note }).then(res => {
         if (res.success) { document.getElementById('tab-time').innerHTML = `<div class="py-10 text-center"><h2 class="text-3xl text-emerald-600 font-black mb-2">${type} SYNCHRONIZED</h2><button onclick="location.reload()" class="mt-4 bg-slate-200 font-bold py-2 px-6 rounded-lg text-xs">RETURN</button></div>`; }
       });
@@ -430,33 +372,49 @@
 
     function submitHrForm() {
       const formType = document.getElementById('formType').value;
-      const details = document.getElementById('formDetails').value.trim();
-      if (!details) return alert("Form requires processing instructions.");
-      document.getElementById('btnForm').innerText = "GENERATING CONTROL LOG..."; document.getElementById('btnForm').disabled = true;
-      sendDataToGoogle({ action: 'SUBMIT_FORM', empId: empId, formType: formType, details: details }).then(res => {
-        if (res.success) { alert("Success! Control Number:\n" + res.controlNum); document.getElementById('formDetails').value = ""; document.getElementById('btnForm').innerText = "SUBMIT SECURE RECORD"; document.getElementById('btnForm').disabled = false; }
+      const formDates = document.getElementById('formDates').value.trim();
+      const formPurpose = document.getElementById('formPurpose').value.trim();
+      if (!formDates || !formPurpose) return alert("Complete all specific details.");
+      
+      // Check if canvas is blank
+      const blankCanvas = document.createElement('canvas'); blankCanvas.width = canvas.width; blankCanvas.height = canvas.height;
+      if (canvas.toDataURL() === blankCanvas.toDataURL()) return alert("Signature is required.");
+
+      document.getElementById('btnForm').innerText = "GENERATING E-SIGNATURE LOG..."; document.getElementById('btnForm').disabled = true;
+      sendDataToGoogle({ action: 'SUBMIT_FORM', empId: empId, formType: formType, dates: formDates, purpose: formPurpose, signature: canvas.toDataURL('image/png') }).then(res => {
+        if (res.success) { alert("Success! PDF generated and emailed to Admin. Control Number: " + res.controlNum); location.reload(); }
       });
     }
 
+    function markRead() {
+      document.getElementById('notifBadge').classList.add('hidden'); document.getElementById('notifList').innerHTML = "No new messages.";
+      sendDataToGoogle({ action: 'MARK_READ', empId: empId });
+    }
+
     function fetchAdminData() {
-      document.getElementById('adminLogs').innerHTML = "Polling queue system database..."; document.getElementById('adminForms').innerHTML = "Polling queue form structures...";
       sendDataToGoogle({ action: 'GET_ADMIN_DATA' }).then(res => {
         const logCont = document.getElementById('adminLogs'); logCont.innerHTML = ""; 
         if (!res.logs || res.logs.length === 0) { logCont.innerHTML = `<p class="text-slate-400 font-bold text-xs">No pending clock verifications found.</p>`; }
         else { res.logs.forEach(log => {
-            logCont.innerHTML += `<div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm text-xs"><div class="flex justify-between items-center mb-1"><span class="font-black text-slate-800">${log.empId}</span><span class="bg-blue-50 px-2 py-0.5 rounded text-[9px] font-black">${log.action}</span></div><p class="text-slate-400 font-medium mb-3">${log.time}</p><div class="flex gap-2 mb-3"><a href="${log.photo}" target="_blank" class="flex-1 bg-slate-50 text-center py-2 rounded-lg border font-bold">Image Log</a><a href="https://www.google.com/maps/search/?api=1&query=${log.lat},${log.lng}" target="_blank" class="flex-1 bg-slate-50 text-center py-2 rounded-lg border font-bold">Map Target</a></div><div class="flex gap-2"><button onclick="updateStatus(this, ${log.row}, 'APPROVED')" class="flex-1 bg-emerald-500 text-white font-black py-2 rounded shadow">APPROVE</button><button onclick="updateStatus(this, ${log.row}, 'REJECTED')" class="flex-1 bg-rose-500 text-white font-black py-2 rounded shadow">REJECT</button></div></div>`;
+            logCont.innerHTML += `<div class="bg-white p-4 border rounded-xl shadow-sm text-xs"><div class="flex justify-between items-center mb-1"><span class="font-black">${log.empId}</span><span class="bg-blue-50 px-2 py-0.5 rounded text-[9px] font-black">${log.action}</span></div><p class="text-slate-400 font-medium mb-3">${log.time}</p><div class="flex gap-2"><button onclick="updateStatus(this, ${log.row}, 'APPROVED')" class="flex-1 bg-emerald-500 text-white font-black py-2 rounded shadow">APPROVE</button></div></div>`;
           }); }
+        
         const formCont = document.getElementById('adminForms'); formCont.innerHTML = ""; 
         if (!res.forms || res.forms.length === 0) { formCont.innerHTML = `<p class="text-slate-400 font-bold text-xs">No pending administrative documents.</p>`; }
         else { res.forms.forEach(f => {
-            formCont.innerHTML += `<div class="bg-white p-4 border-2 border-slate-200 rounded-xl shadow-sm text-xs"><div class="flex justify-between items-center mb-1"><span class="font-black text-blue-900">${f.empId}</span><span class="text-[9px] font-black text-slate-400">${f.controlNum}</span></div><p class="text-slate-800 font-bold mb-1">${f.formType}</p><p class="text-slate-600 mb-3 bg-slate-50 p-2 rounded border font-medium">${f.details}</p><button onclick="approveForm(this, ${f.row}, '${f.empId}', '${f.formType}', '${f.details}', '${f.controlNum}')" class="w-full bg-slate-800 text-white font-black py-2.5 rounded shadow">EXECUTE COMPLIANCE AND PRINT PDF</button></div>`;
+            formCont.innerHTML += `<div class="bg-white p-4 border rounded-xl shadow-sm text-xs"><div class="flex justify-between mb-1"><span class="font-black text-blue-900">${f.empId}</span><span class="text-[9px] font-black">${f.controlNum}</span></div><p class="font-bold mb-1">${f.formType}</p><p class="text-slate-600 mb-3 bg-slate-50 p-2 rounded border">${f.details}</p><img src="${f.sig}" class="h-10 mb-3 border-b border-black"><button onclick="approveForm(this, ${f.row}, '${f.empId}', '${f.formType}', \`${f.details}\`, '${f.controlNum}')" class="w-full bg-slate-800 text-white font-black py-2.5 rounded shadow">APPROVE & TRIGGER NOTIFICATION</button></div>`;
           }); }
+
+        // Last Known Location Fleet Map (Links to Google Maps)
+        const mapCont = document.getElementById('fleetMap'); mapCont.innerHTML = "";
+        res.fleetMap.forEach(loc => {
+          mapCont.innerHTML += `<a href="https://www.google.com/maps/search/?api=1&query=$${loc.lat},${loc.lng}" target="_blank" class="block flex justify-between items-center p-2 hover:bg-slate-50 border-b last:border-0"><span class="font-black text-xs text-blue-900">${loc.empId}</span><span class="text-[10px] text-slate-500 font-bold">${loc.time} 📍</span></a>`;
+        });
       });
     }
 
-    function updateStatus(btn, row, status) { btn.parentElement.innerHTML = "<span class='text-xs font-bold text-slate-400 animate-pulse'>Writing status change...</span>"; sendDataToGoogle({ action: 'UPDATE_STATUS', row: row, status: status }).then(res => { fetchAdminData(); }); }
-    function approveForm(btn, row, empId, formType, details, controlNum) { btn.innerText = "COMPILING GOVERNMENT COMPLIANT PDF..."; btn.disabled = true; sendDataToGoogle({ action: 'APPROVE_FORM', row: row, empId: empId, formType: formType, details: details, controlNum: controlNum }).then(res => { if(res.success) { alert("Compliance validation completed! PDF compiled."); fetchAdminData(); } }); }
-    function publishBroadcast() { const msg = document.getElementById('memoText').value.trim(); if(!msg) return; document.getElementById('btnMemo').innerText = "PROPAGATING INTERCEPT PROTOCOL..."; sendDataToGoogle({ action: 'CREATE_BROADCAST', message: msg }).then(res => { alert("Broadcast system intercept active. Global terminals isolated."); document.getElementById('memoText').value = ""; document.getElementById('btnMemo').innerText = "BROADCAST GLOBAL HARMONY BLOCK"; }); }
+    function updateStatus(btn, row, status) { btn.parentElement.innerHTML = "Updating..."; sendDataToGoogle({ action: 'UPDATE_STATUS', row: row, status: status }).then(res => { fetchAdminData(); }); }
+    function approveForm(btn, row, empId, formType, details, controlNum) { btn.innerText = "APPROVING..."; btn.disabled = true; sendDataToGoogle({ action: 'APPROVE_FORM', row: row, empId: empId, formType: formType, details: details, controlNum: controlNum }).then(res => { if(res.success) { alert("PDF compiled and Notification sent."); fetchAdminData(); } }); }
   </script>
 </body>
 </html>
