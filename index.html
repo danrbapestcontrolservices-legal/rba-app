@@ -36,7 +36,7 @@
       <div>
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2 px-6">HR & Compliance</p>
         <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-rose-500">📚</span> Manual & Directory</button>
-        <button onclick="switchTab('tab-admin')" id="nav-admin" class="hidden nav-btn w-full flex items-center gap-3 px-6 py-3 text-blue-900 hover:bg-blue-50 text-sm font-bold transition-all"><span class="text-blue-900">⚙️</span> Admin Panel</button>
+        <button onclick="switchTab('tab-admin')" id="nav-admin" class="hidden nav-btn w-full items-center gap-3 px-6 py-3 text-blue-900 hover:bg-blue-50 text-sm font-bold transition-all"><span class="text-blue-900">⚙️</span> Admin Panel</button>
       </div>
     </div>
     <div class="p-4 border-t border-slate-100"><button onclick="logoutSession()" class="w-full bg-slate-100 text-slate-600 font-bold py-2 rounded-lg text-xs hover:bg-rose-100 hover:text-rose-600 transition-all">SECURE LOGOUT</button></div>
@@ -66,11 +66,11 @@
           <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" class="h-16 mx-auto mb-6">
           <div id="loadingView" class="hidden py-8"><svg class="w-10 h-10 animate-spin text-blue-900 mx-auto mb-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><p class="font-bold text-slate-500 text-sm">Resuming Session...</p></div>
           <div id="loginView">
-            <input type="text" id="empId" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl uppercase font-black text-center text-xl outline-none" placeholder="EMPLOYEE ID">
+            <input type="text" id="empId" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl uppercase font-black text-center text-xl outline-none" placeholder="EMPLOYEE ID">
             <button onclick="sendOTP()" class="mt-4 w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow" id="btnSend">SECURE LOGIN</button>
           </div>
-          <div id="otpView" class="hidden fade-in">
-            <input type="number" id="otpCode" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl text-center tracking-[0.5em] text-3xl font-black outline-none" placeholder="••••••">
+          <div id="otpView" class="hidden fade-in mt-4">
+            <input type="number" id="otpCode" class="w-full bg-slate-50 border-2 p-4 rounded-xl text-center tracking-[0.5em] text-3xl font-black outline-none" placeholder="••••••">
             <button onclick="verifyOTP()" class="mt-4 w-full bg-emerald-600 text-white font-bold py-4 rounded-xl shadow" id="btnVerify">VERIFY IDENTITY</button>
           </div>
         </div>
@@ -203,7 +203,7 @@
   </main>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwk9cUSsnj2_FAfqwByagFPwQ5nw8pCMwS0Ci9hwJqeB1TAYBcHjhNu4xCsr7yed-1CRg/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbzI89fYolPy51A7D1Z6aWowm9uM8ftM6Pva0qBxNOLRCPMYc-mmFNKFHZlM4-DYAU0-Qg/exec"; 
     let empId = "", lat = null, lng = null, jfPhotoBase64 = null;
 
     if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js?v=' + new Date().getTime()).then(reg => { reg.update(); }); }
@@ -238,13 +238,13 @@
     function toggleInbox() { document.getElementById('inboxView').classList.toggle('hidden'); }
     function logoutSession() { localStorage.removeItem('rba_emp_id'); location.reload(); }
 
-    // THE X-RAY FETCH PROTOCOL: Catches Backend HTML Crashes
+    // THE X-RAY FETCH PROTOCOL: Catches Backend HTML Crashes Gracefully
     async function sendDataToGoogle(data) {
       try {
         const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, redirect: 'follow', body: JSON.stringify(data) });
         const text = await response.text();
         try { return JSON.parse(text); } 
-        catch (e) { return { success: false, error: "System Error: " + text.replace(/(<([^>]+)>)/gi, "").substring(0, 100) }; }
+        catch (e) { return { success: false, error: "Google Server Error: " + text.replace(/(<([^>]+)>)/gi, "").substring(0, 100) }; }
       } catch (error) { return { success: false, error: "Network Error: Ensure your Google Link ends in /exec and Access is set to 'Anyone'." }; }
     }
 
@@ -288,12 +288,12 @@
       }
 
       const sCont = document.getElementById('mySchedule'); sCont.innerHTML = "";
-      if(res.schedule.length === 0) sCont.innerHTML = "<p class='text-xs text-slate-500'>No scheduled shifts.</p>";
-      res.schedule.forEach(s => { sCont.innerHTML += `<div class="bg-indigo-50 p-3 rounded-lg border border-indigo-100 text-xs mb-2"><span class="font-black text-indigo-900">${s.date}</span><p class="font-bold text-slate-700">${s.client}</p><p class="text-[10px] text-slate-500 uppercase">${s.time}</p></div>`; });
+      if(res.schedule && res.schedule.length === 0) sCont.innerHTML = "<p class='text-xs text-slate-500'>No scheduled shifts.</p>";
+      if(res.schedule) res.schedule.forEach(s => { sCont.innerHTML += `<div class="bg-indigo-50 p-3 rounded-lg border border-indigo-100 text-xs mb-2"><span class="font-black text-indigo-900">${s.date}</span><p class="font-bold text-slate-700">${s.client}</p><p class="text-[10px] text-slate-500 uppercase">${s.time}</p></div>`; });
 
       const tCont = document.getElementById('myTasks'); tCont.innerHTML = "";
-      if(res.tasks.length === 0) tCont.innerHTML = "<p class='text-xs text-slate-500'>No pending tasks.</p>";
-      res.tasks.forEach(t => { 
+      if(res.tasks && res.tasks.length === 0) tCont.innerHTML = "<p class='text-xs text-slate-500'>No pending tasks.</p>";
+      if(res.tasks) res.tasks.forEach(t => { 
         let btn = t.status === 'COMPLETED' ? `<span class="text-[10px] font-black text-emerald-600">✓ DONE</span>` : `<button onclick="completeTask(${t.row})" class="text-[10px] bg-slate-800 text-white px-2 py-1 rounded shadow">MARK DONE</button>`;
         tCont.innerHTML += `<div class="bg-white p-3 rounded-lg border border-slate-200 text-xs mb-2 flex justify-between items-center"><div class="flex-1"><p class="font-bold text-slate-800">${t.desc}</p><p class="text-[10px] text-rose-500 font-bold uppercase">DUE: ${t.deadline}</p></div>${btn}</div>`; 
       });
@@ -310,7 +310,7 @@
       if(res.profile.photoUrl) { document.getElementById('profImg').src = res.profile.photoUrl; document.getElementById('profImg').classList.remove('hidden'); }
       
       let orgHtml = "";
-      res.directory.forEach(emp => {
+      if(res.directory) res.directory.forEach(emp => {
         const imgHtml = emp.photo ? `<img src="${emp.photo}" class="w-10 h-10 rounded-full object-cover shadow-sm">` : `<div class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold shadow-sm">${emp.name.substring(0,2).toUpperCase()}</div>`;
         orgHtml += `<div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-slate-100 shadow-sm mb-2"><div class="flex-shrink-0">${imgHtml}</div><div><p class="font-black text-slate-800 text-sm">${emp.name}</p><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${emp.role}</p></div></div>`;
       });
@@ -413,7 +413,7 @@
 
     function toggleAdminInputs() {
       const act = document.getElementById('admAction').value;
-      if(act==='schedule'){ document.getElementById('admDetail1').placeholder = "Client / Site Name"; document.getElementById('admDetail2').classList.remove('hidden'); }
+      if(act==='schedule'){ document.getElementById('admDetail1').placeholder = "Client / Site Name"; document.getElementById('admDetail2').placeholder = "Time Range (e.g. 8am - 5pm)"; document.getElementById('admDetail2').classList.remove('hidden'); }
       else { document.getElementById('admDetail1').placeholder = "Task Description"; document.getElementById('admDetail2').classList.add('hidden'); }
     }
     function adminAssign() {
@@ -424,6 +424,7 @@
 
     function fetchAdminData() {
       sendDataToGoogle({ action: 'GET_ADMIN_DATA' }).then(res => {
+        if(!res.success) return;
         const formCont = document.getElementById('adminForms'); formCont.innerHTML = ""; 
         if(res.forms) res.forms.forEach(f => { formCont.innerHTML += `<div class="bg-white p-4 border rounded-xl shadow-sm text-xs mb-2"><div class="flex justify-between mb-1"><span class="font-black text-blue-900">${f.empId}</span><span class="text-[9px] font-black text-slate-400">${f.controlNum}</span></div><p class="font-bold mb-1">${f.formType}</p><a href="${f.pdf}" target="_blank" class="text-blue-500 font-bold underline mb-3 block">View PDF Report</a><button onclick="updateForm(this, ${f.row})" class="w-full bg-slate-800 text-white font-black py-2.5 rounded shadow">MARK REVIEWED</button></div>`; });
         const logCont = document.getElementById('adminLogs'); logCont.innerHTML = ""; 
@@ -433,8 +434,6 @@
       });
     }
     function updateForm(btn, row) { btn.innerText="UPDATING..."; sendDataToGoogle({action:'APPROVE_FORM', row:row}).then(res=>{fetchAdminData();}); }
-    function acknowledgeMemo() { document.getElementById('btnAck').innerText = "SYNCHRONIZING..."; document.getElementById('btnAck').disabled = true; sendDataToGoogle({ action: 'ACKNOWLEDGE', empId: empId, gateId: activeGateId }).then(res => { location.reload(); }); }
-    function publishBroadcast() { const msg = document.getElementById('memoText').value.trim(); if(!msg) return; document.getElementById('btnMemo').innerText = "PROPAGATING..."; sendDataToGoogle({ action: 'CREATE_BROADCAST', message: msg }).then(res => { alert("Broadcast intercept active."); document.getElementById('memoText').value = ""; document.getElementById('btnMemo').innerText = "BROADCAST GLOBAL LOCK"; }); }
   </script>
 </body>
 </html>
