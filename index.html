@@ -15,13 +15,14 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .sig-canvas { touch-action: none; border: 2px dashed #cbd5e1; background: #f8fafc; width: 100%; height: 150px; border-radius: 0.75rem; }
     .modal-overlay { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(4px); }
-    @media (min-width: 768px) { .mobile-wrapper { max-width: 1200px !important; } .nav-btn.active { border-top: 0px; border-left: 4px solid #1e3a8a; } }
+    @media (min-width: 768px) { .mobile-wrapper { max-width: 1200px !important; } .nav-btn.active { border-top: 0px; border-l-4: 4px solid #1e3a8a; } }
   </style>
 </head>
 
 <body class="bg-slate-50 flex h-screen overflow-hidden text-slate-800">
 
-  <aside id="sidebar" class="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 h-full z-20 flex-shrink-0">
+  <!-- ================= DESKTOP SIDEBAR ================= -->
+  <aside id="sidebar" class="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 h-full z-20 flex-shrink-0 shadow-lg">
     <div class="p-5 border-b border-slate-100 flex items-center gap-3">
       <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" class="h-8 object-contain">
       <div><h1 class="font-black text-[13px] leading-tight text-blue-900">RBA PEST CONTROL</h1><p class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Operations Hub</p></div>
@@ -29,19 +30,20 @@
     <div class="flex-1 overflow-y-auto py-6 space-y-6 no-scrollbar">
       <div>
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2 px-6">Operations</p>
-        <button onclick="switchTab('tab-time')" id="nav-time" class="nav-btn active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all">⏱️ Time Clock</button>
-        <button onclick="switchTab('tab-schedule')" id="nav-schedule" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all">📅 My Schedule & Tasks</button>
-        <button onclick="switchTab('tab-forms')" id="nav-forms" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all">📄 Field Forms</button>
+        <button onclick="switchTab('tab-time')" id="nav-time" class="nav-btn active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-emerald-500">⏱️</span> Time Clock</button>
+        <button onclick="switchTab('tab-schedule')" id="nav-schedule" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-indigo-500">📅</span> My Schedule & Tasks</button>
+        <button onclick="switchTab('tab-forms')" id="nav-forms" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-amber-500">📄</span> Field Forms</button>
       </div>
       <div>
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2 px-6">HR & Compliance</p>
-        <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all">📚 Manual & Directory</button>
-        <button onclick="switchTab('tab-admin')" id="nav-admin" class="hidden nav-btn w-full items-center gap-3 px-6 py-3 text-blue-900 hover:bg-blue-50 text-sm font-bold transition-all">⚙️ Admin Panel</button>
+        <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-rose-500">📚</span> Manual & Directory</button>
+        <button onclick="switchTab('tab-admin')" id="nav-admin" class="hidden nav-btn w-full flex items-center gap-3 px-6 py-3 text-blue-900 hover:bg-blue-50 text-sm font-bold transition-all"><span class="text-blue-900">⚙️</span> Admin Panel</button>
       </div>
     </div>
     <div class="p-4 border-t border-slate-100"><button onclick="logoutSession()" class="w-full bg-slate-100 text-slate-600 font-bold py-2 rounded-lg text-xs hover:bg-rose-100 hover:text-rose-600 transition-all">SECURE LOGOUT</button></div>
   </aside>
 
+  <!-- ================= MAIN CANVAS ================= -->
   <main class="flex-1 flex flex-col h-full overflow-hidden relative">
     <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-10 flex-shrink-0">
       <div class="flex items-center gap-3 md:hidden"><img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" class="h-8"><h1 class="font-black text-sm text-blue-900">RBA HUB</h1></div>
@@ -55,120 +57,193 @@
           <div id="notifList" class="space-y-2 text-xs text-slate-600 font-medium mb-3 max-h-48 overflow-y-auto">No new messages.</div>
           <button onclick="markRead()" class="w-full bg-slate-100 text-slate-600 text-xs font-bold py-2 rounded-lg hover:bg-slate-200">MARK ALL AS READ</button>
         </div>
-        <div id="profHeader" class="hidden h-9 w-9 rounded-full bg-blue-900 text-white flex items-center justify-center font-black text-xs">RBA</div>
+        <div id="profHeader" class="hidden h-9 w-9 rounded-full bg-blue-900 text-white flex items-center justify-center font-black text-xs shadow-sm">RBA</div>
       </div>
     </header>
 
     <div id="workspace" class="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8 relative">
 
+      <!-- ================= AUTHENTICATION ================= -->
       <div id="authSection" class="fade-in max-w-md mx-auto mt-10">
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-center">
+        <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 text-center">
           <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" class="h-16 mx-auto mb-6">
-          <div id="loadingView" class="hidden py-8"><svg class="w-10 h-10 animate-spin text-blue-900 mx-auto mb-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><p class="font-bold text-slate-500 text-sm">Loading System Hub Data...</p></div>
+          <div id="loadingView" class="hidden py-8"><svg class="w-10 h-10 animate-spin text-blue-900 mx-auto mb-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><p class="font-bold text-slate-500 text-sm">Resuming Secure Session...</p></div>
           <div id="loginView">
-            <input type="text" id="empId" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl uppercase font-black text-center text-xl outline-none" placeholder="EMPLOYEE ID">
-            <button onclick="sendOTP()" class="mt-4 w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow" id="btnSend">SECURE LOGIN</button>
+            <input type="text" id="empId" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl uppercase font-black text-center text-xl outline-none focus:border-blue-900 transition-all" placeholder="EMPLOYEE ID">
+            <button onclick="sendOTP()" class="mt-4 w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnSend">SECURE LOGIN</button>
           </div>
           <div id="otpView" class="hidden fade-in mt-4">
-            <input type="number" id="otpCode" class="w-full bg-slate-50 border-2 p-4 rounded-xl text-center tracking-[0.5em] text-3xl font-black outline-none" placeholder="••••••">
-            <button onclick="verifyOTP()" class="mt-4 w-full bg-emerald-600 text-white font-bold py-4 rounded-xl shadow" id="btnVerify">VERIFY IDENTITY</button>
+            <div class="bg-blue-50 text-blue-800 text-xs font-semibold p-3 rounded-lg mb-4 text-center border border-blue-100">Verification SMS Dispatched.</div>
+            <input type="number" id="otpCode" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl text-center tracking-[0.5em] text-3xl font-black outline-none focus:border-blue-900 transition-all" placeholder="••••••">
+            <button onclick="verifyOTP()" class="mt-4 w-full bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition-all" id="btnVerify">VERIFY IDENTITY</button>
           </div>
         </div>
       </div>
 
+      <!-- ================= COMPLIANCE GATES (MODALS) ================= -->
       <div id="broadcastView" class="hidden fade-in text-center py-10 max-w-md mx-auto">
-        <h3 class="text-2xl font-black text-slate-800 mb-4">Official Executive Directive</h3>
-        <div class="bg-white p-6 rounded-xl border border-slate-200 text-slate-700 font-medium text-sm text-left mb-6 shadow-sm whitespace-pre-wrap" id="broadcastMessage"></div>
-        <button onclick="acknowledgeMemo()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl" id="btnAck">I CONFIRM AND LEGALLY AGREE</button>
+        <div class="inline-block bg-rose-100 text-rose-800 px-4 py-1 rounded-full font-black text-xs mb-4 animate-pulse">COMPULSORY DIRECTIVE</div>
+        <h3 class="text-2xl font-black text-slate-800 mb-4">Official Executive Memo</h3>
+        <div class="bg-white p-6 rounded-xl border-2 border-slate-200 text-slate-700 font-medium text-sm text-left mb-6 shadow-sm whitespace-pre-wrap" id="broadcastMessage"></div>
+        <button onclick="acknowledgeMemo()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg" id="btnAck">I CONFIRM AND LEGALLY AGREE</button>
       </div>
 
+      <!-- Jotform Accomplishment Modal -->
       <div id="jotformModal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl fade-in flex flex-col max-h-[90vh]">
-          <div class="bg-blue-900 p-4 text-white"><h2 class="font-black text-lg">Accomplishment Report</h2><p class="text-xs text-blue-200">Required before Clock Out</p></div>
-          <div class="p-6 overflow-y-auto space-y-4 flex-1">
-            <div><label class="text-xs font-black text-slate-500 uppercase">1. Client / Site Name</label><input type="text" id="jfSite" class="w-full bg-slate-50 border p-3 rounded-lg outline-none font-bold mt-1"></div>
-            <div><label class="text-xs font-black text-slate-500 uppercase">2. Work Executed</label><textarea id="jfWork" class="w-full bg-slate-50 border p-3 rounded-lg outline-none font-medium h-20 mt-1" placeholder="Describe work done..."></textarea></div>
-            <div><label class="text-xs font-black text-slate-500 uppercase">3. Live Site Photo</label><input type="file" id="jfPhoto" accept="image/*" capture="environment" class="w-full text-sm mt-1"></div>
-            <div><label class="text-xs font-black text-slate-500 uppercase">4. E-Signature Validation</label><canvas id="sigCanvas" class="sig-canvas mt-1"></canvas><button onclick="clearCanvas('sigCanvas')" class="text-[10px] font-bold text-blue-600 mt-1">Clear Signature</button></div>
+          <div class="bg-blue-900 p-5 text-white shadow-md z-10"><h2 class="font-black text-lg">Accomplishment Report</h2><p class="text-xs text-blue-200 font-bold tracking-wider uppercase mt-1">Required for Official Clock Out</p></div>
+          <div class="p-6 overflow-y-auto space-y-5 flex-1 bg-slate-50">
+            <div><label class="text-xs font-black text-slate-500 uppercase">1. Client / Site Name</label><input type="text" id="jfSite" class="w-full bg-white border border-slate-200 shadow-sm p-3 rounded-lg outline-none font-bold mt-1 focus:border-blue-500"></div>
+            <div><label class="text-xs font-black text-slate-500 uppercase">2. Work Executed</label><textarea id="jfWork" class="w-full bg-white border border-slate-200 shadow-sm p-3 rounded-lg outline-none font-medium h-24 mt-1 focus:border-blue-500" placeholder="Describe work done..."></textarea></div>
+            <div><label class="text-xs font-black text-slate-500 uppercase">3. Live Site Photo</label><input type="file" id="jfPhoto" accept="image/*" capture="environment" class="w-full text-sm mt-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-900"></div>
+            <div><label class="text-xs font-black text-slate-500 uppercase">4. E-Signature Validation</label><canvas id="sigCanvas" class="sig-canvas mt-1 shadow-inner"></canvas><button onclick="clearCanvas('sigCanvas')" class="text-[10px] font-bold text-blue-600 mt-1 uppercase tracking-wider">Clear Signature</button></div>
           </div>
-          <div class="p-4 border-t flex gap-3">
-            <button onclick="closeJotform()" class="flex-1 bg-slate-200 text-slate-700 font-bold py-3 rounded-xl">CANCEL</button>
-            <button onclick="submitJotform()" id="btnJotSubmit" class="flex-1 bg-emerald-600 text-white font-black py-3 rounded-xl shadow-lg">SUBMIT & CLOCK OUT</button>
+          <div class="p-4 border-t bg-white flex gap-3 shadow-lg z-10">
+            <button onclick="closeJotform()" class="flex-1 bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-300">CANCEL</button>
+            <button onclick="submitJotform()" id="btnJotSubmit" class="flex-1 bg-emerald-600 text-white font-black py-3 rounded-xl shadow-lg hover:bg-emerald-700">SUBMIT & OUT</button>
           </div>
         </div>
       </div>
 
+      <!-- ================= APP MODULES ================= -->
       <div id="appModules" class="hidden h-full">
 
+        <!-- MODULE: TIME CLOCK -->
         <div id="tab-time" class="fade-in max-w-md mx-auto">
           <div id="lockMessage" class="hidden bg-rose-100 text-rose-800 text-xs font-bold p-3 rounded-lg mb-4 border border-rose-300 shadow-sm"></div>
-          <div class="relative rounded-xl overflow-hidden shadow-inner border-4 border-slate-200 bg-black aspect-square md:aspect-video"><video id="videoElement" autoplay playsinline class="w-full h-full object-cover"></video><canvas id="canvas" class="hidden"></canvas></div>
-          <p id="gpsText" class="text-slate-500 mt-3 font-bold text-xs text-center animate-pulse">Acquiring Location...</p>
+          <div class="relative rounded-xl overflow-hidden shadow-inner border-4 border-slate-200 bg-black aspect-square md:aspect-video"><video id="videoElement" autoplay playsinline class="w-full h-full object-cover opacity-90"></video><canvas id="canvas" class="hidden"></canvas></div>
+          <p id="gpsText" class="text-slate-500 mt-3 font-bold text-xs text-center animate-pulse tracking-widest uppercase">Acquiring Telemetry...</p>
           <div class="flex gap-4 mt-6">
-            <button onclick="logTimeIn()" class="flex-1 bg-emerald-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25" id="btnIn" disabled>TIME IN</button>
-            <button onclick="openJotform()" class="flex-1 bg-rose-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25" id="btnOut" disabled>TIME OUT</button>
+            <button onclick="logTimeIn()" class="flex-1 bg-emerald-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25 hover:-translate-y-1 transition-all" id="btnIn" disabled>TIME IN</button>
+            <button onclick="openJotform()" class="flex-1 bg-rose-500 text-white font-black py-5 rounded-xl shadow-lg disabled:opacity-25 hover:-translate-y-1 transition-all" id="btnOut" disabled>TIME OUT</button>
           </div>
         </div>
 
+        <!-- MODULE: SCHEDULE & TASKS -->
         <div id="tab-schedule" class="hidden fade-in text-left max-w-md mx-auto">
-          <h2 class="text-xl font-black text-slate-800 mb-4 border-b pb-2">My Tasks & Schedule</h2>
+          <h2 class="text-xl font-black text-slate-800 mb-4 border-b-2 border-slate-200 pb-2">My Tasks & Schedule</h2>
           <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-2">Pending Tasks</h3>
-          <div id="myTasks" class="space-y-3 mb-6"></div>
+          <div id="myTasks" class="space-y-3 mb-8"></div>
           <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-2">Weekly Schedule</h3>
           <div id="mySchedule" class="space-y-3 pb-10"></div>
         </div>
 
+        <!-- MODULE: FORMS -->
         <div id="tab-forms" class="hidden fade-in text-left max-w-md mx-auto">
-          <h2 class="text-xl font-black text-slate-800 mb-4 border-b pb-2">Digital Form Hub</h2>
-          <select id="formType" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-bold text-slate-700 mb-4 outline-none shadow-sm"><option value="Official Leave Application">Official Leave Application</option><option value="Cash Advance / Vale">Cash Advance / Vale</option><option value="Incident Report">Incident Report</option><option value="Material & PPE Request">Material Request</option></select>
-          <input type="text" id="formDates" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-medium text-slate-700 mb-4 outline-none shadow-sm" placeholder="Specific Dates / Duration">
-          <textarea id="formPurpose" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-medium text-slate-700 h-24 mb-4 outline-none shadow-sm" placeholder="Detailed Purpose..."></textarea>
-          <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Digital Signature</label>
+          <h2 class="text-xl font-black text-slate-800 mb-4 border-b-2 border-slate-200 pb-2">Digital Form Hub</h2>
+          <select id="formType" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-bold text-slate-700 mb-4 outline-none shadow-sm focus:ring-2 focus:ring-blue-100"><option value="Official Leave Application (Annex E)">Official Leave Application (Annex E)</option><option value="Cash Advance / Vale (Annex D)">Cash Advance / Vale (Annex D)</option><option value="Incident Report (Annex C)">Incident Report (Annex C)</option><option value="Material & PPE Request">Material Request</option></select>
+          <input type="text" id="formDates" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-medium text-slate-700 mb-4 outline-none shadow-sm focus:ring-2 focus:ring-blue-100" placeholder="Specific Dates / Duration">
+          <textarea id="formPurpose" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-medium text-slate-700 h-28 mb-4 outline-none shadow-sm focus:ring-2 focus:ring-blue-100" placeholder="Detailed Purpose / Justification..."></textarea>
+          <label class="block text-[10px] font-black text-slate-500 uppercase mb-1 tracking-wider">Digital Signature</label>
           <canvas id="formSigCanvas" class="sig-canvas mb-2 shadow-inner"></canvas>
-          <button onclick="clearCanvas('formSigCanvas')" class="text-xs font-bold text-blue-600 mb-6 outline-none">Clear Signature</button>
-          <button onclick="submitHrForm()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow hover:bg-blue-800" id="btnForm">SIGN & SUBMIT TO HR</button>
+          <button onclick="clearCanvas('formSigCanvas')" class="text-xs font-bold text-blue-600 mb-6 outline-none uppercase tracking-wider">Clear Signature</button>
+          <button onclick="submitHrForm()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all" id="btnForm">SIGN & SUBMIT TO HR</button>
         </div>
 
-        <div id="tab-hub" class="hidden fade-in text-left max-w-lg mx-auto">
-          <div class="flex items-center gap-4 mb-6 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm relative overflow-hidden">
-            <label for="avatarUpload" class="cursor-pointer relative group h-20 w-20 bg-slate-100 rounded-full shadow flex-shrink-0 overflow-hidden flex items-center justify-center border-4 border-white">
+        <!-- MODULE: HUB (FULL CORPORATE MANUAL, PROFILE & EXAM) -->
+        <div id="tab-hub" class="hidden fade-in text-left max-w-2xl mx-auto">
+          
+          <!-- Profile Quick-Card -->
+          <div class="flex items-center gap-5 mb-8 bg-gradient-to-r from-blue-900 to-indigo-900 p-6 rounded-2xl shadow-xl relative overflow-hidden text-white">
+            <label for="avatarUpload" class="cursor-pointer relative group h-20 w-20 bg-white rounded-full shadow-lg flex-shrink-0 overflow-hidden flex items-center justify-center border-4 border-blue-200">
               <img id="profImg" src="" class="h-full w-full object-cover hidden">
-              <span id="profInitials" class="text-slate-400 font-black text-2xl group-hover:hidden">RBA</span>
+              <span id="profInitials" class="text-blue-900 font-black text-2xl group-hover:hidden">RBA</span>
+              <div class="absolute inset-0 bg-black bg-opacity-50 hidden group-hover:flex items-center justify-center"><span class="text-[8px] font-black text-white uppercase">Upload</span></div>
               <input type="file" id="avatarUpload" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
             </label>
-            <div class="flex-1"><h2 class="text-2xl font-black text-slate-800 truncate" id="profName">Name</h2><p class="text-xs font-bold text-blue-600 uppercase" id="profRole">Role</p></div>
-            <div id="uploadSpinner" class="hidden absolute top-4 right-4"><svg class="w-5 h-5 animate-spin text-blue-900" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle></svg></div>
+            <div class="flex-1"><h2 class="text-2xl font-black truncate" id="profName">Name</h2><p class="text-xs font-bold text-blue-200 uppercase tracking-widest" id="profRole">Role</p></div>
+            <div id="uploadSpinner" class="hidden absolute top-4 right-4"><svg class="w-5 h-5 animate-spin text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>
           </div>
 
-          <div class="bg-white border rounded-2xl p-4 mb-6 grid grid-cols-2 gap-4 text-xs shadow-sm">
-            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">SSS Number</span><p class="font-black text-slate-800 mt-0.5" id="profSss">N/A</p></div>
-            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">TIN Number</span><p class="font-black text-slate-800 mt-0.5" id="profTin">N/A</p></div>
-            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">PhilHealth ID</span><p class="font-black text-slate-800 mt-0.5" id="profPh">N/A</p></div>
-            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">Pag-IBIG MID</span><p class="font-black text-slate-800 mt-0.5" id="profPag">N/A</p></div>
-          </div>
-
-          <div class="flex justify-between items-end mb-6 border-b pb-2">
-            <div><h2 class="text-xl font-black text-slate-800">Company Welfare Manual</h2></div>
-            <button onclick="startExam()" id="btnStartExam" class="hidden bg-rose-600 text-white text-xs font-bold px-4 py-2 rounded-lg shadow animate-pulse">TAKE REQUIRED EXAM</button>
+          <!-- HR Exam Alert -->
+          <div class="flex justify-between items-end mb-6 border-b-2 border-slate-200 pb-2">
+            <div><h2 class="text-2xl font-black text-slate-800">Compliance & Welfare</h2><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Document Code: RBA-HR-MAN-FINAL-V19</p></div>
+            <button onclick="startExam()" id="btnStartExam" class="hidden bg-rose-600 text-white text-[10px] font-black px-4 py-2 rounded-lg shadow-lg animate-pulse uppercase tracking-widest">Required Exam</button>
           </div>
           
-          <div id="examContainer" class="hidden bg-white p-6 rounded-xl border-2 border-blue-200 shadow-xl mb-8">
-            <h3 class="font-black text-blue-900 mb-4 text-lg">Annual HR Exam</h3>
+          <!-- Interactive Quiz Engine -->
+          <div id="examContainer" class="hidden bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner mb-8">
+            <h3 class="font-black text-blue-900 mb-2 text-lg uppercase tracking-wider">Annual Certification</h3>
+            <p class="text-xs font-bold text-slate-500 mb-6">Answer the 10 randomized questions below based on the RBA Corporate Manual.</p>
             <div id="quizQuestions" class="space-y-4 mb-6"></div>
-            <button onclick="submitExam()" id="btnSubmitExam" class="w-full bg-emerald-600 text-white font-black py-3 rounded-lg shadow">SUBMIT EXAM</button>
+            <button onclick="submitExam()" id="btnSubmitExam" class="w-full bg-emerald-600 text-white font-black py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition-all">SUBMIT CERTIFICATION</button>
           </div>
 
-          <div class="space-y-3 mb-6">
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><button onclick="toggleFaq('faq1')" class="w-full p-4 text-left font-black text-blue-900 bg-blue-50 flex justify-between outline-none">Art I: Business Integrity <span>+</span></button><div id="faq1" class="hidden p-4 text-xs text-slate-600 space-y-2"><p>The Company exercises its lawful right to organize, streamline, and direct all operational and human resource requirements in good faith.</p></div></div>
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><button onclick="toggleFaq('faq2')" class="w-full p-4 text-left font-black text-emerald-900 bg-emerald-50 flex justify-between outline-none">Art II: Medical & Search <span>+</span></button><div id="faq2" class="hidden p-4 text-xs text-slate-600 space-y-2"><p>Candidates must establish physical fitness via a Fit-to-Work clearance. The Company reserves the right to conduct respectful inspections of bags and vehicles upon entry/exit.</p></div></div>
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><button onclick="toggleFaq('faq3')" class="w-full p-4 text-left font-black text-amber-900 bg-amber-50 flex justify-between outline-none">Art III: Timekeeping <span>+</span></button><div id="faq3" class="hidden p-4 text-xs text-slate-600 space-y-2"><p>Compensable time includes required reporting, briefing, loading, equipment or PPE issuance. Employees assigned to Company-owned vehicles must not disconnect, disable, cover, alter, damage, or delete footage from the dashcam.</p></div></div>
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><button onclick="toggleFaq('faq4')" class="w-full p-4 text-left font-black text-rose-900 bg-rose-50 flex justify-between outline-none">Art IV & V: Conduct <span>+</span></button><div id="faq4" class="hidden p-4 text-xs text-slate-600 space-y-2"><p>Salary or Daily Task Rate is fully integrated and inclusive of all gasoline expenses, routine vehicle maintenance, and operational wear-and-tear.</p></div></div>
+          <!-- THE ULTRA-COMPLETE CORPORATE MANUAL -->
+          <div class="space-y-3 mb-8">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <button onclick="toggleFaq('faq1')" class="w-full p-4 text-left font-black text-blue-900 bg-blue-50 flex justify-between outline-none">🏛️ President's Covenant & Business Integrity <span>+</span></button>
+              <div id="faq1" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
+                <p>At the heart of our operations is a profound commitment to the individuals who execute our vision daily[cite: 3]. We provide premium employee protections and generous company welfare benefits—including enhanced leaves and structured health policies—that demonstrate our commitment to your stability[cite: 3].</p>
+                <p>The Company exercises its lawful right to organize, streamline, and direct all operational and human resource requirements in good faith[cite: 3]. This includes establishing job duties, assigning specific equipment, setting deployment criteria, and regulating time and place protocols[cite: 3].</p>
+                <p>The perfection of the employment relationship and regularized tenure is subject to a suspensive condition: the completion of a valid 201 File[cite: 3].</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <button onclick="toggleFaq('faq2')" class="w-full p-4 text-left font-black text-emerald-900 bg-emerald-50 flex justify-between outline-none">🏥 Medical Standards & Property Security <span>+</span></button>
+              <div id="faq2" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
+                <p>Candidates must establish physical fitness[cite: 3]. The Company requires a standardized Pre-Employment Medical Examination (PEME)[cite: 3]. Employees are only required to submit a "Fit-to-Work" clearance or restriction note from a licensed physician[cite: 3].</p>
+                <p>The Company reserves the right to conduct standard, respectful inspections of bags, lockers, personal effects, and company vehicles upon entry and exit of facilities or client areas[cite: 3].</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <button onclick="toggleFaq('faq3')" class="w-full p-4 text-left font-black text-amber-900 bg-amber-50 flex justify-between outline-none">⏱️ Timekeeping & Dashcam Integrity <span>+</span></button>
+              <div id="faq3" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
+                <p>The Company implements a Compressed Workweek (CWW) and Flexible Work Arrangement to accommodate operational realities[cite: 3].</p>
+                <p>Compensable time includes required reporting, briefing, loading, equipment or PPE issuance, Company transport from a required dispatch point, travel between client sites, controlled waiting, preparation, cleanup, decontamination, and required reports[cite: 3].</p>
+                <p>Ordinary home-to-first-site and last-site-to-home travel is non-compensable only when no duties are performed and the employee is not under Company control[cite: 3].</p>
+                <p>Employees assigned to Company-owned vehicles must not disconnect, disable, cover, alter, damage, delete footage from, or otherwise interfere with the dashcam or its wiring, memory card, GPS, settings, or related equipment[cite: 3]. Any malfunction, damage, missing memory card, recording interruption, or irregularity must be reported immediately to the Supervisor, Operations Head, or HR[cite: 3].</p>
+                <p>The Company may provide shared stay-in facilities where operationally necessary and subsidizes water and electricity up to Php 1,500.00 per month per facility unit[cite: 3].</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <button onclick="toggleFaq('faq4')" class="w-full p-4 text-left font-black text-indigo-900 bg-indigo-50 flex justify-between outline-none">💰 Salary, Leaves & Accountability <span>+</span></button>
+              <div id="faq4" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
+                <p>Contractually agreed Salary or Daily Task Rate is fully integrated and inclusive of all gasoline expenses, routine vehicle maintenance, and operational wear-and-tear[cite: 3].</p>
+                <p>Rank-and-file workers (including those under a Compressed Workweek or Task-Based setup) are entitled to 13th-month pay[cite: 3].</p>
+                <p><strong>Leaves:</strong> 7-Day Sick/Vacation Leave: Granted annually upon regularization to provide our team with ample time to rest and recuperate[cite: 3]. 3-Day Paid Bereavement Leave: Granted immediately to support regular employees during the loss of an immediate family member[cite: 3].</p>
+                <p><strong>Vales:</strong> Operational cash advances must be liquidated with legitimate receipts and any unused funds within forty-eight (48) hours, unless Finance grants a documented extension[cite: 3].</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <button onclick="toggleFaq('faq5')" class="w-full p-4 text-left font-black text-rose-900 bg-rose-50 flex justify-between outline-none">⚖️ Workplace Safety & Progressive Discipline <span>+</span></button>
+              <div id="faq5" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
+                <p>RBA shall maintain a written Drug-Free Workplace Policy and Program under R.A. 9165 and DOLE D.O. 53-03[cite: 3]. RBA prohibits gender-based sexual harassment, workplace bullying, and violence[cite: 3].</p>
+                <p>Employees owe their professional dedication exclusively to the Company[cite: 3]. Engaging in side-line businesses ("moonlighting") or privately offering pest control or waterproofing services to the Company's active or potential clients represents a direct conflict of interest, a violation of the Non-Disclosure Agreement (NDA), and a serious breach of trust[cite: 3]. Proven violations may result in disciplinary action, up to and including dismissal, and lawful recovery of damages, after investigation and due process[cite: 3].</p>
+                <p>Employees are encouraged to use the Grievance Committee or HR for prompt internal resolution[cite: 3].</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <button onclick="toggleFaq('faq6')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-100 flex justify-between outline-none">🚪 Resignation, Final Pay & SOPs <span>+</span></button>
+              <div id="faq6" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
+                <p>Submit your resignation letter to HR exactly 15 days prior to your last day[cite: 3].</p>
+                <p>Separation Pay is provided only if the Company initiates separation due to Authorized Causes such as business closure, redundancy, or retrenchment[cite: 3]. Employees who voluntarily resign or are separated due to disciplinary Just Causes (e.g., severe infractions, failing PIP) are not legally entitled to Separation Pay[cite: 3].</p>
+                <p>Final pay, including prorated 13th-month pay and other amounts due, shall generally be released within thirty (30) calendar days from separation or termination[cite: 3].</p>
+                <hr>
+                <p><strong>Field SOPs:</strong> Ask the Client or Guard to record and sign the site Time-In[cite: 3]. Submit legitimate receipts and return any unused funds to Finance within 48 hours, unless an extension is documented[cite: 3]. If you fall ill, text or call your supervisor 2 hours before your shift so we can adjust operations[cite: 3]. On your last day, peacefully surrender Company property using Annex J[cite: 3].</p>
+              </div>
+            </div>
           </div>
           
-          <h2 class="text-xl font-black text-slate-800 mb-4 border-b pb-2">Company Directory</h2>
-          <div id="orgChart" class="space-y-2 max-h-[40vh] overflow-y-auto pr-2 pb-6 no-scrollbar"></div>
+          <!-- Government Information Panel -->
+          <div class="bg-slate-800 border rounded-2xl p-5 mb-8 grid grid-cols-2 gap-4 shadow-lg">
+            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">SSS Number</span><p class="font-black text-white mt-0.5" id="profSss">N/A</p></div>
+            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">TIN Number</span><p class="font-black text-white mt-0.5" id="profTin">N/A</p></div>
+            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">PhilHealth ID</span><p class="font-black text-white mt-0.5" id="profPh">N/A</p></div>
+            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">Pag-IBIG MID</span><p class="font-black text-white mt-0.5" id="profPag">N/A</p></div>
+          </div>
+          <a id="btnContract" href="#" target="_blank" class="w-full block text-center bg-white text-blue-900 border-2 border-blue-900 font-black py-4 rounded-xl mb-8 shadow-sm hover:bg-blue-50 transition-all">VIEW SECURE EMPLOYMENT CONTRACT</a>
+          
+          <h2 class="text-xl font-black text-slate-800 mb-4 border-b-2 border-slate-200 pb-2">Company Directory</h2>
+          <div id="orgChart" class="space-y-3 max-h-[40vh] overflow-y-auto pr-2 pb-6 no-scrollbar"></div>
         </div>
 
+        <!-- MODULE: ADMIN DASHBOARD -->
         <div id="tab-admin" class="hidden fade-in text-left max-w-5xl mx-auto">
           <div class="lg:grid lg:grid-cols-2 lg:gap-8">
             <div>
@@ -178,20 +253,20 @@
               <div id="adminLogs" class="space-y-3 mb-6 max-h-[35vh] overflow-y-auto pr-2 no-scrollbar"></div>
             </div>
             <div>
-              <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 shadow-sm mb-6">
+              <div class="bg-indigo-50 p-6 rounded-2xl border border-indigo-100 shadow-sm mb-6">
                 <h2 class="text-lg font-black text-indigo-900 mb-4">Dispatcher: Assign Schedule & Tasks</h2>
-                <input type="text" id="admEmpId" placeholder="Employee ID (e.g. ABC123)" class="w-full bg-white border p-3 rounded-lg mb-2 text-sm font-bold outline-none">
-                <div class="grid grid-cols-2 gap-2 mb-2">
-                  <input type="date" id="admDate" class="w-full bg-white border p-3 rounded-lg text-sm outline-none">
-                  <select id="admAction" class="w-full bg-white border p-3 rounded-lg text-sm outline-none font-bold" onchange="toggleAdminInputs()">
+                <input type="text" id="admEmpId" placeholder="Employee ID (e.g. ABC123)" class="w-full bg-white border border-slate-200 p-3 rounded-lg mb-3 text-sm font-bold outline-none shadow-sm focus:border-indigo-500">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                  <input type="date" id="admDate" class="w-full bg-white border border-slate-200 p-3 rounded-lg text-sm outline-none shadow-sm focus:border-indigo-500">
+                  <select id="admAction" class="w-full bg-white border border-slate-200 p-3 rounded-lg text-sm outline-none font-bold shadow-sm" onchange="toggleAdminInputs()">
                     <option value="schedule">Add Schedule</option><option value="task">Assign Task</option>
                   </select>
                 </div>
-                <input type="text" id="admDetail1" placeholder="Client / Site Name" class="w-full bg-white border p-3 rounded-lg mb-2 text-sm outline-none">
-                <input type="text" id="admDetail2" placeholder="Time Range (e.g. 8am - 5pm)" class="w-full bg-white border p-3 rounded-lg mb-4 text-sm outline-none">
-                <button onclick="adminAssign()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg shadow">DISPATCH ASSIGNMENT</button>
+                <input type="text" id="admDetail1" placeholder="Client / Site Name" class="w-full bg-white border border-slate-200 p-3 rounded-lg mb-3 text-sm outline-none shadow-sm focus:border-indigo-500">
+                <input type="text" id="admDetail2" placeholder="Time Range (e.g. 8am - 5pm)" class="w-full bg-white border border-slate-200 p-3 rounded-lg mb-5 text-sm outline-none shadow-sm focus:border-indigo-500">
+                <button onclick="adminAssign()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition-all tracking-wider">DISPATCH ASSIGNMENT</button>
               </div>
-              <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm mb-6 h-48 overflow-y-auto"><h2 class="text-lg font-black text-blue-900 mb-1">Fleet Map</h2><div id="fleetMap" class="mt-4 text-xs space-y-2"></div></div>
+              <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm mb-6 h-48 overflow-y-auto"><h2 class="text-lg font-black text-blue-900 mb-1">Fleet Map</h2><div id="fleetMap" class="mt-4 text-xs space-y-2"></div></div>
             </div>
           </div>
         </div>
@@ -199,11 +274,12 @@
       </div>
     </div>
 
-    <nav id="bottomNav" class="hidden md:hidden absolute bottom-0 w-full bg-white border-t flex justify-around items-center h-[70px] z-20">
-      <button onclick="switchTab('tab-time')" id="nav-mobile-time" class="nav-btn-mobile active flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><span class="text-[9px] font-black">CLOCK</span></button>
-      <button onclick="switchTab('tab-schedule')" id="nav-mobile-schedule" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><span class="text-[9px] font-black">PLANNER</span></button>
-      <button onclick="switchTab('tab-forms')" id="nav-mobile-forms" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><span class="text-[9px] font-black">FORMS</span></button>
-      <button onclick="switchTab('tab-hub')" id="nav-mobile-hub" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><span class="text-[9px] font-black">HUB</span></button>
+    <!-- MOBILE NAV -->
+    <nav id="bottomNav" class="hidden md:hidden absolute bottom-0 w-full bg-white border-t flex justify-around items-center h-[70px] z-20 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+      <button onclick="switchTab('tab-time')" id="nav-mobile-time" class="nav-btn-mobile active flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[9px] font-black">CLOCK</span></button>
+      <button onclick="switchTab('tab-schedule')" id="nav-mobile-schedule" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span class="text-[9px] font-black">PLANNER</span></button>
+      <button onclick="switchTab('tab-forms')" id="nav-mobile-forms" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span class="text-[9px] font-black">FORMS</span></button>
+      <button onclick="switchTab('tab-hub')" id="nav-mobile-hub" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg><span class="text-[9px] font-black">HUB</span></button>
     </nav>
   </main>
 
@@ -288,13 +364,13 @@
 
       const sCont = document.getElementById('mySchedule'); sCont.innerHTML = "";
       if(res.schedule && res.schedule.length === 0) sCont.innerHTML = "<p class='text-xs text-slate-500'>No scheduled shifts.</p>";
-      if(res.schedule) res.schedule.forEach(s => { sCont.innerHTML += `<div class="bg-indigo-50 p-3 rounded-lg border border-indigo-100 text-xs mb-2"><span class="font-black text-indigo-900">${s.date}</span><p class="font-bold text-slate-700">${s.client}</p><p class="text-[10px] text-slate-500 uppercase">${s.time}</p></div>`; });
+      if(res.schedule) res.schedule.forEach(s => { sCont.innerHTML += `<div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-xs mb-3 shadow-sm"><span class="font-black text-indigo-900">${s.date}</span><p class="font-bold text-slate-700 text-sm mt-1">${s.client}</p><p class="text-[10px] text-slate-500 uppercase font-black tracking-widest mt-1">${s.time}</p></div>`; });
 
       const tCont = document.getElementById('myTasks'); tCont.innerHTML = "";
       if(res.tasks && res.tasks.length === 0) tCont.innerHTML = "<p class='text-xs text-slate-500'>No pending operational tasks.</p>";
       if(res.tasks) res.tasks.forEach(t => { 
-        let btn = t.status === 'COMPLETED' ? `<span class="text-[10px] font-black text-emerald-600">✓ DONE</span>` : `<button onclick="completeTask(${t.row})" class="text-[10px] bg-slate-800 text-white px-2 py-1 rounded shadow">MARK DONE</button>`;
-        tCont.innerHTML += `<div class="bg-white p-3 rounded-lg border border-slate-200 text-xs mb-2 flex justify-between items-center"><div class="flex-1"><p class="font-bold text-slate-800">${t.desc}</p><p class="text-[10px] text-rose-500 font-bold uppercase">DUE: ${t.deadline}</p></div>${btn}</div>`; 
+        let btn = t.status === 'COMPLETED' ? `<span class="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded">✓ DONE</span>` : `<button onclick="completeTask(${t.row})" class="text-[10px] font-black bg-slate-800 text-white px-3 py-2 rounded-lg shadow-md hover:bg-slate-700">MARK DONE</button>`;
+        tCont.innerHTML += `<div class="bg-white p-4 rounded-xl border border-slate-200 text-xs mb-3 flex justify-between items-center shadow-sm"><div class="flex-1"><p class="font-bold text-slate-800 text-sm mb-1">${t.desc}</p><p class="text-[10px] text-rose-500 font-black uppercase tracking-wider">DUE: ${t.deadline}</p></div>${btn}</div>`; 
       });
 
       if (res.needsTraining) { document.getElementById('btnStartExam').classList.remove('hidden'); generateQuiz(); }
@@ -306,18 +382,17 @@
       document.getElementById('profName').innerText = res.profile.name || "Employee";
       document.getElementById('profRole').innerText = res.role || "User"; 
       
-      // Safe assignment blocks preventing script halt down the line
-      if(document.getElementById('profSss')) document.getElementById('profSss').innerText = res.profile.sss || "Not Configured"; 
-      if(document.getElementById('profTin')) document.getElementById('profTin').innerText = res.profile.tin || "Not Configured"; 
-      if(document.getElementById('profPh')) document.getElementById('profPh').innerText = res.profile.philhealth || "Not Configured"; 
-      if(document.getElementById('profPag')) document.getElementById('profPag').innerText = res.profile.pagibig || "Not Configured"; 
+      if(document.getElementById('profSss')) document.getElementById('profSss').innerText = res.profile.sss || "N/A"; 
+      if(document.getElementById('profTin')) document.getElementById('profTin').innerText = res.profile.tin || "N/A"; 
+      if(document.getElementById('profPh')) document.getElementById('profPh').innerText = res.profile.philhealth || "N/A"; 
+      if(document.getElementById('profPag')) document.getElementById('profPag').innerText = res.profile.pagibig || "N/A"; 
       
       if(res.profile.photoUrl) { document.getElementById('profImg').src = res.profile.photoUrl; document.getElementById('profImg').classList.remove('hidden'); }
       
       let orgHtml = "";
       if(res.directory) res.directory.forEach(emp => {
-        const imgHtml = emp.photo ? `<img src="${emp.photo}" class="w-10 h-10 rounded-full object-cover shadow-sm">` : `<div class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold shadow-sm">${emp.name.substring(0,2).toUpperCase()}</div>`;
-        orgHtml += `<div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-slate-100 shadow-sm mb-2"><div class="flex-shrink-0">${imgHtml}</div><div><p class="font-black text-slate-800 text-sm">${emp.name}</p><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${emp.role}</p></div></div>`;
+        const imgHtml = emp.photo ? `<img src="${emp.photo}" class="w-10 h-10 rounded-full object-cover shadow-sm border border-slate-200">` : `<div class="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-xs font-black shadow-sm border border-slate-200">${emp.name.substring(0,2).toUpperCase()}</div>`;
+        orgHtml += `<div class="flex items-center gap-4 p-3 bg-white rounded-xl border border-slate-100 shadow-sm mb-2"><div class="flex-shrink-0">${imgHtml}</div><div><p class="font-black text-slate-800 text-sm">${emp.name}</p><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${emp.role}</p></div></div>`;
       });
       document.getElementById('orgChart').innerHTML = orgHtml;
 
@@ -398,24 +473,49 @@
       }; reader.readAsDataURL(file);
     }
 
-    const quizBank = [{q:"When must cash advances be liquidated?", a:"Within 48 hours"},{q:"Is travel time from home to the first site paid?", a:"No, it is personal transit time"},{q:"What is the penalty for moonlighting?", a:"Immediate Dismissal"},{q:"Are you allowed to tamper with the vehicle dashcam?", a:"No, it is strictly prohibited"}];
+    // ================= ENTERPRISE QUIZ ENGINE =================
+    const fullQuizBank = [
+      {q:"When must operational cash advances be liquidated?", a:"Within 48 hours", w1:"Within 7 days", w2:"Next payday"},
+      {q:"Is travel time from personal residence to the first site compensable?", a:"No, it is non-compensable", w1:"Yes, fully paid", w2:"Only on weekends"},
+      {q:"What is the penalty for moonlighting or stealing clients?", a:"Up to Dismissal", w1:"A warning", w2:"Salary deduction"},
+      {q:"Are employees allowed to disconnect or cover the dashcam?", a:"No, it is strictly prohibited", w1:"Yes, during breaks", w2:"Only with permission"},
+      {q:"How many days of paid Bereavement Leave are provided?", a:"3 Days", w1:"5 Days", w2:"7 Days"},
+      {q:"What clearance is required to establish physical fitness?", a:"Fit-to-Work Clearance", w1:"Full hospital records", w2:"Barangay Clearance"},
+      {q:"What is the maximum utility subsidy per stay-in facility?", a:"Php 1,500.00", w1:"Php 5,000.00", w2:"Fully subsidized"},
+      {q:"How many days of written notice are required for voluntary resignation?", a:"15 Days", w1:"30 Days", w2:"7 Days"},
+      {q:"What happens if an employee refuses a mandated drug test?", a:"Evaluated individually after notice/explanation", w1:"Nothing happens", w2:"Automatic promotion"},
+      {q:"Who should employees approach for internal grievance resolution?", a:"HR or Grievance Committee", w1:"Post on Facebook", w2:"Direct to DOLE immediately"},
+      {q:"Are rank-and-file workers under task-based setups entitled to 13th month pay?", a:"Yes", w1:"No", w2:"Only if approved"},
+      {q:"Are employees entitled to separation pay if separated due to Just Causes?", a:"No", w1:"Yes", w2:"Depends on the manager"},
+      {q:"Within how many days is final pay generally released?", a:"30 calendar days", w1:"15 calendar days", w2:"Immediately"},
+      {q:"Does signing Annex K (Quitclaim) prevent recourse to DOLE?", a:"No", w1:"Yes", w2:"Only for monetary claims"},
+      {q:"What form is used to request operational funds?", a:"Annex D", w1:"Annex E", w2:"Annex B"}
+    ];
+
+    let currentQuiz = [];
     function startExam() { document.getElementById('examContainer').classList.remove('hidden'); }
+    
     function generateQuiz() {
+      // Fisher-Yates Randomizer: Selects 10 random questions from the master bank
+      currentQuiz = fullQuizBank.sort(() => 0.5 - Math.random()).slice(0, 10);
       const qCont = document.getElementById('quizQuestions'); qCont.innerHTML = "";
-      quizBank.forEach((item, idx) => {
-        let wrongOpts = ["Within 7 days", "Fully paid", "A warning"].sort(() => 0.5 - Math.random()).slice(0,2);
-        let opts = [item.a, ...wrongOpts].sort(() => 0.5 - Math.random());
-        let selectHtml = `<select id="qx${idx}" class="w-full bg-slate-50 border p-3 rounded-lg text-sm font-bold mb-4 outline-none"><option value="">Select answer...</option>`;
+      
+      currentQuiz.forEach((item, idx) => {
+        let opts = [item.a, item.w1, item.w2].sort(() => 0.5 - Math.random());
+        let selectHtml = `<select id="qx${idx}" class="w-full bg-white border border-slate-300 shadow-sm p-4 rounded-xl text-sm font-bold mb-5 outline-none focus:ring-2 focus:ring-blue-100"><option value="">Select your answer...</option>`;
         opts.forEach(o => { selectHtml += `<option value="${o === item.a ? 'correct' : 'wrong'}">${o}</option>`; });
-        selectHtml += `</select>`; qCont.innerHTML += `<p class="text-sm font-bold text-slate-700 mb-2">${idx+1}. ${item.q}</p>${selectHtml}`;
+        selectHtml += `</select>`; 
+        qCont.innerHTML += `<p class="text-sm font-black text-slate-800 mb-2">${idx+1}. ${item.q}</p>${selectHtml}`;
       });
     }
+
     function submitExam() {
-      for(let i=0; i<quizBank.length; i++) { if(document.getElementById(`qx${i}`).value !== 'correct') return alert("Some answers are incorrect. Review the Corporate Manual."); }
+      for(let i=0; i<10; i++) { if(document.getElementById(`qx${i}`).value !== 'correct') return alert("Some answers are incorrect. Please review the Corporate Manual thoroughly and try again."); }
       document.getElementById('btnSubmitExam').innerText = "LOGGING COMPLIANCE..."; document.getElementById('btnSubmitExam').disabled = true;
       sendDataToGoogle({ action: 'LOG_TRAINING', empId: empId, score: '100%' }).then(res => { location.reload(); });
     }
 
+    // ================= ADMIN DISPATCH =================
     function toggleAdminInputs() {
       const act = document.getElementById('admAction').value;
       if(act==='schedule'){ document.getElementById('admDetail1').placeholder = "Client / Site Name"; document.getElementById('admDetail2').placeholder = "Time Range (e.g. 8am - 5pm)"; document.getElementById('admDetail2').classList.remove('hidden'); }
@@ -424,7 +524,7 @@
     function adminAssign() {
       const eId = document.getElementById('admEmpId').value.trim(); const act = document.getElementById('admAction').value; const dt = document.getElementById('admDate').value; const d1 = document.getElementById('admDetail1').value.trim(); const d2 = document.getElementById('admDetail2').value.trim();
       if(!eId || !dt || !d1) return alert("Fill required validation parameters.");
-      sendDataToGoogle(act==='schedule' ? {action:'ADD_SCHEDULE', empId:eId, date:dt, client:d1, timeRange:d2} : {action:'ADD_TASK', empId:eId, deadline:dt, desc:d1}).then(res => { alert("Assignment dispatched successfully."); });
+      sendDataToGoogle(act==='schedule' ? {action:'ADD_SCHEDULE', empId:eId, date:dt, client:d1, timeRange:d2} : {action:'ADD_TASK', empId:eId, deadline:dt, desc:d1}).then(res => { alert("Assignment dispatched successfully."); document.getElementById('admDetail1').value=""; document.getElementById('admDetail2').value=""; });
     }
 
     function fetchAdminData() {
@@ -432,15 +532,15 @@
         if(!res.success) return;
         const formCont = document.getElementById('adminForms'); formCont.innerHTML = ""; 
         if(res.forms && res.forms.length === 0) formCont.innerHTML = "<p class='text-xs text-slate-500'>No pending forms waiting review.</p>";
-        if(res.forms) res.forms.forEach(f => { formCont.innerHTML += `<div class="bg-white p-4 border rounded-xl shadow-sm text-xs mb-2"><div class="flex justify-between mb-1"><span class="font-black text-blue-900">${f.empId}</span><span class="text-[9px] font-black text-slate-400">${f.controlNum}</span></div><p class="font-bold mb-1">${f.formType}</p><a href="${f.pdf}" target="_blank" class="text-blue-500 font-bold underline mb-3 block">View PDF Document</a><button onclick="updateForm(this, ${f.row})" class="w-full bg-slate-800 text-white font-black py-2 rounded shadow">APPROVE FORM</button></div>`; });
+        if(res.forms) res.forms.forEach(f => { formCont.innerHTML += `<div class="bg-white p-5 border rounded-2xl shadow-sm text-xs mb-3"><div class="flex justify-between mb-2"><span class="font-black text-blue-900">${f.empId}</span><span class="text-[9px] font-black text-slate-400 bg-slate-100 px-2 py-1 rounded">${f.controlNum}</span></div><p class="font-black text-slate-800 text-sm mb-2">${f.formType}</p><a href="${f.pdf}" target="_blank" class="text-blue-600 font-black underline mb-4 block flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg> View Generated PDF Report</a><button onclick="updateForm(this, ${f.row})" class="w-full bg-slate-800 text-white font-black py-3 rounded-xl shadow-lg hover:bg-slate-700 transition-all uppercase tracking-widest">Approve Form</button></div>`; });
         
         const logCont = document.getElementById('adminLogs'); logCont.innerHTML = ""; 
         if(res.logs && res.logs.length === 0) logCont.innerHTML = "<p class='text-xs text-slate-500'>No logs to display.</p>";
-        if(res.logs) res.logs.forEach(log => { logCont.innerHTML += `<div class="bg-white p-4 border rounded-xl shadow-sm text-xs mb-2"><div class="flex justify-between items-center mb-1"><span class="font-black">${log.empId}</span><span class="bg-slate-100 px-2 py-0.5 rounded text-[9px] font-black">${log.action}</span></div><p class="text-slate-400 font-medium mb-2">${log.time}</p><a href="${log.photo}" target="_blank" class="text-blue-500 font-bold underline block">View verification capture</a></div>`; });
+        if(res.logs) res.logs.forEach(log => { logCont.innerHTML += `<div class="bg-white p-5 border rounded-2xl shadow-sm text-xs mb-3"><div class="flex justify-between items-center mb-2"><span class="font-black text-slate-800">${log.empId}</span><span class="bg-slate-100 text-slate-600 px-2 py-1 rounded text-[9px] font-black tracking-widest uppercase">${log.action}</span></div><p class="text-slate-500 font-bold mb-3">${log.time}</p><a href="${log.photo}" target="_blank" class="text-blue-600 font-black underline block flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> View Security Capture</a></div>`; });
         
         const mapCont = document.getElementById('fleetMap'); mapCont.innerHTML = "";
         if(res.fleetMap && res.fleetMap.length === 0) mapCont.innerHTML = "<p class='text-xs text-slate-500'>No recent field coordinates recorded.</p>";
-        if(res.fleetMap) res.fleetMap.forEach(loc => { mapCont.innerHTML += `<div class="flex justify-between items-center p-2 border-b"><span class="font-black text-xs text-blue-900">${loc.empId}</span><span class="text-[10px] text-slate-500 font-bold">${loc.time} 📍</span></div>`; });
+        if(res.fleetMap) res.fleetMap.forEach(loc => { mapCont.innerHTML += `<a href="https://www.google.com/maps/search/?api=1&query=$${loc.lat},${loc.lng}" target="_blank" class="flex justify-between items-center p-3 hover:bg-slate-50 border-b border-slate-100 last:border-0"><span class="font-black text-xs text-blue-900">${loc.empId}</span><span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">${loc.time} 📍</span></a>`; });
       });
     }
     function updateForm(btn, row) { btn.innerText="PROCESSING..."; sendDataToGoogle({action:'APPROVE_FORM', row:row}).then(res=>{fetchAdminData();}); }
