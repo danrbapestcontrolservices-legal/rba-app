@@ -15,7 +15,7 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .sig-canvas { touch-action: none; border: 2px dashed #cbd5e1; background: #f8fafc; width: 100%; height: 150px; border-radius: 0.75rem; }
     .modal-overlay { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(4px); }
-    @media (min-width: 768px) { .mobile-wrapper { max-width: 1200px !important; } .nav-btn.active { border-top: 0px; border-l-4: 4px solid #1e3a8a; } }
+    @media (min-width: 768px) { .mobile-wrapper { max-width: 1200px !important; } .nav-btn.active { border-top: 0px; border-left: 4px solid #1e3a8a; } }
   </style>
 </head>
 
@@ -29,14 +29,14 @@
     <div class="flex-1 overflow-y-auto py-6 space-y-6 no-scrollbar">
       <div>
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2 px-6">Operations</p>
-        <button onclick="switchTab('tab-time')" id="nav-time" class="nav-btn active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-emerald-500">⏱️</span> Time Clock</button>
-        <button onclick="switchTab('tab-schedule')" id="nav-schedule" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-indigo-500">📅</span> My Schedule & Tasks</button>
-        <button onclick="switchTab('tab-forms')" id="nav-forms" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-amber-500">📄</span> Field Forms</button>
+        <button onclick="switchTab('tab-time')" id="nav-time" class="nav-btn active w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all">⏱️ Time Clock</button>
+        <button onclick="switchTab('tab-schedule')" id="nav-schedule" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all">📅 My Schedule & Tasks</button>
+        <button onclick="switchTab('tab-forms')" id="nav-forms" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all">📄 Field Forms</button>
       </div>
       <div>
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2 px-6">HR & Compliance</p>
-        <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-rose-500">📚</span> Manual & Directory</button>
-        <button onclick="switchTab('tab-admin')" id="nav-admin" class="hidden nav-btn w-full items-center gap-3 px-6 py-3 text-blue-900 hover:bg-blue-50 text-sm font-bold transition-all"><span class="text-blue-900">⚙️</span> Admin Panel</button>
+        <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all">📚 Manual & Directory</button>
+        <button onclick="switchTab('tab-admin')" id="nav-admin" class="hidden nav-btn w-full items-center gap-3 px-6 py-3 text-blue-900 hover:bg-blue-50 text-sm font-bold transition-all">⚙️ Admin Panel</button>
       </div>
     </div>
     <div class="p-4 border-t border-slate-100"><button onclick="logoutSession()" class="w-full bg-slate-100 text-slate-600 font-bold py-2 rounded-lg text-xs hover:bg-rose-100 hover:text-rose-600 transition-all">SECURE LOGOUT</button></div>
@@ -50,7 +50,7 @@
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
           <span id="notifBadge" class="hidden absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full border-2 border-white shadow">0</span>
         </button>
-        <div id="inboxView" class="hidden absolute top-12 right-0 bg-white border border-slate-200 rounded-xl shadow-2xl w-72 p-4 fade-in">
+        <div id="inboxView" class="hidden absolute top-12 right-0 bg-white border border-slate-200 rounded-xl shadow-2xl w-72 p-4 z-50 fade-in">
           <h3 class="font-black text-slate-800 mb-2 border-b pb-1">Notifications</h3>
           <div id="notifList" class="space-y-2 text-xs text-slate-600 font-medium mb-3 max-h-48 overflow-y-auto">No new messages.</div>
           <button onclick="markRead()" class="w-full bg-slate-100 text-slate-600 text-xs font-bold py-2 rounded-lg hover:bg-slate-200">MARK ALL AS READ</button>
@@ -64,7 +64,7 @@
       <div id="authSection" class="fade-in max-w-md mx-auto mt-10">
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-center">
           <img src="https://i.ibb.co/bj5t74dq/rba-logo.avif" class="h-16 mx-auto mb-6">
-          <div id="loadingView" class="hidden py-8"><svg class="w-10 h-10 animate-spin text-blue-900 mx-auto mb-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><p class="font-bold text-slate-500 text-sm">Resuming Session...</p></div>
+          <div id="loadingView" class="hidden py-8"><svg class="w-10 h-10 animate-spin text-blue-900 mx-auto mb-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><p class="font-bold text-slate-500 text-sm">Loading System Hub Data...</p></div>
           <div id="loginView">
             <input type="text" id="empId" class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-xl uppercase font-black text-center text-xl outline-none" placeholder="EMPLOYEE ID">
             <button onclick="sendOTP()" class="mt-4 w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow" id="btnSend">SECURE LOGIN</button>
@@ -88,7 +88,7 @@
           <div class="p-6 overflow-y-auto space-y-4 flex-1">
             <div><label class="text-xs font-black text-slate-500 uppercase">1. Client / Site Name</label><input type="text" id="jfSite" class="w-full bg-slate-50 border p-3 rounded-lg outline-none font-bold mt-1"></div>
             <div><label class="text-xs font-black text-slate-500 uppercase">2. Work Executed</label><textarea id="jfWork" class="w-full bg-slate-50 border p-3 rounded-lg outline-none font-medium h-20 mt-1" placeholder="Describe work done..."></textarea></div>
-            <div><label class="text-xs font-black text-slate-500 uppercase">3. Live Site Photo (No Gallery)</label><input type="file" id="jfPhoto" accept="image/*" capture="environment" class="w-full text-sm mt-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700"></div>
+            <div><label class="text-xs font-black text-slate-500 uppercase">3. Live Site Photo</label><input type="file" id="jfPhoto" accept="image/*" capture="environment" class="w-full text-sm mt-1"></div>
             <div><label class="text-xs font-black text-slate-500 uppercase">4. E-Signature Validation</label><canvas id="sigCanvas" class="sig-canvas mt-1"></canvas><button onclick="clearCanvas('sigCanvas')" class="text-[10px] font-bold text-blue-600 mt-1">Clear Signature</button></div>
           </div>
           <div class="p-4 border-t flex gap-3">
@@ -120,9 +120,9 @@
 
         <div id="tab-forms" class="hidden fade-in text-left max-w-md mx-auto">
           <h2 class="text-xl font-black text-slate-800 mb-4 border-b pb-2">Digital Form Hub</h2>
-          <select id="formType" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-bold text-slate-700 mb-4 outline-none focus:border-blue-900 shadow-sm"><option value="Official Leave Application">Official Leave Application</option><option value="Cash Advance / Vale">Cash Advance / Vale</option><option value="Incident Report">Incident Report</option><option value="Material & PPE Request">Material Request</option></select>
-          <input type="text" id="formDates" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-medium text-slate-700 mb-4 outline-none focus:border-blue-900 shadow-sm" placeholder="Specific Dates / Duration">
-          <textarea id="formPurpose" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-medium text-slate-700 h-24 mb-4 outline-none focus:border-blue-900 shadow-sm" placeholder="Detailed Purpose / Justification..."></textarea>
+          <select id="formType" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-bold text-slate-700 mb-4 outline-none shadow-sm"><option value="Official Leave Application">Official Leave Application</option><option value="Cash Advance / Vale">Cash Advance / Vale</option><option value="Incident Report">Incident Report</option><option value="Material & PPE Request">Material Request</option></select>
+          <input type="text" id="formDates" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-medium text-slate-700 mb-4 outline-none shadow-sm" placeholder="Specific Dates / Duration">
+          <textarea id="formPurpose" class="w-full bg-white border border-slate-200 p-4 rounded-xl font-medium text-slate-700 h-24 mb-4 outline-none shadow-sm" placeholder="Detailed Purpose..."></textarea>
           <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Digital Signature</label>
           <canvas id="formSigCanvas" class="sig-canvas mb-2 shadow-inner"></canvas>
           <button onclick="clearCanvas('formSigCanvas')" class="text-xs font-bold text-blue-600 mb-6 outline-none">Clear Signature</button>
@@ -130,20 +130,25 @@
         </div>
 
         <div id="tab-hub" class="hidden fade-in text-left max-w-lg mx-auto">
-          
-          <div class="flex items-center gap-4 mb-8 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm relative overflow-hidden">
-            <label for="avatarUpload" class="cursor-pointer relative group h-20 w-20 bg-slate-100 rounded-full shadow flex-shrink-0 overflow-hidden flex items-center justify-center border-4 border-white ring-2 ring-slate-100">
+          <div class="flex items-center gap-4 mb-6 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm relative overflow-hidden">
+            <label for="avatarUpload" class="cursor-pointer relative group h-20 w-20 bg-slate-100 rounded-full shadow flex-shrink-0 overflow-hidden flex items-center justify-center border-4 border-white">
               <img id="profImg" src="" class="h-full w-full object-cover hidden">
               <span id="profInitials" class="text-slate-400 font-black text-2xl group-hover:hidden">RBA</span>
-              <div class="absolute inset-0 bg-black bg-opacity-50 hidden group-hover:flex items-center justify-center"><span class="text-[8px] font-black text-white">UPLOAD</span></div>
               <input type="file" id="avatarUpload" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
             </label>
             <div class="flex-1"><h2 class="text-2xl font-black text-slate-800 truncate" id="profName">Name</h2><p class="text-xs font-bold text-blue-600 uppercase" id="profRole">Role</p></div>
-            <div id="uploadSpinner" class="hidden absolute top-4 right-4"><svg class="w-5 h-5 animate-spin text-blue-900" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>
+            <div id="uploadSpinner" class="hidden absolute top-4 right-4"><svg class="w-5 h-5 animate-spin text-blue-900" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle></svg></div>
+          </div>
+
+          <div class="bg-white border rounded-2xl p-4 mb-6 grid grid-cols-2 gap-4 text-xs shadow-sm">
+            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">SSS Number</span><p class="font-black text-slate-800 mt-0.5" id="profSss">N/A</p></div>
+            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">TIN Number</span><p class="font-black text-slate-800 mt-0.5" id="profTin">N/A</p></div>
+            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">PhilHealth ID</span><p class="font-black text-slate-800 mt-0.5" id="profPh">N/A</p></div>
+            <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">Pag-IBIG MID</span><p class="font-black text-slate-800 mt-0.5" id="profPag">N/A</p></div>
           </div>
 
           <div class="flex justify-between items-end mb-6 border-b pb-2">
-            <div><h2 class="text-2xl font-black text-slate-800">Company Hub</h2><p class="text-[10px] text-slate-400 font-bold uppercase">Code: RBA-HR-MAN-FINAL-V19</p></div>
+            <div><h2 class="text-xl font-black text-slate-800">Company Welfare Manual</h2></div>
             <button onclick="startExam()" id="btnStartExam" class="hidden bg-rose-600 text-white text-xs font-bold px-4 py-2 rounded-lg shadow animate-pulse">TAKE REQUIRED EXAM</button>
           </div>
           
@@ -153,11 +158,11 @@
             <button onclick="submitExam()" id="btnSubmitExam" class="w-full bg-emerald-600 text-white font-black py-3 rounded-lg shadow">SUBMIT EXAM</button>
           </div>
 
-          <div class="space-y-3 pb-10">
+          <div class="space-y-3 mb-6">
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><button onclick="toggleFaq('faq1')" class="w-full p-4 text-left font-black text-blue-900 bg-blue-50 flex justify-between outline-none">Art I: Business Integrity <span>+</span></button><div id="faq1" class="hidden p-4 text-xs text-slate-600 space-y-2"><p>The Company exercises its lawful right to organize, streamline, and direct all operational and human resource requirements in good faith.</p></div></div>
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><button onclick="toggleFaq('faq2')" class="w-full p-4 text-left font-black text-emerald-900 bg-emerald-50 flex justify-between outline-none">Art II: Medical & Search <span>+</span></button><div id="faq2" class="hidden p-4 text-xs text-slate-600 space-y-2"><p>Candidates must establish physical fitness via a Fit-to-Work clearance. The Company reserves the right to conduct respectful inspections of bags and vehicles upon entry/exit.</p></div></div>
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><button onclick="toggleFaq('faq3')" class="w-full p-4 text-left font-black text-amber-900 bg-amber-50 flex justify-between outline-none">Art III: Timekeeping <span>+</span></button><div id="faq3" class="hidden p-4 text-xs text-slate-600 space-y-2"><p>Compensable time includes required reporting, briefing, loading, equipment or PPE issuance. Employees assigned to Company-owned vehicles must not disconnect, disable, cover, alter, damage, or delete footage from the dashcam.</p></div></div>
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><button onclick="toggleFaq('faq4')" class="w-full p-4 text-left font-black text-rose-900 bg-rose-50 flex justify-between outline-none">Art IV & V: Conduct <span>+</span></button><div id="faq4" class="hidden p-4 text-xs text-slate-600 space-y-2"><p>Salary or Daily Task Rate is fully integrated and inclusive of all gasoline expenses, routine vehicle maintenance, and operational wear-and-tear. Operational cash advances must be liquidated with legitimate receipts within forty-eight (48) hours.</p></div></div>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><button onclick="toggleFaq('faq4')" class="w-full p-4 text-left font-black text-rose-900 bg-rose-50 flex justify-between outline-none">Art IV & V: Conduct <span>+</span></button><div id="faq4" class="hidden p-4 text-xs text-slate-600 space-y-2"><p>Salary or Daily Task Rate is fully integrated and inclusive of all gasoline expenses, routine vehicle maintenance, and operational wear-and-tear.</p></div></div>
           </div>
           
           <h2 class="text-xl font-black text-slate-800 mb-4 border-b pb-2">Company Directory</h2>
@@ -184,7 +189,7 @@
                 </div>
                 <input type="text" id="admDetail1" placeholder="Client / Site Name" class="w-full bg-white border p-3 rounded-lg mb-2 text-sm outline-none">
                 <input type="text" id="admDetail2" placeholder="Time Range (e.g. 8am - 5pm)" class="w-full bg-white border p-3 rounded-lg mb-4 text-sm outline-none">
-                <button onclick="adminAssign()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg shadow hover:bg-indigo-700">DISPATCH ASSIGNMENT</button>
+                <button onclick="adminAssign()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg shadow">DISPATCH ASSIGNMENT</button>
               </div>
               <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm mb-6 h-48 overflow-y-auto"><h2 class="text-lg font-black text-blue-900 mb-1">Fleet Map</h2><div id="fleetMap" class="mt-4 text-xs space-y-2"></div></div>
             </div>
@@ -195,10 +200,10 @@
     </div>
 
     <nav id="bottomNav" class="hidden md:hidden absolute bottom-0 w-full bg-white border-t flex justify-around items-center h-[70px] z-20">
-      <button onclick="switchTab('tab-time')" id="nav-mobile-time" class="nav-btn-mobile active flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[9px] font-black">CLOCK</span></button>
-      <button onclick="switchTab('tab-schedule')" id="nav-mobile-schedule" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span class="text-[9px] font-black">PLANNER</span></button>
-      <button onclick="switchTab('tab-forms')" id="nav-mobile-forms" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span class="text-[9px] font-black">FORMS</span></button>
-      <button onclick="switchTab('tab-hub')" id="nav-mobile-hub" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg><span class="text-[9px] font-black">HUB</span></button>
+      <button onclick="switchTab('tab-time')" id="nav-mobile-time" class="nav-btn-mobile active flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><span class="text-[9px] font-black">CLOCK</span></button>
+      <button onclick="switchTab('tab-schedule')" id="nav-mobile-schedule" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><span class="text-[9px] font-black">PLANNER</span></button>
+      <button onclick="switchTab('tab-forms')" id="nav-mobile-forms" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><span class="text-[9px] font-black">FORMS</span></button>
+      <button onclick="switchTab('tab-hub')" id="nav-mobile-hub" class="nav-btn-mobile flex-1 flex flex-col items-center justify-center h-full text-slate-400 outline-none"><span class="text-[9px] font-black">HUB</span></button>
     </nav>
   </main>
 
@@ -206,12 +211,8 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbzI89fYolPy51A7D1Z6aWowm9uM8ftM6Pva0qBxNOLRCPMYc-mmFNKFHZlM4-DYAU0-Qg/exec"; 
     let empId = "", lat = null, lng = null, jfPhotoBase64 = null;
 
-    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js?v=' + new Date().getTime()).then(reg => { reg.update(); }); }
-
-    // Canvas Logic (Supports Multiple Canvases)
     function setupCanvas(canvasId) {
-      const cvs = document.getElementById(canvasId);
-      if(!cvs) return;
+      const cvs = document.getElementById(canvasId); if(!cvs) return;
       const c = cvs.getContext('2d'); let drawFlag = false;
       const rs = () => { const ratio = Math.max(window.devicePixelRatio || 1, 1); cvs.width = cvs.offsetWidth * ratio; cvs.height = cvs.offsetHeight * ratio; c.scale(ratio, ratio); };
       window.addEventListener('resize', rs); setTimeout(rs, 500);
@@ -238,14 +239,12 @@
     function toggleInbox() { document.getElementById('inboxView').classList.toggle('hidden'); }
     function logoutSession() { localStorage.removeItem('rba_emp_id'); location.reload(); }
 
-    // THE X-RAY FETCH PROTOCOL: Catches Backend HTML Crashes Gracefully
     async function sendDataToGoogle(data) {
       try {
         const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, redirect: 'follow', body: JSON.stringify(data) });
         const text = await response.text();
-        try { return JSON.parse(text); } 
-        catch (e) { return { success: false, error: "Google Server Error: " + text.replace(/(<([^>]+)>)/gi, "").substring(0, 100) }; }
-      } catch (error) { return { success: false, error: "Network Error: Ensure your Google Link ends in /exec and Access is set to 'Anyone'." }; }
+        try { return JSON.parse(text); } catch (e) { return { success: false, error: "Server structural variance." }; }
+      } catch (error) { return { success: false, error: "Connection error." }; }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -261,7 +260,7 @@
       document.getElementById('btnSend').innerText = "TRANSMITTING..."; document.getElementById('btnSend').disabled = true;
       sendDataToGoogle({ action: 'SEND_OTP', empId: empId }).then(res => {
         if (res.success) { document.getElementById('loginView').classList.add('hidden'); document.getElementById('otpView').classList.remove('hidden'); } 
-        else { alert(res.error || res.message || "Unknown error"); document.getElementById('btnSend').innerText = "SECURE LOGIN"; document.getElementById('btnSend').disabled = false; }
+        else { alert(res.error || "Employee ID not discovered."); document.getElementById('btnSend').innerText = "SECURE LOGIN"; document.getElementById('btnSend').disabled = false; }
       });
     }
 
@@ -270,7 +269,7 @@
       document.getElementById('btnVerify').innerText = "AUTHENTICATING..."; document.getElementById('btnVerify').disabled = true;
       sendDataToGoogle({ action: 'VERIFY_OTP', empId: empId, otp: otp }).then(res => {
         if (res.success) { localStorage.setItem('rba_emp_id', empId); executeLogin(res); } 
-        else { alert(res.error || "Invalid Code."); document.getElementById('btnVerify').innerText = "VERIFY IDENTITY"; document.getElementById('btnVerify').disabled = false; }
+        else { alert(res.error || "Invalid Verification Code."); document.getElementById('btnVerify').innerText = "VERIFY IDENTITY"; document.getElementById('btnVerify').disabled = false; }
       });
     }
 
@@ -292,7 +291,7 @@
       if(res.schedule) res.schedule.forEach(s => { sCont.innerHTML += `<div class="bg-indigo-50 p-3 rounded-lg border border-indigo-100 text-xs mb-2"><span class="font-black text-indigo-900">${s.date}</span><p class="font-bold text-slate-700">${s.client}</p><p class="text-[10px] text-slate-500 uppercase">${s.time}</p></div>`; });
 
       const tCont = document.getElementById('myTasks'); tCont.innerHTML = "";
-      if(res.tasks && res.tasks.length === 0) tCont.innerHTML = "<p class='text-xs text-slate-500'>No pending tasks.</p>";
+      if(res.tasks && res.tasks.length === 0) tCont.innerHTML = "<p class='text-xs text-slate-500'>No pending operational tasks.</p>";
       if(res.tasks) res.tasks.forEach(t => { 
         let btn = t.status === 'COMPLETED' ? `<span class="text-[10px] font-black text-emerald-600">✓ DONE</span>` : `<button onclick="completeTask(${t.row})" class="text-[10px] bg-slate-800 text-white px-2 py-1 rounded shadow">MARK DONE</button>`;
         tCont.innerHTML += `<div class="bg-white p-3 rounded-lg border border-slate-200 text-xs mb-2 flex justify-between items-center"><div class="flex-1"><p class="font-bold text-slate-800">${t.desc}</p><p class="text-[10px] text-rose-500 font-bold uppercase">DUE: ${t.deadline}</p></div>${btn}</div>`; 
@@ -303,10 +302,16 @@
       const lm = document.getElementById('lockMessage');
       if (res.lockMessage) { lm.innerText = res.lockMessage; lm.classList.remove('hidden'); }
       
-      document.getElementById('profInitials').innerText = empId.substring(0,3); document.getElementById('profName').innerText = res.profile.name || "N/A";
-      document.getElementById('profRole').innerText = res.role; document.getElementById('profSss').innerText = res.profile.sss || "N/A"; 
-      document.getElementById('profTin').innerText = res.profile.tin || "N/A"; document.getElementById('profPh').innerText = res.profile.philhealth || "N/A"; 
-      document.getElementById('profPag').innerText = res.profile.pagibig || "N/A";
+      document.getElementById('profInitials').innerText = empId.substring(0,3); 
+      document.getElementById('profName').innerText = res.profile.name || "Employee";
+      document.getElementById('profRole').innerText = res.role || "User"; 
+      
+      // Safe assignment blocks preventing script halt down the line
+      if(document.getElementById('profSss')) document.getElementById('profSss').innerText = res.profile.sss || "Not Configured"; 
+      if(document.getElementById('profTin')) document.getElementById('profTin').innerText = res.profile.tin || "Not Configured"; 
+      if(document.getElementById('profPh')) document.getElementById('profPh').innerText = res.profile.philhealth || "Not Configured"; 
+      if(document.getElementById('profPag')) document.getElementById('profPag').innerText = res.profile.pagibig || "Not Configured"; 
+      
       if(res.profile.photoUrl) { document.getElementById('profImg').src = res.profile.photoUrl; document.getElementById('profImg').classList.remove('hidden'); }
       
       let orgHtml = "";
@@ -331,7 +336,7 @@
       if (role === 'ADMIN') { switchTab('tab-admin'); fetchAdminData(); } else { switchTab('tab-time'); }
       document.getElementById('btnIn').disabled = timeInDisabled; document.getElementById('btnOut').disabled = timeOutDisabled;
       
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } }).then(stream => { document.getElementById('videoElement').srcObject = stream; });
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } }).then(stream => { document.getElementById('videoElement').srcObject = stream; }).catch(e=>{});
       navigator.geolocation.getCurrentPosition(pos => { lat = pos.coords.latitude; lng = pos.coords.longitude; document.getElementById('gpsText').innerHTML = `✓ GEOLOCATION LOCKED`; }, err => {}, { enableHighAccuracy: true });
     }
 
@@ -353,21 +358,21 @@
     function submitJotform() {
       const site = document.getElementById('jfSite').value.trim(); const work = document.getElementById('jfWork').value.trim();
       const cvs = document.getElementById('sigCanvas'); const blank = document.createElement('canvas'); blank.width = cvs.width; blank.height = cvs.height;
-      if (!site || !work || !jfPhotoBase64 || cvs.toDataURL() === blank.toDataURL()) return alert("Complete all fields and sign.");
+      if (!site || !work || !jfPhotoBase64 || cvs.toDataURL() === blank.toDataURL()) return alert("Complete all data criteria and sign.");
       
       document.getElementById('btnJotSubmit').innerText = "GENERATING PDF..."; document.getElementById('btnJotSubmit').disabled = true;
       sendDataToGoogle({ action: 'SUBMIT_ACCOMPLISHMENT', empId: empId, siteName: site, workDone: work, lat: lat, lng: lng, jobPhoto: jfPhotoBase64, signature: cvs.toDataURL('image/png') }).then(res => {
-        if(res.success) { alert("Accomplishment Report generated. Clocked Out."); location.reload(); } else { alert(res.error || "Failed"); location.reload();}
+        location.reload();
       });
     }
 
     function submitHrForm() {
       const formType = document.getElementById('formType').value; const formDates = document.getElementById('formDates').value.trim(); const formPurpose = document.getElementById('formPurpose').value.trim();
       const cvs = document.getElementById('formSigCanvas'); const blank = document.createElement('canvas'); blank.width = cvs.width; blank.height = cvs.height;
-      if (!formDates || !formPurpose || cvs.toDataURL() === blank.toDataURL()) return alert("Complete details and sign.");
+      if (!formDates || !formPurpose || cvs.toDataURL() === blank.toDataURL()) return alert("Complete details and sign form.");
       document.getElementById('btnForm').innerText = "GENERATING LOG..."; document.getElementById('btnForm').disabled = true;
       sendDataToGoogle({ action: 'SUBMIT_FORM', empId: empId, formType: formType, dates: formDates, purpose: formPurpose, signature: cvs.toDataURL('image/png') }).then(res => {
-        if (res.success) { alert("Success! PDF generated. Control: " + res.controlNum); location.reload(); } else { alert(res.error || "Failed"); location.reload();}
+        if (res.success) { alert("Form transmitted. Control ID: " + res.controlNum); location.reload(); } else { alert("Error dispatching request."); location.reload();}
       });
     }
 
@@ -393,12 +398,12 @@
       }; reader.readAsDataURL(file);
     }
 
-    const quizBank = [{q:"When must cash advances be liquidated?", a:"Within 48 hours"},{q:"Is travel time from home to the first site paid?", a:"No, it is personal transit time"},{q:"What is the penalty for moonlighting?", a:"Immediate Dismissal"},{q:"Are you allowed to tamper with the vehicle dashcam?", a:"No, it is strictly prohibited"},{q:"Who do you report workplace bullying to?", a:"HR or Grievance Committee"},{q:"How many days of paid Bereavement Leave are provided?", a:"3 Days"},{q:"What clearance is required for physical fitness?", a:"Fit-to-Work Clearance"},{q:"What is the maximum utility subsidy per facility?", a:"Php 1,500.00"},{q:"How many days notice is required for resignation?", a:"15 Days"},{q:"What happens if you refuse a mandated drug test?", a:"It is considered insubordination"}];
+    const quizBank = [{q:"When must cash advances be liquidated?", a:"Within 48 hours"},{q:"Is travel time from home to the first site paid?", a:"No, it is personal transit time"},{q:"What is the penalty for moonlighting?", a:"Immediate Dismissal"},{q:"Are you allowed to tamper with the vehicle dashcam?", a:"No, it is strictly prohibited"}];
     function startExam() { document.getElementById('examContainer').classList.remove('hidden'); }
     function generateQuiz() {
       const qCont = document.getElementById('quizQuestions'); qCont.innerHTML = "";
       quizBank.forEach((item, idx) => {
-        let wrongOpts = ["Within 7 days", "Fully paid", "A warning", "Only if off-duty", "5 Days"].sort(() => 0.5 - Math.random()).slice(0,2);
+        let wrongOpts = ["Within 7 days", "Fully paid", "A warning"].sort(() => 0.5 - Math.random()).slice(0,2);
         let opts = [item.a, ...wrongOpts].sort(() => 0.5 - Math.random());
         let selectHtml = `<select id="qx${idx}" class="w-full bg-slate-50 border p-3 rounded-lg text-sm font-bold mb-4 outline-none"><option value="">Select answer...</option>`;
         opts.forEach(o => { selectHtml += `<option value="${o === item.a ? 'correct' : 'wrong'}">${o}</option>`; });
@@ -406,7 +411,7 @@
       });
     }
     function submitExam() {
-      for(let i=0; i<10; i++) { if(document.getElementById(`qx${i}`).value !== 'correct') return alert("Some answers are incorrect. Review the Corporate Manual."); }
+      for(let i=0; i<quizBank.length; i++) { if(document.getElementById(`qx${i}`).value !== 'correct') return alert("Some answers are incorrect. Review the Corporate Manual."); }
       document.getElementById('btnSubmitExam').innerText = "LOGGING COMPLIANCE..."; document.getElementById('btnSubmitExam').disabled = true;
       sendDataToGoogle({ action: 'LOG_TRAINING', empId: empId, score: '100%' }).then(res => { location.reload(); });
     }
@@ -418,22 +423,27 @@
     }
     function adminAssign() {
       const eId = document.getElementById('admEmpId').value.trim(); const act = document.getElementById('admAction').value; const dt = document.getElementById('admDate').value; const d1 = document.getElementById('admDetail1').value.trim(); const d2 = document.getElementById('admDetail2').value.trim();
-      if(!eId || !dt || !d1) return alert("Fill required fields.");
-      sendDataToGoogle(act==='schedule' ? {action:'ADD_SCHEDULE', empId:eId, date:dt, client:d1, timeRange:d2} : {action:'ADD_TASK', empId:eId, deadline:dt, desc:d1}).then(res => { alert("Dispatch Sent."); document.getElementById('admDetail1').value=""; document.getElementById('admDetail2').value=""; });
+      if(!eId || !dt || !d1) return alert("Fill required validation parameters.");
+      sendDataToGoogle(act==='schedule' ? {action:'ADD_SCHEDULE', empId:eId, date:dt, client:d1, timeRange:d2} : {action:'ADD_TASK', empId:eId, deadline:dt, desc:d1}).then(res => { alert("Assignment dispatched successfully."); });
     }
 
     function fetchAdminData() {
       sendDataToGoogle({ action: 'GET_ADMIN_DATA' }).then(res => {
         if(!res.success) return;
         const formCont = document.getElementById('adminForms'); formCont.innerHTML = ""; 
-        if(res.forms) res.forms.forEach(f => { formCont.innerHTML += `<div class="bg-white p-4 border rounded-xl shadow-sm text-xs mb-2"><div class="flex justify-between mb-1"><span class="font-black text-blue-900">${f.empId}</span><span class="text-[9px] font-black text-slate-400">${f.controlNum}</span></div><p class="font-bold mb-1">${f.formType}</p><a href="${f.pdf}" target="_blank" class="text-blue-500 font-bold underline mb-3 block">View PDF Report</a><button onclick="updateForm(this, ${f.row})" class="w-full bg-slate-800 text-white font-black py-2.5 rounded shadow">MARK REVIEWED</button></div>`; });
+        if(res.forms && res.forms.length === 0) formCont.innerHTML = "<p class='text-xs text-slate-500'>No pending forms waiting review.</p>";
+        if(res.forms) res.forms.forEach(f => { formCont.innerHTML += `<div class="bg-white p-4 border rounded-xl shadow-sm text-xs mb-2"><div class="flex justify-between mb-1"><span class="font-black text-blue-900">${f.empId}</span><span class="text-[9px] font-black text-slate-400">${f.controlNum}</span></div><p class="font-bold mb-1">${f.formType}</p><a href="${f.pdf}" target="_blank" class="text-blue-500 font-bold underline mb-3 block">View PDF Document</a><button onclick="updateForm(this, ${f.row})" class="w-full bg-slate-800 text-white font-black py-2 rounded shadow">APPROVE FORM</button></div>`; });
+        
         const logCont = document.getElementById('adminLogs'); logCont.innerHTML = ""; 
-        if(res.logs) res.logs.forEach(log => { logCont.innerHTML += `<div class="bg-white p-4 border rounded-xl shadow-sm text-xs mb-2"><div class="flex justify-between items-center mb-1"><span class="font-black">${log.empId}</span><span class="bg-slate-100 px-2 py-0.5 rounded text-[9px] font-black">${log.action}</span></div><p class="text-slate-400 font-medium mb-3">${log.time}</p><a href="${log.photo}" target="_blank" class="text-blue-500 font-bold underline block mb-2">View Photo</a></div>`; });
+        if(res.logs && res.logs.length === 0) logCont.innerHTML = "<p class='text-xs text-slate-500'>No logs to display.</p>";
+        if(res.logs) res.logs.forEach(log => { logCont.innerHTML += `<div class="bg-white p-4 border rounded-xl shadow-sm text-xs mb-2"><div class="flex justify-between items-center mb-1"><span class="font-black">${log.empId}</span><span class="bg-slate-100 px-2 py-0.5 rounded text-[9px] font-black">${log.action}</span></div><p class="text-slate-400 font-medium mb-2">${log.time}</p><a href="${log.photo}" target="_blank" class="text-blue-500 font-bold underline block">View verification capture</a></div>`; });
+        
         const mapCont = document.getElementById('fleetMap'); mapCont.innerHTML = "";
-        if(res.fleetMap) res.fleetMap.forEach(loc => { mapCont.innerHTML += `<a href="https://www.google.com/maps/search/?api=1&query=$${loc.lat},${loc.lng}" target="_blank" class="flex justify-between items-center p-3 hover:bg-slate-50 border-b"><span class="font-black text-xs text-blue-900">${loc.empId}</span><span class="text-[10px] text-slate-500 font-bold">${loc.time} 📍</span></a>`; });
+        if(res.fleetMap && res.fleetMap.length === 0) mapCont.innerHTML = "<p class='text-xs text-slate-500'>No recent field coordinates recorded.</p>";
+        if(res.fleetMap) res.fleetMap.forEach(loc => { mapCont.innerHTML += `<div class="flex justify-between items-center p-2 border-b"><span class="font-black text-xs text-blue-900">${loc.empId}</span><span class="text-[10px] text-slate-500 font-bold">${loc.time} 📍</span></div>`; });
       });
     }
-    function updateForm(btn, row) { btn.innerText="UPDATING..."; sendDataToGoogle({action:'APPROVE_FORM', row:row}).then(res=>{fetchAdminData();}); }
+    function updateForm(btn, row) { btn.innerText="PROCESSING..."; sendDataToGoogle({action:'APPROVE_FORM', row:row}).then(res=>{fetchAdminData();}); }
   </script>
 </body>
 </html>
