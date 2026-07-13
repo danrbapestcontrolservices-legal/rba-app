@@ -37,7 +37,7 @@
       <div>
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2 px-6">HR & Compliance</p>
         <button onclick="switchTab('tab-hub')" id="nav-hub" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-slate-600 hover:bg-slate-50 text-sm transition-all"><span class="text-rose-500">📚</span> Manual & Directory</button>
-        <button onclick="switchTab('tab-admin')" id="nav-admin" class="hidden nav-btn w-full flex items-center gap-3 px-6 py-3 text-blue-900 hover:bg-blue-50 text-sm font-bold transition-all"><span class="text-blue-900">⚙️</span> Admin Panel</button>
+        <button onclick="switchTab('tab-admin')" id="nav-admin" class="hidden nav-btn w-full items-center gap-3 px-6 py-3 text-blue-900 hover:bg-blue-50 text-sm font-bold transition-all"><span class="text-blue-900">⚙️</span> Admin Panel</button>
       </div>
     </div>
     <div class="p-4 border-t border-slate-100"><button onclick="logoutSession()" class="w-full bg-slate-100 text-slate-600 font-bold py-2 rounded-lg text-xs hover:bg-rose-100 hover:text-rose-600 transition-all">SECURE LOGOUT</button></div>
@@ -80,12 +80,25 @@
         </div>
       </div>
 
-      <!-- ================= COMPLIANCE GATES (MODALS) ================= -->
+      <!-- ================= COMPLIANCE GATES & MODALS ================= -->
       <div id="broadcastView" class="hidden fade-in text-center py-10 max-w-md mx-auto">
         <div class="inline-block bg-rose-100 text-rose-800 px-4 py-1 rounded-full font-black text-xs mb-4 animate-pulse">COMPULSORY DIRECTIVE</div>
         <h3 class="text-2xl font-black text-slate-800 mb-4">Official Executive Memo</h3>
         <div class="bg-white p-6 rounded-xl border-2 border-slate-200 text-slate-700 font-medium text-sm text-left mb-6 shadow-sm whitespace-pre-wrap" id="broadcastMessage"></div>
         <button onclick="acknowledgeMemo()" class="w-full bg-blue-900 text-white font-bold py-4 rounded-xl shadow-lg" id="btnAck">I CONFIRM AND LEGALLY AGREE</button>
+      </div>
+
+      <!-- Admin Employee Full Profile Modal (GOD MODE) -->
+      <div id="adminEmpModal" class="hidden fixed inset-0 modal-overlay z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl fade-in flex flex-col max-h-[90vh]">
+          <div class="bg-indigo-900 p-5 text-white shadow-md z-10 flex justify-between items-center">
+            <div><h2 class="font-black text-lg">Employee 201 Profile</h2><p class="text-[10px] text-indigo-200 font-bold tracking-widest uppercase mt-1">Admin Access Only</p></div>
+            <button onclick="closeAdminEmpModal()" class="text-white hover:text-rose-400 font-black text-2xl outline-none">&times;</button>
+          </div>
+          <div class="p-6 overflow-y-auto flex-1 bg-slate-50" id="adminEmpModalContent">
+            <!-- Details Injected Here -->
+          </div>
+        </div>
       </div>
 
       <!-- Jotform Accomplishment Modal -->
@@ -174,58 +187,58 @@
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <button onclick="toggleFaq('faq1')" class="w-full p-4 text-left font-black text-blue-900 bg-blue-50 flex justify-between outline-none">🏛️ President's Covenant & Business Integrity <span>+</span></button>
               <div id="faq1" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
-                <p>At the heart of our operations is a profound commitment to the individuals who execute our vision daily[cite: 3]. We provide premium employee protections and generous company welfare benefits—including enhanced leaves and structured health policies—that demonstrate our commitment to your stability[cite: 3].</p>
-                <p>The Company exercises its lawful right to organize, streamline, and direct all operational and human resource requirements in good faith[cite: 3]. This includes establishing job duties, assigning specific equipment, setting deployment criteria, and regulating time and place protocols[cite: 3].</p>
-                <p>The perfection of the employment relationship and regularized tenure is subject to a suspensive condition: the completion of a valid 201 File[cite: 3].</p>
+                <p>At the heart of our operations is a profound commitment to the individuals who execute our vision daily. We provide premium employee protections and generous company welfare benefits—including enhanced leaves and structured health policies—that demonstrate our commitment to your stability.</p>
+                <p>The Company exercises its lawful right to organize, streamline, and direct all operational and human resource requirements in good faith. This includes establishing job duties, assigning specific equipment, setting deployment criteria, and regulating time and place protocols.</p>
+                <p>The perfection of the employment relationship and regularized tenure is subject to a suspensive condition: the completion of a valid 201 File.</p>
               </div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <button onclick="toggleFaq('faq2')" class="w-full p-4 text-left font-black text-emerald-900 bg-emerald-50 flex justify-between outline-none">🏥 Medical Standards & Property Security <span>+</span></button>
               <div id="faq2" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
-                <p>Candidates must establish physical fitness[cite: 3]. The Company requires a standardized Pre-Employment Medical Examination (PEME)[cite: 3]. Employees are only required to submit a "Fit-to-Work" clearance or restriction note from a licensed physician[cite: 3].</p>
-                <p>The Company reserves the right to conduct standard, respectful inspections of bags, lockers, personal effects, and company vehicles upon entry and exit of facilities or client areas[cite: 3].</p>
+                <p>Candidates must establish physical fitness. The Company requires a standardized Pre-Employment Medical Examination (PEME). Employees are only required to submit a "Fit-to-Work" clearance or restriction note from a licensed physician.</p>
+                <p>The Company reserves the right to conduct standard, respectful inspections of bags, lockers, personal effects, and company vehicles upon entry and exit of facilities or client areas.</p>
               </div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <button onclick="toggleFaq('faq3')" class="w-full p-4 text-left font-black text-amber-900 bg-amber-50 flex justify-between outline-none">⏱️ Timekeeping & Dashcam Integrity <span>+</span></button>
               <div id="faq3" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
-                <p>The Company implements a Compressed Workweek (CWW) and Flexible Work Arrangement to accommodate operational realities[cite: 3].</p>
-                <p>Compensable time includes required reporting, briefing, loading, equipment or PPE issuance, Company transport from a required dispatch point, travel between client sites, controlled waiting, preparation, cleanup, decontamination, and required reports[cite: 3].</p>
-                <p>Ordinary home-to-first-site and last-site-to-home travel is non-compensable only when no duties are performed and the employee is not under Company control[cite: 3].</p>
-                <p>Employees assigned to Company-owned vehicles must not disconnect, disable, cover, alter, damage, delete footage from, or otherwise interfere with the dashcam or its wiring, memory card, GPS, settings, or related equipment[cite: 3]. Any malfunction, damage, missing memory card, recording interruption, or irregularity must be reported immediately to the Supervisor, Operations Head, or HR[cite: 3].</p>
-                <p>The Company may provide shared stay-in facilities where operationally necessary and subsidizes water and electricity up to Php 1,500.00 per month per facility unit[cite: 3].</p>
+                <p>The Company implements a Compressed Workweek (CWW) and Flexible Work Arrangement to accommodate operational realities.</p>
+                <p>Compensable time includes required reporting, briefing, loading, equipment or PPE issuance, Company transport from a required dispatch point, travel between client sites, controlled waiting, preparation, cleanup, decontamination, and required reports.</p>
+                <p>Ordinary home-to-first-site and last-site-to-home travel is non-compensable only when no duties are performed and the employee is not under Company control.</p>
+                <p>Employees assigned to Company-owned vehicles must not disconnect, disable, cover, alter, damage, delete footage from, or otherwise interfere with the dashcam or its wiring, memory card, GPS, settings, or related equipment. Any malfunction, damage, missing memory card, recording interruption, or irregularity must be reported immediately to the Supervisor, Operations Head, or HR.</p>
+                <p>The Company may provide shared stay-in facilities where operationally necessary and subsidizes water and electricity up to Php 1,500.00 per month per facility unit.</p>
               </div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <button onclick="toggleFaq('faq4')" class="w-full p-4 text-left font-black text-indigo-900 bg-indigo-50 flex justify-between outline-none">💰 Salary, Leaves & Accountability <span>+</span></button>
               <div id="faq4" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
-                <p>Contractually agreed Salary or Daily Task Rate is fully integrated and inclusive of all gasoline expenses, routine vehicle maintenance, and operational wear-and-tear[cite: 3].</p>
-                <p>Rank-and-file workers (including those under a Compressed Workweek or Task-Based setup) are entitled to 13th-month pay[cite: 3].</p>
-                <p><strong>Leaves:</strong> 7-Day Sick/Vacation Leave: Granted annually upon regularization to provide our team with ample time to rest and recuperate[cite: 3]. 3-Day Paid Bereavement Leave: Granted immediately to support regular employees during the loss of an immediate family member[cite: 3].</p>
-                <p><strong>Vales:</strong> Operational cash advances must be liquidated with legitimate receipts and any unused funds within forty-eight (48) hours, unless Finance grants a documented extension[cite: 3].</p>
+                <p>Contractually agreed Salary or Daily Task Rate is fully integrated and inclusive of all gasoline expenses, routine vehicle maintenance, and operational wear-and-tear.</p>
+                <p>Rank-and-file workers (including those under a Compressed Workweek or Task-Based setup) are entitled to 13th-month pay.</p>
+                <p><strong>Leaves:</strong> 7-Day Sick/Vacation Leave: Granted annually upon regularization to provide our team with ample time to rest and recuperate. 3-Day Paid Bereavement Leave: Granted immediately to support regular employees during the loss of an immediate family member.</p>
+                <p><strong>Vales:</strong> Operational cash advances must be liquidated with legitimate receipts and any unused funds within forty-eight (48) hours, unless Finance grants a documented extension.</p>
               </div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <button onclick="toggleFaq('faq5')" class="w-full p-4 text-left font-black text-rose-900 bg-rose-50 flex justify-between outline-none">⚖️ Workplace Safety & Progressive Discipline <span>+</span></button>
               <div id="faq5" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
-                <p>RBA shall maintain a written Drug-Free Workplace Policy and Program under R.A. 9165 and DOLE D.O. 53-03[cite: 3]. RBA prohibits gender-based sexual harassment, workplace bullying, and violence[cite: 3].</p>
-                <p>Employees owe their professional dedication exclusively to the Company[cite: 3]. Engaging in side-line businesses ("moonlighting") or privately offering pest control or waterproofing services to the Company's active or potential clients represents a direct conflict of interest, a violation of the Non-Disclosure Agreement (NDA), and a serious breach of trust[cite: 3]. Proven violations may result in disciplinary action, up to and including dismissal, and lawful recovery of damages, after investigation and due process[cite: 3].</p>
-                <p>Employees are encouraged to use the Grievance Committee or HR for prompt internal resolution[cite: 3].</p>
+                <p>RBA shall maintain a written Drug-Free Workplace Policy and Program under R.A. 9165 and DOLE D.O. 53-03. RBA prohibits gender-based sexual harassment, workplace bullying, and violence.</p>
+                <p>Employees owe their professional dedication exclusively to the Company. Engaging in side-line businesses ("moonlighting") or privately offering pest control or waterproofing services to the Company's active or potential clients represents a direct conflict of interest, a violation of the Non-Disclosure Agreement (NDA), and a serious breach of trust. Proven violations may result in disciplinary action, up to and including dismissal, and lawful recovery of damages, after investigation and due process.</p>
+                <p>Employees are encouraged to use the Grievance Committee or HR for prompt internal resolution.</p>
               </div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <button onclick="toggleFaq('faq6')" class="w-full p-4 text-left font-black text-slate-700 bg-slate-100 flex justify-between outline-none">🚪 Resignation, Final Pay & SOPs <span>+</span></button>
               <div id="faq6" class="hidden p-5 text-sm text-slate-600 space-y-3 leading-relaxed border-t border-slate-100">
-                <p>Submit your resignation letter to HR exactly 15 days prior to your last day[cite: 3].</p>
-                <p>Separation Pay is provided only if the Company initiates separation due to Authorized Causes such as business closure, redundancy, or retrenchment[cite: 3]. Employees who voluntarily resign or are separated due to disciplinary Just Causes (e.g., severe infractions, failing PIP) are not legally entitled to Separation Pay[cite: 3].</p>
-                <p>Final pay, including prorated 13th-month pay and other amounts due, shall generally be released within thirty (30) calendar days from separation or termination[cite: 3].</p>
+                <p>Submit your resignation letter to HR exactly 15 days prior to your last day.</p>
+                <p>Separation Pay is provided only if the Company initiates separation due to Authorized Causes such as business closure, redundancy, or retrenchment. Employees who voluntarily resign or are separated due to disciplinary Just Causes (e.g., severe infractions, failing PIP) are not legally entitled to Separation Pay.</p>
+                <p>Final pay, including prorated 13th-month pay and other amounts due, shall generally be released within thirty (30) calendar days from separation or termination.</p>
                 <hr>
-                <p><strong>Field SOPs:</strong> Ask the Client or Guard to record and sign the site Time-In[cite: 3]. Submit legitimate receipts and return any unused funds to Finance within 48 hours, unless an extension is documented[cite: 3]. If you fall ill, text or call your supervisor 2 hours before your shift so we can adjust operations[cite: 3]. On your last day, peacefully surrender Company property using Annex J[cite: 3].</p>
+                <p><strong>Field SOPs:</strong> Ask the Client or Guard to record and sign the site Time-In. Submit legitimate receipts and return any unused funds to Finance within 48 hours, unless an extension is documented. If you fall ill, text or call your supervisor 2 hours before your shift so we can adjust operations. On your last day, peacefully surrender Company property using Annex J.</p>
               </div>
             </div>
           </div>
@@ -237,7 +250,6 @@
             <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">PhilHealth ID</span><p class="font-black text-white mt-0.5" id="profPh">N/A</p></div>
             <div><span class="text-slate-400 font-bold block uppercase tracking-wider text-[9px]">Pag-IBIG MID</span><p class="font-black text-white mt-0.5" id="profPag">N/A</p></div>
           </div>
-          <a id="btnContract" href="#" target="_blank" class="w-full block text-center bg-white text-blue-900 border-2 border-blue-900 font-black py-4 rounded-xl mb-8 shadow-sm hover:bg-blue-50 transition-all">VIEW SECURE EMPLOYMENT CONTRACT</a>
           
           <h2 class="text-xl font-black text-slate-800 mb-4 border-b-2 border-slate-200 pb-2">Company Directory</h2>
           <div id="orgChart" class="space-y-3 max-h-[40vh] overflow-y-auto pr-2 pb-6 no-scrollbar"></div>
@@ -266,7 +278,7 @@
                 <input type="text" id="admDetail2" placeholder="Time Range (e.g. 8am - 5pm)" class="w-full bg-white border border-slate-200 p-3 rounded-lg mb-5 text-sm outline-none shadow-sm focus:border-indigo-500">
                 <button onclick="adminAssign()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition-all tracking-wider">DISPATCH ASSIGNMENT</button>
               </div>
-              <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm mb-6 h-48 overflow-y-auto"><h2 class="text-lg font-black text-blue-900 mb-1">Fleet Map</h2><div id="fleetMap" class="mt-4 text-xs space-y-2"></div></div>
+              <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm mb-6 h-48 overflow-y-auto"><h2 class="text-lg font-black text-blue-900 mb-1">Fleet Map (Last Locations)</h2><div id="fleetMap" class="mt-4 text-xs space-y-2"></div></div>
             </div>
           </div>
         </div>
@@ -284,7 +296,7 @@
   </main>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzI89fYolPy51A7D1Z6aWowm9uM8ftM6Pva0qBxNOLRCPMYc-mmFNKFHZlM4-DYAU0-Qg/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbxvHuluSoFqLhEYinuCmt-LJ5P3YV-0L_8nBbrUb2CFqy83vexft6V4X_OHKoLKL1quYQ/exec"; 
     let empId = "", lat = null, lng = null, jfPhotoBase64 = null;
 
     function setupCanvas(canvasId) {
@@ -319,8 +331,8 @@
       try {
         const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, redirect: 'follow', body: JSON.stringify(data) });
         const text = await response.text();
-        try { return JSON.parse(text); } catch (e) { return { success: false, error: "Server structural variance." }; }
-      } catch (error) { return { success: false, error: "Connection error." }; }
+        try { return JSON.parse(text); } catch (e) { return { success: false, error: "Server structure variance." }; }
+      } catch (error) { return { success: false, error: "Connection Drop." }; }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -336,7 +348,7 @@
       document.getElementById('btnSend').innerText = "TRANSMITTING..."; document.getElementById('btnSend').disabled = true;
       sendDataToGoogle({ action: 'SEND_OTP', empId: empId }).then(res => {
         if (res.success) { document.getElementById('loginView').classList.add('hidden'); document.getElementById('otpView').classList.remove('hidden'); } 
-        else { alert(res.error || "Employee ID not discovered."); document.getElementById('btnSend').innerText = "SECURE LOGIN"; document.getElementById('btnSend').disabled = false; }
+        else { alert(res.error || "ID not found."); document.getElementById('btnSend').innerText = "SECURE LOGIN"; document.getElementById('btnSend').disabled = false; }
       });
     }
 
@@ -345,7 +357,7 @@
       document.getElementById('btnVerify').innerText = "AUTHENTICATING..."; document.getElementById('btnVerify').disabled = true;
       sendDataToGoogle({ action: 'VERIFY_OTP', empId: empId, otp: otp }).then(res => {
         if (res.success) { localStorage.setItem('rba_emp_id', empId); executeLogin(res); } 
-        else { alert(res.error || "Invalid Verification Code."); document.getElementById('btnVerify').innerText = "VERIFY IDENTITY"; document.getElementById('btnVerify').disabled = false; }
+        else { alert(res.error || "Invalid Code."); document.getElementById('btnVerify').innerText = "VERIFY IDENTITY"; document.getElementById('btnVerify').disabled = false; }
       });
     }
 
@@ -389,10 +401,17 @@
       
       if(res.profile.photoUrl) { document.getElementById('profImg').src = res.profile.photoUrl; document.getElementById('profImg').classList.remove('hidden'); }
       
+      // Store the global directory for Admin God-Mode Modal Access
+      window.globalDirectory = res.directory;
+      
       let orgHtml = "";
-      if(res.directory) res.directory.forEach(emp => {
+      if(res.directory) res.directory.forEach((emp, index) => {
         const imgHtml = emp.photo ? `<img src="${emp.photo}" class="w-10 h-10 rounded-full object-cover shadow-sm border border-slate-200">` : `<div class="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-xs font-black shadow-sm border border-slate-200">${emp.name.substring(0,2).toUpperCase()}</div>`;
-        orgHtml += `<div class="flex items-center gap-4 p-3 bg-white rounded-xl border border-slate-100 shadow-sm mb-2"><div class="flex-shrink-0">${imgHtml}</div><div><p class="font-black text-slate-800 text-sm">${emp.name}</p><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${emp.role}</p></div></div>`;
+        if (res.role === 'ADMIN') {
+          orgHtml += `<div onclick="openAdminEmpModal(${index})" class="cursor-pointer hover:bg-indigo-50 flex items-center gap-4 p-3 bg-white rounded-xl border border-slate-100 shadow-sm mb-2 transition-all"><div class="flex-shrink-0">${imgHtml}</div><div class="flex-1"><p class="font-black text-slate-800 text-sm">${emp.name}</p><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${emp.role}</p></div><div class="text-indigo-300 text-xs font-black">👁️ VIEW</div></div>`;
+        } else {
+          orgHtml += `<div class="flex items-center gap-4 p-3 bg-white rounded-xl border border-slate-100 shadow-sm mb-2"><div class="flex-shrink-0">${imgHtml}</div><div><p class="font-black text-slate-800 text-sm">${emp.name}</p><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${emp.role}</p></div></div>`;
+        }
       });
       document.getElementById('orgChart').innerHTML = orgHtml;
 
@@ -402,6 +421,37 @@
         initApp(res.timeInDisabled, res.timeOutDisabled, res.role);
       }
     }
+
+    // Modal Builder for Admin Employee View
+    function openAdminEmpModal(index) {
+        const emp = window.globalDirectory[index];
+        const content = document.getElementById('adminEmpModalContent');
+        let imgHtml = emp.photo ? `<img src="${emp.photo}" class="h-24 w-24 rounded-full object-cover shadow-md mx-auto mb-3 border-4 border-indigo-100">` : `<div class="h-24 w-24 rounded-full bg-indigo-100 text-indigo-500 flex items-center justify-center text-3xl font-black shadow-md mx-auto mb-3 border-4 border-white">${emp.name.substring(0,2).toUpperCase()}</div>`;
+        
+        content.innerHTML = `
+            <div class="text-center mb-6">
+                ${imgHtml}
+                <h3 class="font-black text-xl text-slate-800">${emp.name}</h3>
+                <p class="text-xs font-bold text-indigo-600 uppercase tracking-widest">${emp.role} | ID: ${emp.empId}</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl border shadow-sm mb-4 space-y-3">
+                <div><p class="text-[10px] text-slate-400 font-bold uppercase">Mobile Number</p><p class="font-black text-slate-800 text-sm">${emp.phone || 'N/A'}</p></div>
+                <div><p class="text-[10px] text-slate-400 font-bold uppercase">Registered Address</p><p class="font-black text-slate-800 text-sm">${emp.address || 'N/A'}</p></div>
+                <div><p class="text-[10px] text-rose-400 font-bold uppercase">Emergency Contact Anchor</p><p class="font-black text-rose-600 text-sm">${emp.emergency || 'N/A'}</p></div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border shadow-sm grid grid-cols-2 gap-4 mb-6">
+                <div><p class="text-[9px] text-slate-400 font-bold uppercase">Hire Date</p><p class="font-black text-slate-800 text-xs">${emp.hireDate || 'N/A'}</p></div>
+                <div><p class="text-[9px] text-slate-400 font-bold uppercase">Birthday</p><p class="font-black text-slate-800 text-xs">${emp.bday || 'N/A'}</p></div>
+                <div><p class="text-[9px] text-slate-400 font-bold uppercase">SSS Number</p><p class="font-black text-slate-800 text-xs">${emp.sss || 'N/A'}</p></div>
+                <div><p class="text-[9px] text-slate-400 font-bold uppercase">TIN Number</p><p class="font-black text-slate-800 text-xs">${emp.tin || 'N/A'}</p></div>
+                <div><p class="text-[9px] text-slate-400 font-bold uppercase">PhilHealth</p><p class="font-black text-slate-800 text-xs">${emp.philhealth || 'N/A'}</p></div>
+                <div><p class="text-[9px] text-slate-400 font-bold uppercase">Pag-IBIG</p><p class="font-black text-slate-800 text-xs">${emp.pagibig || 'N/A'}</p></div>
+            </div>
+            ${emp.contract ? `<a href="${emp.contract}" target="_blank" class="block w-full bg-indigo-50 text-indigo-900 border border-indigo-200 font-black py-4 rounded-xl text-center shadow-sm hover:bg-indigo-100 transition-all text-xs tracking-widest uppercase">View 201 Contract Document</a>` : `<p class="text-center text-xs font-bold text-slate-400 border-t pt-4">No contract uploaded in database</p>`}
+        `;
+        document.getElementById('adminEmpModal').classList.remove('hidden');
+    }
+    function closeAdminEmpModal() { document.getElementById('adminEmpModal').classList.add('hidden'); }
 
     function completeTask(row) { sendDataToGoogle({ action: 'COMPLETE_TASK', row: row }).then(res => { location.reload(); }); }
     function markRead() { document.getElementById('notifBadge').classList.add('hidden'); document.getElementById('notifList').innerHTML = "No new messages."; sendDataToGoogle({ action: 'MARK_READ', empId: empId }); }
@@ -496,16 +546,13 @@
     function startExam() { document.getElementById('examContainer').classList.remove('hidden'); }
     
     function generateQuiz() {
-      // Fisher-Yates Randomizer: Selects 10 random questions from the master bank
       currentQuiz = fullQuizBank.sort(() => 0.5 - Math.random()).slice(0, 10);
       const qCont = document.getElementById('quizQuestions'); qCont.innerHTML = "";
-      
       currentQuiz.forEach((item, idx) => {
         let opts = [item.a, item.w1, item.w2].sort(() => 0.5 - Math.random());
         let selectHtml = `<select id="qx${idx}" class="w-full bg-white border border-slate-300 shadow-sm p-4 rounded-xl text-sm font-bold mb-5 outline-none focus:ring-2 focus:ring-blue-100"><option value="">Select your answer...</option>`;
         opts.forEach(o => { selectHtml += `<option value="${o === item.a ? 'correct' : 'wrong'}">${o}</option>`; });
-        selectHtml += `</select>`; 
-        qCont.innerHTML += `<p class="text-sm font-black text-slate-800 mb-2">${idx+1}. ${item.q}</p>${selectHtml}`;
+        selectHtml += `</select>`; qCont.innerHTML += `<p class="text-sm font-black text-slate-800 mb-2">${idx+1}. ${item.q}</p>${selectHtml}`;
       });
     }
 
